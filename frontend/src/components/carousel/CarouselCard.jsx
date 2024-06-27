@@ -1,7 +1,7 @@
 const CarouselCard = ({data}) => {
     return(
-      <div className="max-w-sm rounded overflow-hidden shadow-lg bg-white h-[20rem] w-[15rem]">
-        <img className="h-[10rem] w-[15rem]" src={data.imageUrl} alt="https://www.shutterstock.com/image-vector/default-ui-image-placeholder-wireframes-600nw-1037719192.jpg" />
+      <div className="max-w-sm rounded overflow-hidden shadow-lg bg-white h-[20rem] w-[15rem] hover:bg-neutral-300">
+        <img className="h-[10rem] w-[15rem]" src={data.imageUrl} onerror="this.src='https://www.shutterstock.com/image-vector/default-ui-image-placeholder-wireframes-600nw-1037719192.jpg';" />
         <div className="px-3 py-4 flex flex-col justify-center items-center">
           <div className="font-bold text-base mb-2 mx-[1.3rem]">{data.name}</div>
           <p className="text-gray-700 text-sm mx-[1.1rem]">

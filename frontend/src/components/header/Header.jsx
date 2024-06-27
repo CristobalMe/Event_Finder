@@ -1,17 +1,8 @@
-import './Header.css'
 import SearchBar from '../searchBar/SearchBar';
 import React, { useState } from "react";
 import {Menu, X} from "lucide-react"
 import { Link } from "react-router-dom"
 
-const NavLinksNotLogged = () => {
-  return(
-    <>
-      <Link to="/SignUp">Sign Up</Link>
-      <Link to="/Login">Login</Link>
-    </>
-  );
-};
 
 const NavLinksLogged = () => {
   return(
@@ -20,7 +11,7 @@ const NavLinksLogged = () => {
       <Link to="/Attending" className='pr-8'>Attending</Link>
       <Link to="/Nearby" className='pr-8'>Nearby</Link>
       <Link to="/ForYou" className='pr-8'>For you</Link>
-      <Link to="/" className='pr-8'>Home</Link>
+      <Link to="/Home" className='pr-8'>Home</Link>
     </>
   );
 };
@@ -37,11 +28,11 @@ const Header = () => {
     return (
       <div >
         <header className='fixed z-[1] top-0 w-full flex flex-wrap items-center justify-between bg-background p-[2em] font-sans font-bold backdrop-blur-[100px] bg-slate-900 text-white'>
-                <div className='m-10 items-center sm:m-2 '>
-                  <h2 className='font-bebas text-xl sm:text-3xl'>Event finder</h2>
+                <div className='m-3 items-center'>
+                  <h2 className='font-bebas text-xl text-3xl'>Event finder</h2>
                 </div>
 
-                <div className='mr-1 content-center text-black'>
+                <div className='hidden mr-1 content-center text-black lg:flex'>
                   <SearchBar />
                 </div>
 
