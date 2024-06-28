@@ -44,12 +44,6 @@ const SignUpForm = ({}) => {
                             <input className="border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight" id="sex" type="text" placeholder="male/female" />
                         </div>
 
-                                                
-                        
-
-
-
-
                         <div className="flex items-center justify-between">
                             <Link to="/Home"><button className="bg-blue-950 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" type="button">Sign Up</button></Link>
                             <Link to="/"><button className="text-blue-950 hover:text-blue-700 font-bold py-2 px-4 rounded " type="button">Sign In</button></Link>

@@ -1,8 +1,8 @@
-import Card from "../Card";
-import data from "../../data"
+import Card from "../Card.jsx";
+import data from "../../data.js"
 
 
-const CardGridForYou = () => {
+const CardGridEventAttending = () => {
   
     return (
       <div className="grid lg:grid-cols-4 sm:grid-cols-2 ">
@@ -15,4 +15,4 @@ const CardGridForYou = () => {
     );
   };
   
-  export default CardGridForYou;
+  export default CardGridEventAttending;

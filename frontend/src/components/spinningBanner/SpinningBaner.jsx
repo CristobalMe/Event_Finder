@@ -5,55 +5,55 @@ import img from './imagesSpinningBaner/1.png'
 
 const SpinningBanner = () => {
     return (
-        <div class="spinningBaner">
-            <div class="banner">
-                <div class="image">
+        <div className="spinningBaner">
+            <div className="banner">
+                <div className="image">
                     <img src='/src/components/spinningBanner/imagesSpinningBaner/1.png' height="100" width="250" />
                 </div>
-                <div class="image">
+                <div className="image">
                     <img src='/src/components/spinningbanner/imagesspinningbaner/2.png' height="100" width="250" />
                 </div>
-                <div class="image">
+                <div className="image">
                     <img src='/src/components/spinningbanner/imagesspinningbaner/3.png' height="100" width="250"  />
                 </div>
-                <div class="image">
+                <div className="image">
                     <img src='/src/components/spinningbanner/imagesspinningbaner/4.png' height="100" width="250"  />
                 </div>
-                <div class="image">
+                <div className="image">
                     <img src='/src/components/spinningbanner/imagesspinningbaner/5.png' height="100" width="250"  />
                 </div>
-                <div class="image">
+                <div className="image">
                     <img src='/src/components/spinningbanner/imagesspinningbaner/6.png' height="100" width="250"  />
                 </div>
-                <div class="image">
+                <div className="image">
                     <img src='/src/components/spinningbanner/imagesspinningbaner/7.png' height="100" width="250"  />
                 </div>
-                <div class="image">
+                <div className="image">
                     <img src='/src/components/spinningbanner/imagesspinningbaner/8.png' height="100" width="250"  />
                 </div>
 
-                <div class="image">
+                <div className="image">
                     <img src='/src/components/spinningBanner/imagesSpinningBaner/1.png' height="100" width="250" />
                 </div>
-                <div class="image">
+                <div className="image">
                     <img src='/src/components/spinningbanner/imagesspinningbaner/2.png' height="100" width="250" />
                 </div>
-                <div class="image">
+                <div className="image">
                     <img src='/src/components/spinningbanner/imagesspinningbaner/3.png' height="100" width="250"  />
                 </div>
-                <div class="image">
+                <div className="image">
                     <img src='/src/components/spinningbanner/imagesspinningbaner/4.png' height="100" width="250"  />
                 </div>
-                <div class="image">
+                <div className="image">
                     <img src='/src/components/spinningbanner/imagesspinningbaner/5.png' height="100" width="250"  />
                 </div>
-                <div class="image">
+                <div className="image">
                     <img src='/src/components/spinningbanner/imagesspinningbaner/6.png' height="100" width="250"  />
                 </div>
-                <div class="image">
+                <div className="image">
                     <img src='/src/components/spinningbanner/imagesspinningbaner/7.png' height="100" width="250"  />
                 </div>
-                <div class="image">
+                <div className="image">
                     <img src='/src/components/spinningbanner/imagesspinningbaner/8.png' height="100" width="250"  />
                 </div>
             </div>
