@@ -1,4 +1,4 @@
-import Header from '../header/Header'
+import Header from '../header/Header.jsx'
 import CardGridAttending from "./CardGridAttending.jsx"
 
 function App() {
