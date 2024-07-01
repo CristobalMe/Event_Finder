@@ -1,11 +1,11 @@
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import CarouselCard from "./CarouselCard.jsx";
-import data from "../../data.js"
+import CarouselCard from "./EventsCarouselCard.jsx";
+//import data from "../../data.js"
 
 
-const Carousel = () => {
+const EventsCarousel = (events) => {
 
 
       var settings = {
@@ -37,13 +37,19 @@ const Carousel = () => {
         ]
       };
 
+
+      let data = [];
+      if (events.events){
+        data = events.events;
+      }
+
     
     return (
         <section>
             <div>
                 <Slider {...settings}>
                     {data.map((d) => (
-                        <CarouselCard data={d} />
+                        <CarouselCard key={d} data={d} />
                     ))}
                 </Slider>
             </div>
@@ -51,4 +57,4 @@ const Carousel = () => {
     );
   };
   
-  export default Carousel;
+  export default EventsCarousel;

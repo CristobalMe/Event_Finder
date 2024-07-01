@@ -1,18 +1,18 @@
-import Card from "../Card.jsx";
+import CardEvent from "../CardEvent.jsx";
 import data from "../../data.js"
 
 
-const CardGridEventAttending = () => {
+const CardGridEventsAttending = () => {
   
     return (
       <div className="grid lg:grid-cols-4 sm:grid-cols-2 ">
         {data.map((d) => (
             <div className="m-[3rem]">
-              <Card data={d} />
+              <CardEvent data={d} />
             </div>
         ))}
       </div>
     );
   };
   
-  export default CardGridEventAttending;
+  export default CardGridEventsAttending;

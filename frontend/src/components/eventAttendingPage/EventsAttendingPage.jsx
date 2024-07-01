@@ -1,5 +1,5 @@
 import Header from '../header/Header.jsx'
-import CardGridAttending from "./CardGridEventAttending.jsx"
+import CardGridAttending from "./CardGridEventsAttending.jsx"
 
 function App() {
 

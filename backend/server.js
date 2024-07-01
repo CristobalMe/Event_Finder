@@ -44,7 +44,7 @@ const eventRoutes = require("./routes/eventRoutes")
 const userRoutes = require("./routes/userRoutes")
 
 app.get('/', (req, res) => {
-    res.send('Welcome to my app!')
+    res.send('Server is working')
 })
 
 app.use('/event', eventRoutes)
