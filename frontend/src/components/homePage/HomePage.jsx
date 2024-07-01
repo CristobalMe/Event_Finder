@@ -1,13 +1,27 @@
-import Carousel from '../carousel/Carousel'
+import EventsCarousel from '../carousel/EventsCarousel'
 import Header from '../header/Header'
 import SpinningBanner from '../spinningBanner/SpinningBaner'
+import { useState, useEffect } from 'react'
 
 function App() {
+    let [events, setEvents] = useState()
+    let [ changeInEvents, setchangeInEvents] = useState(true)
+
+    useEffect(() => {
+        if (changeInEvents) fetchEvents();
+        setchangeInEvents(false)
+    }, [events]);
+
+    const fetchEvents = () => {
+        fetch(`http://localhost:3000/event`)
+            .then(response => response.json())
+            .then(data => {setEvents(data)})
+            .catch(error => console.error('Error fetching:', error))
+    }
 
   return (
     <div>
         <Header />
-
 
         <div className='mt-[10rem]'>
             <SpinningBanner />
@@ -15,22 +29,18 @@ function App() {
 
         <div className='mx-[5rem]  mt-[10rem] content-center sm:mx-[7rem]'>
             <h2 className='font-bebas text-white text-xl'>For You</h2>
-            <Carousel />
+            <EventsCarousel events={events} />
         </div>
 
         <div className='mx-[5rem]  mt-[10rem] content-center sm:mx-[7rem]'>
             <h2 className='font-bebas text-white text-xl'>San Francisco</h2>
-            <Carousel />
+            <EventsCarousel events={events} />
         </div>
 
         <div className='mx-[5rem]  mt-[10rem] content-center sm:mx-[7rem]'>
             <h2 className='font-bebas text-white text-xl'>This week</h2>
-            <Carousel />
+            <EventsCarousel events={events} />
         </div>
-
-        
-    
-
     </div>
   )
 }
