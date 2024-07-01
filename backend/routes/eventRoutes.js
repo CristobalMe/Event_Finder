@@ -3,7 +3,6 @@ const router = express.Router()
 const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient()
 
-
 router.get('/', async (req, res) => {
   const events = await prisma.event.findMany()
   res.json(events)

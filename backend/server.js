@@ -7,8 +7,6 @@ const Sequelize = require('sequelize');
 const app = express()
 const PORT = 3000
 
-
-
 app.use(cors({
   origin: 'http://localhost:5173',
   credentials: true
@@ -16,12 +14,10 @@ app.use(cors({
 app.use(express.json())
 app.use(morgan())
 
-
 const newSequelize = new Sequelize('event_finder', 'postgres', '1025323', {
     host: 'localhost',
     dialect: 'postgres'
 });
-
 
 const SequelizeStore = SequelizeStoreInit(session.Store);
 const sessionStore = new SequelizeStore({
@@ -44,11 +40,8 @@ app.use(
 );
 sessionStore.sync();
 
-
-
 const eventRoutes = require("./routes/eventRoutes")
 const userRoutes = require("./routes/userRoutes")
-
 
 app.get('/', (req, res) => {
     res.send('Welcome to my app!')
@@ -56,7 +49,6 @@ app.get('/', (req, res) => {
 
 app.use('/event', eventRoutes)
 app.use('/users', userRoutes)
-
 
 newSequelize.sync({ alter: true })
   .then(() => {

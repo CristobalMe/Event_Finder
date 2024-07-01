@@ -33,10 +33,6 @@ router.post('/', async (req, res) => {
   res.json(newUser)
 })
 
-
-
-
-
 router.put('/:id', async(req, res) => {
   const { id } = req.params
   const {  username, email, password  } = req.body
