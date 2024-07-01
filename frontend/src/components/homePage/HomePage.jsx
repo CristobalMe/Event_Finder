@@ -4,6 +4,8 @@ import SpinningBanner from '../spinningBanner/SpinningBaner'
 import { useState, useEffect } from 'react'
 
 function App() {
+    const MapsApiKey = import.meta.env.VITE_MAPS_API_KEY;
+    const url = import.meta.env.VITE_URL
     let [events, setEvents] = useState()
     let [ changeInEvents, setchangeInEvents] = useState(true)
 
@@ -13,7 +15,7 @@ function App() {
     }, [events]);
 
     const fetchEvents = () => {
-        fetch(`http://localhost:3000/event`)
+        fetch(`${url}/event`)
             .then(response => response.json())
             .then(data => {setEvents(data)})
             .catch(error => console.error('Error fetching:', error))

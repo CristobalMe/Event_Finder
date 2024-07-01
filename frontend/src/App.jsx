@@ -3,13 +3,11 @@ import ForYouPage from "./components/forYouPage/ForYouPage.jsx"
 import NearbyPage from "./components/nearbyPage/NearbyPage.jsx"
 import EventsAttendingPage from "./components/eventAttendingPage/EventsAttendingPage.jsx"
 import FavoriteEventsPage from "./components/favoriteEventsPage/FavoriteEventsPage.jsx"
-import InitialPage from "./components/initialPage/InitialPage.jsx"
-import SignupPage from "./components/signUpPage/SignUpPage.jsx"
 import { Router, Route, Routes } from 'react-router-dom';
 
 {/* testing for user auth */}
-import LoginForm from "./components/LoginForm/LoginForm.jsx"
-import SignupForm from "./components/SignupForm/SignupForm.jsx"
+import LoginPage from "./components/LoginPage/LoginPage.jsx"
+import SignupPage from "./components/SignupPage/SignUpPage.jsx"
 import { useState, useEffect } from 'react';
 import { UserContext } from './UserContext';
 import { BrowserRouter } from 'react-router-dom';
@@ -28,7 +26,7 @@ function App() {
 
   const updateUser = (newUser) => {
     setUser(newUser);
-    //console.log(user)
+    console.log(user)
   };
 
   useEffect(() => {
@@ -43,17 +41,16 @@ function App() {
       <UserContext.Provider value={{ user, updateUser }}>
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<InitialPage />} />
+            {/* change later */}
+            <Route path="/" element={<HomePage />} />
+            {/*  */}
             <Route path="/SignUp" element={<SignupPage />} />
             <Route path="/Home" element={<HomePage />} />
             <Route path="/ForYou" element={<ForYouPage />} />
             <Route path="/Nearby" element={<NearbyPage />} />
             <Route path="/Attending" element={<EventsAttendingPage />} />
             <Route path="/Favorites" element={<FavoriteEventsPage />} />
-
-            {/* testing for user auth */}
-            <Route path="/1" element={<LoginForm />} />
-            <Route path="/2" element={<SignupForm />} />
+            <Route path="/Login" element={<LoginPage />} />
           </Routes>
         </BrowserRouter>
       </UserContext.Provider>
