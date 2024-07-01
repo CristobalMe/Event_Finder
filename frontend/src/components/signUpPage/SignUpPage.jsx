@@ -1,5 +1,5 @@
 import InitialHeaderSignUp from "./InitialHeaderSignUp"
-import SignUpForm from "./SignUpForm"
+import SignUpForm from "./SignupForm"
 
 
 function App() {

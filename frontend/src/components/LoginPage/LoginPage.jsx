@@ -1,5 +1,5 @@
 import InitialHeader from "./InitialHeader"
-import SignInForm from "./SignInForm"
+import LoginForm from "./LoginForm"
 
 function App() {
 
@@ -7,7 +7,7 @@ function App() {
       <div>
         <InitialHeader />
 
-        <div className="h-screen flex items-center justify-center"><SignInForm /></div>
+        <div className="h-screen flex items-center justify-center"><LoginForm /></div>
         
           
       </div>
