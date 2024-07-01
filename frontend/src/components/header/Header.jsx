@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import {Menu, X} from "lucide-react"
 import { Link } from "react-router-dom"
 
-
 const NavLinksLogged = () => {
   return(
     <>
@@ -15,8 +14,6 @@ const NavLinksLogged = () => {
     </>
   );
 };
-
-
 
 const Header = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -54,7 +51,7 @@ const Header = () => {
         </header>
       </div>
     );
-  };
+};
   
-  export default Header;
+export default Header;
   

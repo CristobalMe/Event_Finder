@@ -1,13 +1,10 @@
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import CarouselCard from "./CarouselCard.jsx";
+import EventCarouselCard from "./EventCarouselCard.jsx"
 import data from "../../data.js"
 
-
 const Carousel = () => {
-
-
       var settings = {
         dots: false,
         infinite: true,
@@ -43,7 +40,7 @@ const Carousel = () => {
             <div>
                 <Slider {...settings}>
                     {data.map((d) => (
-                        <CarouselCard data={d} />
+                        <EventCarouselCard data={d} />
                     ))}
                 </Slider>
             </div>

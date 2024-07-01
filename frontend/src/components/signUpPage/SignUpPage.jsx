@@ -1,4 +1,5 @@
-import InitialHeaderSignUp from "./InitialHeaderSignUp"
+
+
 import SignUpForm from "./SignUpForm"
 
 
@@ -6,7 +7,7 @@ function App() {
 
     return (
       <div>
-        <InitialHeaderSignUp />
+        <HeaderSignUp />
 
         <div className="h-screen flex items-center justify-center mt-[6rem]"><SignUpForm /></div>
         

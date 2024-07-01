@@ -1,4 +1,4 @@
-const Card = ({data}) => {
+const EventCarouselCard = ({data}) => {
     return(
       <div className="max-w-sm rounded overflow-hidden shadow-lg bg-white h-[20rem] w-[15rem] hover:bg-neutral-300">
         <img className="h-[10rem] w-[15rem]" src={data.imageUrl} onerror="this.src='https://www.shutterstock.com/image-vector/default-ui-image-placeholder-wireframes-600nw-1037719192.jpg';" />
@@ -7,8 +7,6 @@ const Card = ({data}) => {
           <p className="text-gray-700 text-sm mx-[1.1rem]">
             📍{data.location}
           </p>
-
-
           <div className="flex items-center mt-[2.5rem]">
                 {/* checkbox from: https://flowbite.com/docs/forms/checkbox/ */}
                 <input id="bordered-checkbox-1" type="checkbox" value="" name="bordered-checkbox" className=" mx-[1.5rem] w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
@@ -22,12 +20,8 @@ const Card = ({data}) => {
                 <a className="text-sm font-medium text-gray-900  hover:no-underline dark:text-white">{data.numReviews} reviews</a>
           </div>
         </div>
-
-
-        
-        
       </div>
     );
 };
 
-export default Card;
+export default EventCarouselCard;

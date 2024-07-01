@@ -10,7 +10,7 @@ const NavLinks = () => {
 
 
 
-const InitialHeaderSignUp = () => {
+const HeaderSignUp = () => {
     return (
       <div >
         <header className='fixed z-[1] top-0 w-full flex flex-wrap items-center justify-between bg-background p-[2em] font-sans font-bold backdrop-blur-[100px] bg-slate-900 text-white'>
@@ -29,5 +29,5 @@ const InitialHeaderSignUp = () => {
     );
   };
   
-  export default InitialHeaderSignUp;
+  export default HeaderSignUp;
   
