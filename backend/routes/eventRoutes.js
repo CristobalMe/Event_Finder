@@ -13,6 +13,7 @@ router.post('/', async (req, res) => {
   
   const newEvent = await prisma.event.create({
     data: {
+      rating, 
       location, 
       name, 
       duration, 
@@ -21,26 +22,27 @@ router.post('/', async (req, res) => {
       category
     }
   })
+
   res.json(newEvent)
 })
 
-router.patch('/:id', async(req, res) => {
+router.put('/:id', async(req, res) => {
   const { id } = req.params
-  const {  location, lat, long, duration, description, image, date, time  } = req.body
+  const {  rating, location, name, duration, description, image, category  } = req.body
 
   const updatedEvent = await prisma.event.update({
     where: { id: parseInt(id) },
     data: {
-      location,
-      lat,
-      long,
+      rating, 
+      location, 
+      name, 
       duration, 
       description, 
       image, 
-      date,
-      time
+      category
     }
   })
+
   res.json(updatedEvent)
 })
 
@@ -50,33 +52,10 @@ router.delete('/:id', async(req, res) => {
   const deletedEvent = await prisma.event.delete({
     where: { id: parseInt(id) }
   })
+
   res.json(deletedEvent)
+
 })
 
-router.get('/:id', async (req, res) => {
-  const { id } = req.params
-  const event = await prisma.event.findFirst({
-    where: { id: parseInt(id) }
-  })
-  res.json(event)
-})
-
-router.get('/User/:userId', async (req, res) => {
-  const { userId } = req.params
-  const event = await prisma.event.findMany({
-    where: { userId: parseInt(userId) }
-  })
-  res.json(event)
-})
-
-router.get('/attending/user', async (req, res) => {
-  const {  attending  } = req.body
-  const events = await prisma.event.findMany({
-    where: {
-      id: { in: attending }
-    }
-  })
-  res.json(events)
-})
 
 module.exports = router

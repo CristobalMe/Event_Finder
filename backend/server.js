@@ -5,6 +5,7 @@ const SequelizeStoreInit = require('connect-session-sequelize');
 const session = require('express-session');
 const Sequelize = require('sequelize');
 const app = express()
+const PORT = 3000
 
 app.use(cors({
   origin: 'http://localhost:5173',
@@ -23,6 +24,7 @@ const sessionStore = new SequelizeStore({
   db: newSequelize
 });
 
+// Session middleware
 app.use(
   session({
     secret: 'your-secret-key',
@@ -40,13 +42,13 @@ sessionStore.sync();
 
 const eventRoutes = require("./routes/eventRoutes")
 const userRoutes = require("./routes/userRoutes")
-const commentRoutes = require("./routes/commentRoutes")
-const attendanceRoutes = require("./routes/attendanceRoutes")
+
+app.get('/', (req, res) => {
+    res.send('Welcome to my app!')
+})
 
 app.use('/event', eventRoutes)
 app.use('/users', userRoutes)
-app.use('/comments', commentRoutes)
-app.use('/attendance', attendanceRoutes)
 
 newSequelize.sync({ alter: true })
   .then(() => {
