@@ -13,12 +13,14 @@ import { UserContext } from './UserContext';
 import { BrowserRouter } from 'react-router-dom';
 
 // TODO: 
-// Login/signup routing logic (Needs to complete user auth)
-// Redundant code with the creation of InitialHeader (Needs to complete user auth)
 // Change parameters of EventsCarousel (Needs to complete data models and user auth first)
 // Put urls in and .env file 
 // Some kind of email format validation, so that entries like foo@bar can't be used as email
 // Enforce pattern matching for password, e.g must have a symbol
+
+// DONE
+// Login/signup routing logic
+// Redundant code with the creation of InitialHeader
 
 function App() {
 
@@ -26,13 +28,13 @@ function App() {
 
   const updateUser = (newUser) => {
     setUser(newUser);
-    console.log(user)
+    //console.log(user)
   };
 
   useEffect(() => {
     // Save the user data to storage whenever the user state changes
     localStorage.setItem('user', JSON.stringify(user));
-    //console.log(user)
+    //console.log(localStorage.getItem('user'))
   }, [user]);
 
 

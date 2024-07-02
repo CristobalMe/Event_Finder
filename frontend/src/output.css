@@ -704,6 +704,10 @@ body {
   height: 100vh;
 }
 
+.h-\[43rem\] {
+  height: 43rem;
+}
+
 .w-1 {
   width: 0.25rem;
 }
@@ -818,6 +822,11 @@ body {
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
 }
 
+.bg-blue-700 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(29 78 216 / var(--tw-bg-opacity));
+}
+
 .p-\[2em\] {
   padding: 2em;
 }
@@ -884,6 +893,11 @@ body {
 .text-xl {
   font-size: 1.25rem;
   line-height: 1.75rem;
+}
+
+.text-xs {
+  font-size: 0.75rem;
+  line-height: 1rem;
 }
 
 .font-bold {
@@ -959,6 +973,11 @@ body {
   .hover\:bg-neutral-300:hover {
     --tw-bg-opacity: 1;
     background-color: rgb(212 212 212 / var(--tw-bg-opacity));
+  }
+
+  .hover\:bg-blue-950:hover {
+    --tw-bg-opacity: 1;
+    background-color: rgb(23 37 84 / var(--tw-bg-opacity));
   }
 
   .hover\:text-blue-700:hover {
