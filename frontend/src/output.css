@@ -578,6 +578,10 @@ body {
   margin: 3rem;
 }
 
+.m-10 {
+  margin: 2.5rem;
+}
+
 .mx-1 {
   margin-left: 0.25rem;
   margin-right: 0.25rem;
@@ -650,6 +654,14 @@ body {
 
 .mt-\[6rem\] {
   margin-top: 6rem;
+}
+
+.ml-\[7rem\] {
+  margin-left: 7rem;
+}
+
+.mr-\[7rem\] {
+  margin-right: 7rem;
 }
 
 .block {
@@ -734,6 +746,14 @@ body {
 
 .w-full {
   width: 100%;
+}
+
+.w-\[120rem\] {
+  width: 120rem;
+}
+
+.w-\[30rem\] {
+  width: 30rem;
 }
 
 .max-w-sm {
@@ -825,6 +845,14 @@ body {
 .bg-blue-700 {
   --tw-bg-opacity: 1;
   background-color: rgb(29 78 216 / var(--tw-bg-opacity));
+}
+
+.bg-cover {
+  background-size: cover;
+}
+
+.bg-center {
+  background-position: center;
 }
 
 .p-\[2em\] {
@@ -1036,6 +1064,10 @@ body {
 }
 
 @media (min-width: 640px) {
+  .sm\:m-2 {
+    margin: 0.5rem;
+  }
+
   .sm\:mx-\[7rem\] {
     margin-left: 7rem;
     margin-right: 7rem;
@@ -1047,6 +1079,10 @@ body {
 
   .sm\:grid-cols-2 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .sm\:text-3xl {
+    font-size: 2rem;
   }
 }
 
