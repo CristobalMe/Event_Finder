@@ -22,6 +22,7 @@ model event {
   description String
   image       String
   category    String
+  comments    comment[]
 }
 
 model user {
@@ -29,4 +30,12 @@ model user {
   username    String
   email       String
   password    String
+}
+
+model comment {
+  id          Int      @id @default(autoincrement())
+  event       event    @relation(fields: [eventId], references: [id])
+  userPosting String
+  eventId     Int
+  comment     String
 }

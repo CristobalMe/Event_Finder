@@ -28,7 +28,7 @@ const LoginForm = () => {
 
       if (response.ok) {
         const data = await response.json();
-        const loggedInUser = data.User;
+        const loggedInUser = data.user;
 
         // Update the user context
         updateUser(loggedInUser);
