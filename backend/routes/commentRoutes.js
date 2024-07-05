@@ -15,11 +15,10 @@ router.post('/:eventId', async (req, res) => {
   const newComment = await prisma.comment.create({
     data: {
         userPosting,
-        eventId,
+        eventId: parseInt(eventId),
         comment 
     }
   })
-
   res.json(newComment)
 })
 
@@ -38,7 +37,6 @@ router.put('/:eventId/:id', async(req, res) => {
         comment
     }
   })
-
   res.json(updatedComment)
 })
 
@@ -51,9 +49,7 @@ router.delete('/:eventId/:id', async(req, res) => {
         eventId: parseInt(eventId)
     }
   })
-
   res.json(deletedComment)
-
 })
 
 router.get('/:eventId', async (req, res) => {
@@ -61,9 +57,7 @@ router.get('/:eventId', async (req, res) => {
   const comments = await prisma.comment.findMany({
     where: { eventId: parseInt(eventId) }
   })
-
   res.json(comments)
 })
-
 
 module.exports = router

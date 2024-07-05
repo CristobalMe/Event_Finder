@@ -1,19 +1,20 @@
-import HomePage from "./components/homePage/HomePage.jsx"
-import ForYouPage from "./components/forYouPage/ForYouPage.jsx"
-import NearbyPage from "./components/nearbyPage/NearbyPage.jsx"
-import EventsAttendingPage from "./components/eventAttendingPage/EventsAttendingPage.jsx"
-import FavoriteEventsPage from "./components/favoriteEventsPage/FavoriteEventsPage.jsx"
-import EventPage from "./components/eventPage/EventPage.jsx"
-import LoginPage from "./components/LoginPage/LoginPage.jsx"
-import SignupPage from "./components/signUpPage/SignUpPage.jsx"
-import { useState, useEffect } from 'react';
-import { UserContext } from './UserContext';
-import { BrowserRouter } from 'react-router-dom';
-import { Router, Route, Routes } from 'react-router-dom';
+import HomePage from "./components/homePage/HomePage.jsx";
+import ForYouPage from "./components/forYouPage/ForYouPage.jsx";
+import NearbyPage from "./components/nearbyPage/NearbyPage.jsx";
+import EventsAttendingPage from "./components/eventAttendingPage/EventsAttendingPage.jsx";
+import FavoriteEventsPage from "./components/favoriteEventsPage/FavoriteEventsPage.jsx";
+import EventPage from "./components/eventPage/EventPage.jsx";
+import LoginPage from "./components/LoginPage/LoginPage.jsx";
+import SignupPage from "./components/signUpPage/SignUpPage.jsx";
+import UserPage from "./components/userPage/UserPage.jsx" 
+import { useState, useEffect } from "react";
+import { UserContext } from "./UserContext";
+import { BrowserRouter } from "react-router-dom";
+import { Router, Route, Routes } from "react-router-dom";
 
-// TODO: 
+// TODO:
 // Change parameters of EventsCarousel (Needs to complete data models and user auth first)
-// Put urls in and .env file 
+// Put urls in and .env file
 // Some kind of email format validation, so that entries like foo@bar can't be used as email
 // Enforce pattern matching for password, e.g must have a symbol
 // GET LOCATION OF EVENT (LAT & LONG)
@@ -24,8 +25,9 @@ import { Router, Route, Routes } from 'react-router-dom';
 // Redundant code with the creation of InitialHeader
 
 function App() {
-
-  const [user, setUser] = useState(localStorage.getItem('user') ?? null);
+  const [user, setUser] = useState(
+    JSON.parse(localStorage.getItem("user")) ?? null,
+  );
 
   const updateUser = (newUser) => {
     setUser(newUser);
@@ -33,12 +35,11 @@ function App() {
 
   useEffect(() => {
     // Save the user data to storage whenever the user state changes
-    localStorage.setItem('user', JSON.stringify(user));
-    // console.log(localStorage.getItem('user'))
+    localStorage.setItem("user", JSON.stringify(user));
+    console.log(localStorage.getItem("user"));
     // console.log(typeof localStorage.getItem('user'));
     // console.log(String === typeof localStorage.getItem('user') instanceof String);
   }, [user]);
-
 
   return (
     <div>
@@ -54,11 +55,12 @@ function App() {
             <Route path="/Favorites" element={<FavoriteEventsPage />} />
             <Route path="/Login" element={<LoginPage />} />
             <Route path="/Event/:id" element={<EventPage />} />
+            <Route path="/User/:id" element={<UserPage />} />
           </Routes>
         </BrowserRouter>
       </UserContext.Provider>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
