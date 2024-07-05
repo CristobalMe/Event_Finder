@@ -1,18 +1,17 @@
-import HomePage from "./components/homePage/HomePage.jsx"
-import ForYouPage from "./components/forYouPage/ForYouPage.jsx"
-import NearbyPage from "./components/nearbyPage/NearbyPage.jsx"
-import EventsAttendingPage from "./components/eventsAttendingPage/EventsAttendingPage.jsx"
-import FavoriteEventsPage from "./components/favoriteEventsPage/FavoriteEventsPage.jsx"
-import InitialPage from "./components/initialPage/InitialPage.jsx"
+import HomePage from "./components/homePage/HomePage.jsx";
+import ForYouPage from "./components/forYouPage/ForYouPage.jsx";
+import NearbyPage from "./components/nearbyPage/NearbyPage.jsx";
+import EventsAttendingPage from "./components/eventsAttendingPage/EventsAttendingPage.jsx";
+import FavoriteEventsPage from "./components/favoriteEventsPage/FavoriteEventsPage.jsx";
+import InitialPage from "./components/initialPage/InitialPage.jsx";
+import SignupPage from "./components/signUpPage/SignUpPage.jsx";
 
-import SignupPage from "./components/SignupPage/SignUpPage.jsx"
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-
-// TODO: 
+// TODO:
 // login/signup routing logic
 // Consolidate Headers in to one
-// Fix sign in and sign up the same forms (User flow)
+// Fix sign in and sign up the same forms (user flow)
 // Fix Carousel data flow
 function App() {
   return (
@@ -27,7 +26,7 @@ function App() {
         <Route path="/Favorites" element={<FavoriteEventsPage />} />
       </Routes>
     </Router>
-  )
+  );
 }
 
-export default App
+export default App;
