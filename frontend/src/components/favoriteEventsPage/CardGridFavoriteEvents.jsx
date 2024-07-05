@@ -1,4 +1,4 @@
-import EventCard from "../EventCard.jsx";
+import CardEvent from "../CardEvent.jsx";
 import data from "../../data.js";
 
 const CardGridFavoriteEvents = () => {
@@ -6,13 +6,7 @@ const CardGridFavoriteEvents = () => {
     <div className="grid lg:grid-cols-4 sm:grid-cols-2 ">
       {data.map((d) => (
         <div className="m-[3rem]">
-          <EventCard
-            name={d.name}
-            location={d.location}
-            imageUrl={d.imageUrl}
-            score={d.score}
-            numReviews={d.numReviews}
-          />
+          <CardEvent data={d} />
         </div>
       ))}
     </div>

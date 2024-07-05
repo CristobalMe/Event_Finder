@@ -1,13 +1,13 @@
-import InitialHeader from "./InitialHeader";
-import SignInForm from "./SignInForm";
+import LoginForm from "./LoginForm";
+import Header from "../header/Header";
 
 function App() {
   return (
     <div>
-      <InitialHeader />
+      <Header />
 
       <div className="h-screen flex items-center justify-center">
-        <SignInForm />
+        <LoginForm />
       </div>
     </div>
   );

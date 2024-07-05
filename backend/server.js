@@ -5,7 +5,6 @@ const SequelizeStoreInit = require("connect-session-sequelize");
 const session = require("express-session");
 const Sequelize = require("sequelize");
 const app = express();
-const PORT = 3000;
 
 app.use(
   cors({
@@ -44,9 +43,11 @@ sessionStore.sync();
 
 const eventRoutes = require("./routes/eventRoutes");
 const userRoutes = require("./routes/userRoutes");
+const commentRoutes = require("./routes/commentRoutes");
 
 app.use("/event", eventRoutes);
 app.use("/users", userRoutes);
+app.use("/comments", commentRoutes);
 
 newSequelize
   .sync({ alter: true })

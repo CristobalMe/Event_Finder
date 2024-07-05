@@ -58,4 +58,13 @@ router.delete("/:id", async (req, res) => {
   res.json(deletedEvent);
 });
 
+router.get("/:id", async (req, res) => {
+  const { id } = req.params;
+  const event = await prisma.event.findFirst({
+    where: { id: parseInt(id) },
+  });
+
+  res.json(event);
+});
+
 module.exports = router;
