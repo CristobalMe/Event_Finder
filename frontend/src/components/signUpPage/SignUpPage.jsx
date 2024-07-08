@@ -1,19 +1,15 @@
-
-
-import SignUpForm from "./SignUpForm"
-
+import SignUpForm from "./SignUpForm";
 
 function App() {
+  return (
+    <div>
+      <HeaderSignUp />
 
-    return (
-      <div>
-        <HeaderSignUp />
-
-        <div className="h-screen flex items-center justify-center mt-[6rem]"><SignUpForm /></div>
-        
-          
+      <div className="h-screen flex items-center justify-center mt-[6rem]">
+        <SignUpForm />
       </div>
-    )
-  }
-  
-  export default App
+    </div>
+  );
+}
+
+export default App;
