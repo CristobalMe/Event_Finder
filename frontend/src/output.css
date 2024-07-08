@@ -578,6 +578,18 @@ body {
   margin: 3rem;
 }
 
+.m-\[1\.5rem\] {
+  margin: 1.5rem;
+}
+
+.m-\[\.5rem\] {
+  margin: .5rem;
+}
+
+.m-\[1rem\] {
+  margin: 1rem;
+}
+
 .mx-1 {
   margin-left: 0.25rem;
   margin-right: 0.25rem;
@@ -606,6 +618,11 @@ body {
 .mx-\[5rem\] {
   margin-left: 5rem;
   margin-right: 5rem;
+}
+
+.mx-\[\.5rem\] {
+  margin-left: .5rem;
+  margin-right: .5rem;
 }
 
 .mb-2 {
@@ -648,12 +665,48 @@ body {
   margin-top: 6rem;
 }
 
+.mt-\[1rem\] {
+  margin-top: 1rem;
+}
+
+.ml-\[\.5rem\] {
+  margin-left: .5rem;
+}
+
+.mr-\[25rem\] {
+  margin-right: 25rem;
+}
+
+.ml-\[25rem\] {
+  margin-left: 25rem;
+}
+
+.ml-\[5rem\] {
+  margin-left: 5rem;
+}
+
 .block {
   display: block;
 }
 
+.inline-block {
+  display: inline-block;
+}
+
+.inline {
+  display: inline;
+}
+
 .flex {
   display: flex;
+}
+
+.inline-flex {
+  display: inline-flex;
+}
+
+.table-row {
+  display: table-row;
 }
 
 .grid {
@@ -662,6 +715,11 @@ body {
 
 .hidden {
   display: none;
+}
+
+.size-6 {
+  width: 1.5rem;
+  height: 1.5rem;
 }
 
 .h-1 {
@@ -700,6 +758,22 @@ body {
   height: 100vh;
 }
 
+.h-\[35rem\] {
+  height: 35rem;
+}
+
+.h-\[50rem\] {
+  height: 50rem;
+}
+
+.h-\[15rem\] {
+  height: 15rem;
+}
+
+.h-\[17\.5rem\] {
+  height: 17.5rem;
+}
+
 .w-1 {
   width: 0.25rem;
 }
@@ -728,12 +802,32 @@ body {
   width: 100%;
 }
 
+.w-\[75rem\] {
+  width: 75rem;
+}
+
+.w-\[175rem\] {
+  width: 175rem;
+}
+
+.w-\[50rem\] {
+  width: 50rem;
+}
+
+.w-\[25rem\] {
+  width: 25rem;
+}
+
 .max-w-sm {
   max-width: 24rem;
 }
 
 .basis-full {
   flex-basis: 100%;
+}
+
+.list-none {
+  list-style-type: none;
 }
 
 .flex-col {
@@ -768,12 +862,20 @@ body {
   overflow: hidden;
 }
 
+.break-all {
+  word-break: break-all;
+}
+
 .rounded {
   border-radius: 0.25rem;
 }
 
 .rounded-full {
   border-radius: 9999px;
+}
+
+.rounded-br-lg {
+  border-bottom-right-radius: 0.5rem;
 }
 
 .border {
@@ -812,6 +914,11 @@ body {
 .bg-white {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+}
+
+.bg-blue-700 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(29 78 216 / var(--tw-bg-opacity));
 }
 
 .p-\[2em\] {
@@ -880,6 +987,11 @@ body {
 .text-xl {
   font-size: 1.25rem;
   line-height: 1.75rem;
+}
+
+.text-xs {
+  font-size: 0.75rem;
+  line-height: 1rem;
 }
 
 .font-bold {
@@ -955,6 +1067,11 @@ body {
   .hover\:bg-neutral-300:hover {
     --tw-bg-opacity: 1;
     background-color: rgb(212 212 212 / var(--tw-bg-opacity));
+  }
+
+  .hover\:bg-blue-950:hover {
+    --tw-bg-opacity: 1;
+    background-color: rgb(23 37 84 / var(--tw-bg-opacity));
   }
 
   .hover\:text-blue-700:hover {
