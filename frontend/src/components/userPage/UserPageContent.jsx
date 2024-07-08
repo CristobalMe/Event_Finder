@@ -4,6 +4,7 @@ import axios from "axios";
 
 const UserPageContent = () => {
   const userData = JSON.parse(localStorage.getItem("user"));
+  const url = import.meta.env.VITE_URL;
   const [userEvents, setUserEvents] = useState();
   let [changeInEvent, setchangeInEvent] = useState(true);
   let [eventAttendance, setEventAttendance] = useState();
@@ -44,7 +45,7 @@ const UserPageContent = () => {
   };
 
   const fetchUserEvents = () => {
-    fetch(`http://localhost:3000/event/User/${userData.id}`)
+    fetch(`${url}/event/User/${userData.id}`)
       .then((response) => response.json())
       .then((data) => setUserEvents(data))
       .catch((error) => console.error("Error fetching:", error));
@@ -52,7 +53,7 @@ const UserPageContent = () => {
 
   const handleDeleteEvent = async id => {
     try {
-      await axios.delete(`http://localhost:3000/event/${id}`);
+      await axios.delete(`${url}/event/${id}`);
       location.reload();
     } catch (error) {
       console.error("Error:", error);
@@ -63,7 +64,7 @@ const UserPageContent = () => {
   const fetchAttendance = async id => {
     setShowEventAttendance(!showEventAttendance);
 
-    fetch(`http://localhost:3000/attendance/${id}`)
+    fetch(`${url}/attendance/${id}`)
       .then((response) => response.json())
       .then((data) => {
         setEventAttendance(data)
@@ -84,7 +85,7 @@ const UserPageContent = () => {
 
     const handleModifyEvent = async () => {
         try {
-          await axios.patch(`http://localhost:3000/event/${eventModify.id}`, {
+          await axios.patch(`${url}/event/${eventModify.id}`, {
             location: eventLocation,
             lat: lat,
             long: long,

@@ -7,6 +7,7 @@ const DisplayEventComments = (comments) => {
 
   let displayComments = comments.comments;
   let Logged = false;
+  const url = import.meta.env.VITE_URL;
   const current_link = window.location.pathname;
   const current_eventId = current_link.split("/")[2];
   let user = localStorage.getItem("user");
@@ -27,7 +28,7 @@ const DisplayEventComments = (comments) => {
         return;
       }
 
-      await axios.post(`http://localhost:3000/comments/${current_eventId}`, {
+      await axios.post(`${url}/comments/${current_eventId}`, {
         userPosting: jsonUser.username,
         comment: userComment,
       });

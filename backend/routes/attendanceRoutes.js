@@ -8,19 +8,6 @@ router.get('/', async (req, res) => {
   res.json(attendance)
 })
 
-router.post('/:eventId', async (req, res) => {
-    const { eventId } = req.params
-  const {  userAttending } = req.body
-  
-  const newAttendance = await prisma.attendance.create({
-    data: {
-        userAttending,
-        eventId: parseInt(eventId),
-    }
-  })
-  res.json(newAttendance)
-})
-
 router.delete('/:eventId/:id', async(req, res) => {
   const { eventId, id } = req.params
 
@@ -37,6 +24,49 @@ router.get('/:eventId', async (req, res) => {
   const { eventId } = req.params
   const attendance = await prisma.attendance.findMany({
     where: { eventId: parseInt(eventId) }
+  })
+  res.json(attendance)
+})
+
+router.get('/user/:userAttending', async (req, res) => {
+  const { userAttending } = req.params
+  const attendance = await prisma.attendance.findMany({
+    where: { 
+      userAttending: userAttending
+    }
+  })
+  res.json(attendance)
+})
+
+router.post('/user/:userAttending/:eventId', async (req, res) => {
+  const { userAttending, eventId } = req.params
+  const newAttendance = await prisma.attendance.create({
+    data: { 
+      userAttending: userAttending,
+      eventId: parseInt(eventId)
+    }
+  })
+  res.json(newAttendance)
+})
+
+router.get('/user/:userAttending/:eventId', async (req, res) => {
+  const { userAttending, eventId } = req.params
+  const attendance = await prisma.attendance.findMany({
+    where: { 
+      userAttending: userAttending,
+      eventId: parseInt(eventId)
+    }
+  })
+  res.json(attendance)
+})
+
+router.delete('/user/:userAttending/:eventId', async (req, res) => {
+  const { userAttending, eventId } = req.params
+  const attendance = await prisma.attendance.deleteMany({
+    where: { 
+      userAttending: userAttending,
+      eventId: parseInt(eventId)
+    }
   })
   res.json(attendance)
 })

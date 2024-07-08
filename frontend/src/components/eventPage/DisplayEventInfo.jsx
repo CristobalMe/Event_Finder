@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from "react";
 import EventMap from "../EventMap";
+import axios from "axios";
 
 // TODO:
 // GET LOCATION OF EVENT (LAT & LONG)
 const DisplayEventInfo = (event) => {
+  let userData = {id: 0}
+  const current_eventId = window.location.pathname.split("/")[2];
+  const url = import.meta.env.VITE_URL;
+  const eventDisplay = event.event;
   let Logged = false;
+  let [userIsAttending, setUserIsAttending] = useState();
 
   if (
     !(
@@ -12,13 +18,45 @@ const DisplayEventInfo = (event) => {
       localStorage.getItem("user").includes("null")
     )
   ) {
+    userData = JSON.parse(localStorage.getItem("user"));
     Logged = true;
   }
 
-  const eventDisplay = event.event;
+  useEffect(() => {
+    fetchUserAttendance();
+  }, [userIsAttending]);
 
-  const handleRegister = () => {
-    console.log("done");
+  const handleRegister = async () => {
+    if (userIsAttending == 0){
+      try {
+        await axios.post(`${url}/attendance/user/${userData.id}/${current_eventId}`, {
+          userAttending: userData.username,
+          eventId: current_eventId
+        });
+        fetchUserAttendance();
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    }
+
+    else{
+      try {
+        await axios.delete(`${url}/attendance/user/${userData.id}/${current_eventId}`, {
+          userAttending: userData.username,
+          eventId: current_eventId
+        });
+        fetchUserAttendance();
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    }
+  };
+
+  const fetchUserAttendance = () => {
+    fetch(`${url}/attendance/user/${userData.id}/${current_eventId}`)
+      .then((response) => response.json())
+      .then((data) => setUserIsAttending(data.length))
+      .catch((error) => console.error("Error fetching:", error));
   };
 
   return (
@@ -39,12 +77,19 @@ const DisplayEventInfo = (event) => {
               <h2 className="font-bebas text-3xl">{eventDisplay.name}</h2>
               {Logged && (
                 <div>
-                  <button
+                  {(userIsAttending == 0) && (<button
                     className="bg-blue-700 hover:bg-blue-950 text-white font-bold py-2 px-4 rounded"
                     onClick={handleRegister}
                   >
                     Register
-                  </button>
+                  </button>)}
+
+                  {(userIsAttending != 0) && (<button
+                    className="bg-red-700 hover:bg-red-950 text-white font-bold py-2 px-4 rounded"
+                    onClick={handleRegister}
+                  >
+                    Unregister
+                  </button>)}
                 </div>
               )}
             </div>
