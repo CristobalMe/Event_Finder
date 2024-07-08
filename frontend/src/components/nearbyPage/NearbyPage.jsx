@@ -1,11 +1,12 @@
-import Header from "../header/Header";
+import Header from '../header/Header'
 
 function App() {
+
   return (
     <div>
-      <Header />
+        <Header />
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
