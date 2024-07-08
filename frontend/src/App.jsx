@@ -14,6 +14,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 // Fix sign in and sign up the same forms (user flow)
 // Fix Carousel data flow
 function App() {
+
   return (
     <Router>
       <Routes>
