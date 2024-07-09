@@ -8,7 +8,6 @@ const UserPage = () => {
 
   if (JSON.parse(localStorage.getItem("user")).id == current_userId) isUser=true;
 
-
   return (
     <div>
         <Header />

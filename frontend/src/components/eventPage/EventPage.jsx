@@ -32,9 +32,6 @@ const EventPage = () => {
       .catch((error) => console.error("Error fetching:", error));
   };
 
-  //console.log(event)
-  //console.log(comments)
-
   return (
     <div>
       <Header />

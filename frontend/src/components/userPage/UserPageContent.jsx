@@ -53,7 +53,6 @@ const UserPageContent = () => {
 
   const handleDeleteEvent = async id => {
     try {
-      console.log(`${url}/event/${id}`)
       await axios.delete(`${url}/event/${id}`);
       location.reload();
     } catch (error) {
@@ -61,7 +60,6 @@ const UserPageContent = () => {
     }
   };
 
-  
   const fetchAttendance = async id => {
     setShowEventAttendance(!showEventAttendance);
 
@@ -237,8 +235,6 @@ const UserPageContent = () => {
         )
     };
 
-  
-
   const renderEvents = () => {
 
     return userEvents.map((event) => (
@@ -286,7 +282,6 @@ const UserPageContent = () => {
       </div>
     ));
   };
-
 
   return (
     <div className="rounded overflow-hidden shadow-lg bg-white h-fit w-[50rem] pb-[3rem]">

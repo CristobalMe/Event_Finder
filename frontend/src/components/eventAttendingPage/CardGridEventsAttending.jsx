@@ -39,14 +39,11 @@ const CardGridEventsAttending = () => {
     idEventsAttending.push(d.id)
   )
   // ---------------------------
-  
-  //console.log(idEventsAttending)
 
   const fetchEventsAttending = async () => {
     await axios.get(`${url}/event/${idEventsAttending.map((n, index) => `storeIds[${index}]=${n}`).join('&')}`)
     .then(function (response) {
       setEventsAttending(response.data);
-      console.log(response.data)
     });
   }
 

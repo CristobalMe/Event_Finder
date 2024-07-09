@@ -2,7 +2,6 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import CarouselCard from "./EventsCarouselCard.jsx";
-//import data from "../../data.js"
 
 const EventsCarousel = (events) => {
   var settings = {

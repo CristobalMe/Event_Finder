@@ -169,10 +169,7 @@ const DisplayEventInfo = (event) => {
               </svg>
               <p>{eventDisplay.rating}</p>
             </div>
-            {/* <p>{eventDisplay.detailedDescription}</p> */}
-            {/* <p>{eventDisplay.detailedLocation}</p> */}
-            {/* <p>{eventDisplay.date}</p> */}
-
+            
             {/* Uncomment for demo */}
             {/* <EventMap latitude={40.7826} longitude={73.9656}/> */}
           </div>

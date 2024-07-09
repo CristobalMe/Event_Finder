@@ -30,8 +30,6 @@ const SignupForm = () => {
         const data = await response.json();
         const loggedInUser = data.user;
 
-        console.log("Signup successful");
-
         // Reset form fields
         setUsername("");
         setEmail("");

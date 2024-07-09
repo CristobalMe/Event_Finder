@@ -34,11 +34,7 @@ function App() {
   };
 
   useEffect(() => {
-    // Save the user data to storage whenever the user state changes
     localStorage.setItem("user", JSON.stringify(user));
-    console.log(localStorage.getItem("user"));
-    // console.log(typeof localStorage.getItem('user'));
-    // console.log(String === typeof localStorage.getItem('user') instanceof String);
   }, [user]);
 
   return (

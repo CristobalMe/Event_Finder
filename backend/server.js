@@ -23,7 +23,6 @@ const sessionStore = new SequelizeStore({
   db: newSequelize
 });
 
-// Session middleware
 app.use(
   session({
     secret: 'your-secret-key',
