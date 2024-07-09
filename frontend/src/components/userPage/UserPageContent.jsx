@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import CreateEventForm from "./CreateEventForm";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
@@ -292,7 +291,6 @@ const UserPageContent = () => {
                 <p className="m-[.5rem] font-bebas text-xl">{userData.username}'s Events:</p>
             </div>
             <div>
-                <CreateEventForm />
                 {userEvents && <section>{renderEvents()}</section>}
             </div>
         </div>
