@@ -1,4 +1,3 @@
-//const {events} = require('./eventData')
 const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient()
 
@@ -11,7 +10,12 @@ const events = [
       duration: "2 hours",
       description: "Enjoy live music from your favorite artists in the heart of New York City.",
       image: "https://picsum.photos/200/306",
-      category: "Music"
+      category: "Music",
+      userId: 1,
+      date: "07/14",
+      time: "1pm",
+      lat: 19.432608,
+      long: -99.133209
     },
     {
       rating: 4.2,
@@ -20,7 +24,12 @@ const events = [
       duration: "1 hour",
       description: "Take a guided tour of one of the world's most iconic landmarks.",
       image: "https://picsum.photos/200/307",
-      category: "Sightseeing"
+      category: "Sightseeing",
+      userId: 1,
+      date: "07/14",
+      time: "1pm",
+      lat: 19.432608,
+      long: -99.133209
     },
     {
       rating: 4.8,
@@ -29,7 +38,12 @@ const events = [
       duration: "3 hours",
       description: "Sample the best of Chicago's culinary scene on this guided food tour.",
       image: "https://picsum.photos/200/308",
-      category: "Food & Drink"
+      category: "Food & Drink",
+      userId: 1,
+      date: "07/14",
+      time: "1pm",
+      lat: 19.432608,
+      long: -99.133209
     },
     {
       rating: 4.7,
@@ -38,7 +52,12 @@ const events = [
       duration: "2 hours",
       description: "Explore the famous Hollywood Walk of Fame and learn about its history.",
       image: "https://picsum.photos/200/309",
-      category: "Sightseeing"
+      category: "Sightseeing",
+      userId: 1,
+      date: "07/14",
+      time: "1pm",
+      lat: 19.432608,
+      long: -99.133209
     },
     {
       rating: 4.6,
@@ -47,7 +66,12 @@ const events = [
       duration: "2 hours",
       description: "Experience the magic and wonder of Cirque du Soleil's latest production.",
       image: "https://picsum.photos/200/310",
-      category: "Entertainment"
+      category: "Entertainment",
+      userId: 1,
+      date: "07/14",
+      time: "1pm",
+      lat: 19.432608,
+      long: -99.133209
     },
     
 ];
