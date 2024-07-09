@@ -1,6 +1,5 @@
+import LoginForm from "./LoginForm"
 import Header from "../header/Header"
-import SignUpForm from "./SignUpForm"
-
 
 function App() {
 
@@ -8,7 +7,7 @@ function App() {
       <div>
         <Header />
 
-        <div className="h-screen flex items-center justify-center mt-[6rem]"><SignUpForm /></div>
+        <div className="h-screen flex items-center justify-center"><LoginForm /></div>
         
           
       </div>
