@@ -12,6 +12,7 @@ dist
 dist-ssr
 *.local
 node_modules
+.DS_Store
 
 
 # Editor directories and files
