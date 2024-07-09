@@ -42,7 +42,7 @@ model user {
 
 model comment {
   id          Int      @id @default(autoincrement())
-  event       event    @relation(fields: [eventId], references: [id])
+  event       event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
   userPosting String
   eventId     Int
   comment     String
@@ -52,5 +52,5 @@ model attendance {
   id              Int      @id @default(autoincrement())
   eventId         Int
   userAttending   String
-  user            user     @relation(fields: [userAttending], references: [username])
+  user            user     @relation(fields: [userAttending], references: [username], onDelete: Cascade)
 }

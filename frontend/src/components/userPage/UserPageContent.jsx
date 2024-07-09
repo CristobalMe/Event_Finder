@@ -53,6 +53,7 @@ const UserPageContent = () => {
 
   const handleDeleteEvent = async id => {
     try {
+      console.log(`${url}/event/${id}`)
       await axios.delete(`${url}/event/${id}`);
       location.reload();
     } catch (error) {
