@@ -22,11 +22,35 @@ model event {
   description String
   image       String
   category    String
+  comments    comment[]
+  user        user     @relation(fields: [userId], references: [id])
+  userId      Int
+  date        String
+  time        String
+  lat         Float
+  long        Float
 }
 
 model user {
   id          Int      @id @default(autoincrement())
-  username    String
+  username    String   @unique
   email       String
   password    String
+  attendance  attendance[]
+  events      event[]
+}
+
+model comment {
+  id          Int      @id @default(autoincrement())
+  event       event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  userPosting String
+  eventId     Int
+  comment     String
+}
+
+model attendance {
+  id              Int      @id @default(autoincrement())
+  eventId         Int
+  userAttending   String
+  user            user     @relation(fields: [userAttending], references: [username], onDelete: Cascade)
 }
