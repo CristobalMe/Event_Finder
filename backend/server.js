@@ -23,7 +23,6 @@ const sessionStore = new SequelizeStore({
   db: newSequelize
 });
 
-// Session middleware
 app.use(
   session({
     secret: 'your-secret-key',
@@ -42,14 +41,12 @@ sessionStore.sync();
 const eventRoutes = require("./routes/eventRoutes")
 const userRoutes = require("./routes/userRoutes")
 const commentRoutes = require("./routes/commentRoutes")
-
-app.get('/', (req, res) => {
-    res.send('Server is working')
-})
+const attendanceRoutes = require("./routes/attendanceRoutes")
 
 app.use('/event', eventRoutes)
 app.use('/users', userRoutes)
 app.use('/comments', commentRoutes)
+app.use('/attendance', attendanceRoutes)
 
 newSequelize.sync({ alter: true })
   .then(() => {

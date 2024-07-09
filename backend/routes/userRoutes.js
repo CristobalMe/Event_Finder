@@ -45,7 +45,6 @@ router.put('/:id', async(req, res) => {
         password
     }
   })
-
   res.json(updatedUser)
 })
 
@@ -55,9 +54,7 @@ router.delete('/:id', async(req, res) => {
   const deletedUser = await prisma.user.delete({
     where: { id: parseInt(id) }
   })
-
   res.json(deletedUser)
-
 })
 
 router.post('/login', async (req, res) => {

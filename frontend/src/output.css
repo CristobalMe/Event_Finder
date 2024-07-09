@@ -586,6 +586,10 @@ body {
   margin: 3rem;
 }
 
+.m-\[1re\] {
+  margin: 1re;
+}
+
 .mx-\[1\.1rem\] {
   margin-left: 1.1rem;
   margin-right: 1.1rem;
@@ -678,6 +682,22 @@ body {
 
 .mt-\[6rem\] {
   margin-top: 6rem;
+}
+
+.mt-\[2rem\] {
+  margin-top: 2rem;
+}
+
+.mt-\[1\.7rem\] {
+  margin-top: 1.7rem;
+}
+
+.mt-\[1\.6rem\] {
+  margin-top: 1.6rem;
+}
+
+.mt-\[1\.5rem\] {
+  margin-top: 1.5rem;
 }
 
 .block {
