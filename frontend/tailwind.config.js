@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 const colors = require("tailwindcss/colors");
-const defaultTheme = require('tailwindcss/defaultTheme');
+const defaultTheme = require("tailwindcss/defaultTheme");
 
 module.exports = {
   darkMode: "class",
@@ -11,10 +11,10 @@ module.exports = {
   theme: {
     extend: {
       fontSize: {
-        '2xl': '1.75rem',
-        '3xl': '2rem',
+        "2xl": "1.75rem",
+        "3xl": "2rem",
       },
-      
+
       colors: {
         background: "var(--background-body)",
         "text-primary": "var(--text-main)",
@@ -25,14 +25,12 @@ module.exports = {
         primary: "var(--primary-color)",
         gray: colors.gray,
       },
-      
     },
     fontFamily: {
       serif: ['Merriweather", "serif'],
       sans: ["Fira Sans", "sans-serif"],
-      bebas: ['"Bebas Neue"', ...defaultTheme.fontFamily.sans]
+      bebas: ['"Bebas Neue"', ...defaultTheme.fontFamily.sans],
     },
   },
   plugins: [],
 };
-
