@@ -9,16 +9,24 @@ router.get('/', async (req, res) => {
 })
 
 router.post('/', async (req, res) => {
-  const {  rating, location, name, duration, description, image, category  } = req.body
+  const {  rating, location, name, duration, description, image, category, userId, date, time ,lat, long } = req.body
+  const floatLat = parseFloat(lat);
+  const floatLong = parseFloat(long);
   
   const newEvent = await prisma.event.create({
     data: {
+      rating, 
       location, 
       name, 
       duration, 
       description, 
-      image, 
-      category
+      image,
+      category,
+      userId, 
+      date, 
+      time,
+      lat: floatLat, 
+      long: floatLong
     }
   })
   res.json(newEvent)
