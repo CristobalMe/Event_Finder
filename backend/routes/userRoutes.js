@@ -65,14 +65,14 @@ router.post('/login', async (req, res) => {
       const user = await prisma.user.findFirst({ where: { username: username } });
   
       if (!user) {
-        return res.status(401).json({ error: 'Invalid username or password' });
+        return res.status(401).json({ error: 'Username does not exist' });
       } 
   
       // Compare the password
       const isValidPassword = await bcrypt.compare(password, user.password);
   
       if (!isValidPassword) {
-        return res.status(401).json({ error: 'Invalid username or password' });
+        return res.status(401).json({ error: 'Invalid password' });
       }
   
       // Set the user in the session

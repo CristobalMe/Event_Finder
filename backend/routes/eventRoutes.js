@@ -69,7 +69,7 @@ router.get('/:id', async (req, res) => {
   res.json(event)
 })
 
-router.get('/User/:userId', async (req, res) => {
+router.get('/user/:userId', async (req, res) => {
   const { userId } = req.params
   const event = await prisma.event.findMany({
     where: { userId: parseInt(userId) }

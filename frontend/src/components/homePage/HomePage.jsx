@@ -10,7 +10,7 @@ function App() {
     // const MapsApiKey = import.meta.env.VITE_MAPS_API_KEY
     const url = import.meta.env.VITE_URL
     let [events, setEvents] = useState()
-    let [changeInEvents, setchangeInEvents] = useState(true)
+    let [changeInEvents, setChangeInEvents] = useState(true)
     const [filteredEvents, setFilteredEvents] = useState()
     const [currentCategory, setCurrentCategory] = useState('Art')
     const [isLoading, setIsLoading] = useState(true)
@@ -33,7 +33,7 @@ function App() {
             fetchEventsWithCategory(currentCategory)
         }
         setIsLoading(false)
-        setchangeInEvents(false)
+        setChangeInEvents(false)
     }, [events, currentCategory])
 
     const fetchEvents = () => {
@@ -102,7 +102,7 @@ function App() {
                                                     className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900 w-full"
                                                     onClick={() => {
                                                         setCurrentCategory(c)
-                                                        setchangeInEvents(true)
+                                                        setChangeInEvents(true)
                                                     }}
                                                 >
                                                     {c}
