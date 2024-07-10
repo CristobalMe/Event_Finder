@@ -730,6 +730,26 @@ body {
     margin-top: 0.5rem;
 }
 
+.mt-\[30rem\] {
+    margin-top: 30rem;
+}
+
+.mt-\[250rem\] {
+    margin-top: 250rem;
+}
+
+.mt-\[25rem\] {
+    margin-top: 25rem;
+}
+
+.mt-\[2rem\] {
+    margin-top: 2rem;
+}
+
+.mt-\[screen\] {
+    margin-top: screen;
+}
+
 .block {
     display: block;
 }
@@ -1080,6 +1100,10 @@ body {
 .text-xs {
     font-size: 0.75rem;
     line-height: 1rem;
+}
+
+.text-2xl {
+    font-size: 1.75rem;
 }
 
 .font-bold {
