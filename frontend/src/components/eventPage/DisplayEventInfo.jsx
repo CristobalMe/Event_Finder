@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+// Un comment for Demo
 // import EventMap from "../EventMap";
 import EventCreatorTooltip from '../eventCreatorTooltip/EventCreatorTooltip'
 import axios from 'axios'
