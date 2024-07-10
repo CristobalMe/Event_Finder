@@ -3,6 +3,8 @@ import axios from 'axios'
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
 
+// To Do:
+// Add error handling for when a user inputs a bad request (Create event & modify event)
 const CreateEventForm = () => {
     const url = import.meta.env.VITE_URL
     const [form, setForm] = useState(false)
