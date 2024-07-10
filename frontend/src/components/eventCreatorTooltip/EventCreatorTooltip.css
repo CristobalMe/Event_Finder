@@ -1,0 +1,12 @@
+.tooltip {
+    position: absolute;
+    background: rgb(15 23 42);
+    color: white;
+    visibility: hidden;
+    margin-left: 8rem;
+    margin-top: 0.3rem;
+    padding: 5px;
+    border-radius: 5px;
+    z-index: 1000;
+    margin-bottom: 2rem;
+}
