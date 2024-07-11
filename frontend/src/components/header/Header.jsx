@@ -15,7 +15,7 @@ const NavLinksLogged = () => {
     return (
         <>
             <Link
-                to="/Home"
+                to="/"
                 className="bg-blue-700 hover:bg-blue-950 text-white font-bold py-2 px-4 rounded"
                 onClick={handleLogOut}
             >
@@ -30,7 +30,7 @@ const NavLinksLogged = () => {
             <Link to="/ForYou" className="py-2 px-4">
                 For you
             </Link>
-            <Link to="/Home" className="py-2 px-4">
+            <Link to="/" className="py-2 px-4">
                 Home
             </Link>
         </>
@@ -45,6 +45,9 @@ const NavLinksNotLogged = () => {
             </Link>
             <Link to="/Login" className="py-2 px-4">
                 Log In
+            </Link>
+            <Link to="/" className="py-2 px-4">
+                Home
             </Link>
         </>
     )
@@ -117,9 +120,15 @@ const Header = () => {
                         </button>
                     </div>
 
-                    {isOpen && (
+                    {isOpen && Logged && (
                         <div className="flex flex-col items-center items-center basis-full">
                             <NavLinksLogged />
+                        </div>
+                    )}
+
+                    {isOpen && !Logged && (
+                        <div className="flex flex-col items-center items-center basis-full">
+                            <NavLinksNotLogged />
                         </div>
                     )}
                 </div>

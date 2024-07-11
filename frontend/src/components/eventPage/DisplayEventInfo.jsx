@@ -66,11 +66,11 @@ const DisplayEventInfo = (event) => {
     }
 
     return (
-        <div className="rounded overflow-hidden shadow-lg bg-white h-[37rem] w-[50rem]">
+        <div className="rounded overflow-hidden shadow-lg bg-white lg:h-[37rem] lg:w-[50rem] xs:w-[22rem]">
             {eventDisplay && (
                 <div className="flex">
                     <img
-                        className="h-[37rem] w-[25rem]"
+                        className="xs:h-[37rem] xs:w-[10rem] lg:h-[37rem] lg:w-[25rem]"
                         src={eventDisplay.image}
                         id="image"
                         onError={(e) => {
@@ -118,7 +118,7 @@ const DisplayEventInfo = (event) => {
                                 viewBox="0 0 24 24"
                                 strokeWidth={1.5}
                                 stroke="currentColor"
-                                className="size-6"
+                                className="size-6 xs:ml-[1rem] xs:mt-[1rem]"
                             >
                                 <path
                                     strokeLinecap="round"
@@ -126,7 +126,7 @@ const DisplayEventInfo = (event) => {
                                     d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
                                 />
                             </svg>
-                            <p className="ml-[.5rem]">
+                            <p className="ml-[.5rem] xs:mt-[1rem]">
                                 {eventDisplay.duration}
                             </p>
                         </div>
@@ -189,7 +189,9 @@ const DisplayEventInfo = (event) => {
                         </div>
 
                         {/* Uncomment for demo */}
-                        {/* <EventMap latitude={40.7826} longitude={73.9656}/> */}
+                        <div className="hidden lg:flex">
+                            {/* <EventMap latitude={40.7826} longitude={73.9656} /> */}
+                        </div>
                     </div>
                 </div>
             )}

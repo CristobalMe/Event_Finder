@@ -51,13 +51,15 @@ const DisplayEventComments = (comments) => {
                 <h3 className="text-white font-sans font-bold bg-blue-950 rounded overflow-hidden w-fit h-fit p-[.4rem] mb-[.5rem]">
                     {comment.userPosting}:
                 </h3>
-                <p className="bg-white h-fit p-[.2rem]">⊛ {comment.comment}</p>
+                <p className="bg-white h-fit p-[.2rem] break-all">
+                    ⊛ {comment.comment}
+                </p>
             </div>
         ))
     }
 
     return (
-        <div className="rounded overflow-hidden shadow-lg bg-white h-fit w-[50rem] pb-[3rem]">
+        <div className="rounded overflow-hidden shadow-lg bg-white h-fit md:w-[50rem] pb-[3rem] xs:w-[22rem]">
             {displayComments && (
                 <div>
                     <div className="flex items-center justify-center m-[1rem] ">
@@ -78,7 +80,7 @@ const DisplayEventComments = (comments) => {
                     {form && (
                         <div>
                             <input
-                                className="border-2 border-black rounded w-[30rem] h-fit mx-[1rem]"
+                                className="border-2 border-black rounded lg:w-[30rem] md:w-[20rem] h-fit mx-[1rem]"
                                 type="text"
                                 id="comment"
                                 placeholder="Write here"

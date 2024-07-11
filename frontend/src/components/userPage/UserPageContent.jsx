@@ -307,7 +307,7 @@ const UserPageContent = () => {
 
     return (
         <div>
-            <div className="rounded overflow-hidden shadow-lg bg-white h-fit w-[50rem] pb-[3rem] mb-[2rem]">
+            <div className="rounded overflow-hidden shadow-lg bg-white h-fit pb-[3rem] mb-[2rem] xs:w-[20rem] md:w-[50rem]">
                 <div className="m-[1rem] ">
                     <div className="flex justify-center mt-[1rem]">
                         <img
@@ -366,14 +366,14 @@ const UserPageContent = () => {
                     </div>
                 </div>
             </div>
-            <div className="rounded overflow-hidden shadow-lg bg-white h-fit w-[50rem] pb-[3rem]">
-                <div className="flex justify-center m-[1rem] ">
-                    <div className="flex justify-between mt-[1rem]">
+            <div className="rounded overflow-hidden shadow-lg bg-white h-fit md:w-[50rem] pb-[3rem] xs:w-[20rem]">
+                <div className="flex justify-center m-[1rem]">
+                    <div className="justify-between mt-[1rem]">
                         <img
-                            className="w-10 h-10 rounded-full"
+                            className="w-10 h-10 rounded-full mx-[1rem] xs:mt-[0.2rem]"
                             src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
                         />
-                        <p className="m-[.5rem] font-bebas text-xl">
+                        <p className="hidden m-[.5rem] font-bebas text-xl  md:flex">
                             {userData.username} Events:
                         </p>
                     </div>
