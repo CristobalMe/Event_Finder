@@ -20,7 +20,7 @@ function NearbyPage() {
     return (
         <div>
             <Header />
-            <div className="h-screen flex items-center justify-center lg:mt-[10rem] sm:mt-[15rem]">
+            <div className="flex items-center justify-center mt-[20%] ">
                 <CardGridEvent data={eventData} />
             </div>
         </div>

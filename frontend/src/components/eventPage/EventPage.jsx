@@ -41,7 +41,7 @@ const EventPage = () => {
             {!isLoading && (
                 <div>
                     <Header />
-                    <div className="h-screen flex items-center justify-center">
+                    <div className="mt-[13rem] flex items-center justify-center">
                         <DisplayEventInfo event={event} />
                     </div>
                     <div className="h-screen flex items-center justify-center">

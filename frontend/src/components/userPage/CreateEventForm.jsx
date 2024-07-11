@@ -58,7 +58,7 @@ const CreateEventForm = () => {
         <div className="m-[1rem] mt-[1.5rem]">
             <button
                 type="button"
-                className="bg-blue-700 hover:bg-blue-950 text-white font-bold py-1 px-2 rounded mr-[1rem] mb-[.5rem]"
+                className="bg-blue-700 hover:bg-blue-950 text-white font-bold py-1 px-2 rounded mr-[1rem] mb-[.5rem] xs:ml-[1rem] md:ml-[0rem]"
                 onClick={() => setForm(!form)}
             >
                 Create event
