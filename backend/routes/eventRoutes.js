@@ -97,8 +97,8 @@ router.get('/category/:eventCategory', async (req, res) => {
 
 // To Do:
 // Add slider to modify distance
-router.get('/nearby/user', async (req, res) => {
-  const {  latUser, longUser  } = req.body
+router.get('/nearby/user/:latUser/:longUser', async (req, res) => {
+  const {  latUser, longUser  } = req.params
   const events = await prisma.event.findMany({
     where: { 
       lat: {
