@@ -119,6 +119,7 @@ const UserPageContent = () => {
     const handleChangeLocation = async () => {
         try {
             await axios.patch(`${url}/users/location`, {
+                id: userData.id,
                 lat: userPosition.latitude,
                 long: userPosition.longitude,
             })

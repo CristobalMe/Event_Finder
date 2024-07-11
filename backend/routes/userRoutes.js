@@ -24,7 +24,9 @@ router.post('/', async (req, res) => {
     data: {
         username, 
         email, 
-        password: hashedPasswordValue
+        password: hashedPasswordValue,
+        lat: 0.0,
+        long: 0.0
     }
   })
 
@@ -85,5 +87,18 @@ router.post('/login', async (req, res) => {
       res.status(500).json({ error: 'Server error' });
     }
 });
+
+router.patch('/location', async(req, res) => {
+  const {  id, lat, long  } = req.body
+
+  const updatedUser = await prisma.user.update({
+    where: { id: parseInt(id) },
+    data: {
+      lat,
+      long
+    }
+  })
+  res.json(updatedUser)
+})
 
 module.exports = router
