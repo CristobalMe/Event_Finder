@@ -38,6 +38,8 @@ model user {
   password    String
   attendance  attendance[]
   events      event[]
+  lat         Float
+  long        Float       
 }
 
 model comment {
