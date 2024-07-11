@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import CreateEventForm from './CreateEventForm'
 import { Link } from 'react-router-dom'
+import { useContext } from 'react'
+import { UserContext } from '../../UserContext'
 import axios from 'axios'
 
 const UserPageContent = () => {
@@ -28,6 +30,7 @@ const UserPageContent = () => {
         longitude: 0,
     })
     let [customLocation, setCustomLocation] = useState(false)
+    const { updateUser } = useContext(UserContext)
 
     useEffect(() => {
         if (changeInEvent) {
@@ -118,11 +121,15 @@ const UserPageContent = () => {
 
     const handleChangeLocation = async () => {
         try {
-            await axios.patch(`${url}/users/location`, {
-                id: userData.id,
-                lat: userPosition.latitude,
-                long: userPosition.longitude,
-            })
+            await axios
+                .patch(`${url}/users/location`, {
+                    id: userData.id,
+                    lat: parseFloat(userPosition.latitude),
+                    long: parseFloat(userPosition.longitude),
+                })
+                .then(function (response) {
+                    updateUser(response.data)
+                })
             location.reload()
         } catch (error) {
             console.error('Error changing location:', error)
