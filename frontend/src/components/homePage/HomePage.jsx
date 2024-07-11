@@ -26,8 +26,10 @@ function App() {
     ]
 
     useEffect(() => {
-        fetchEvents()
-        fetchEventsWithCategory(currentCategory)
+        if (isLoading) {
+            fetchEvents()
+            fetchEventsWithCategory(currentCategory)
+        }
         setIsLoading(false)
     }, [events, currentCategory])
 
