@@ -23,10 +23,23 @@ const UserPageContent = () => {
     const [date, setDate] = useState('')
     const [time, setTime] = useState('')
     // ---------------------------------------
+    const [userPosition, setUserPosition] = useState({
+        latitude: 0,
+        longitude: 0,
+    })
+    let [customLocation, setCustomLocation] = useState(false)
 
     useEffect(() => {
         if (changeInEvent) {
             fetchUserEvents()
+        }
+        if ('geolocation' in navigator && !customLocation) {
+            navigator.geolocation.getCurrentPosition(function (position) {
+                setUserPosition({
+                    latitude: position.coords.latitude,
+                    longitude: position.coords.longitude,
+                })
+            })
         }
         setchangeInEvent(false)
     }, [userEvents])
@@ -100,6 +113,18 @@ const UserPageContent = () => {
             location.reload()
         } catch (error) {
             console.error('Error:', error)
+        }
+    }
+
+    const handleChangeLocation = async () => {
+        try {
+            await axios.patch(`${url}/users/location`, {
+                lat: userPosition.latitude,
+                long: userPosition.longitude,
+            })
+            location.reload()
+        } catch (error) {
+            console.error('Error changing location:', error)
         }
     }
 
@@ -277,20 +302,81 @@ const UserPageContent = () => {
     }
 
     return (
-        <div className="rounded overflow-hidden shadow-lg bg-white h-fit w-[50rem] pb-[3rem]">
-            <div className="flex justify-center m-[1rem] ">
-                <div className="flex justify-between mt-[1rem]">
-                    <img
-                        className="w-10 h-10 rounded-full"
-                        src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
-                    />
-                    <p className="m-[.5rem] font-bebas text-xl">
-                        {userData.username} Events:
-                    </p>
+        <div>
+            <div className="rounded overflow-hidden shadow-lg bg-white h-fit w-[50rem] pb-[3rem] mb-[2rem]">
+                <div className="m-[1rem] ">
+                    <div className="flex justify-center mt-[1rem]">
+                        <img
+                            className="w-10 h-10 rounded-full"
+                            src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+                        />
+                        <p className="m-[.5rem] font-bebas text-xl">
+                            {userData.username} Data:
+                        </p>
+                    </div>
+                    <div>
+                        <div className="mb-4">
+                            <label className="block text-gray-800 text-sm font-bold mb-2">
+                                Latitude:
+                            </label>
+                            <input
+                                type="text"
+                                className="border rounded w-full py-2 px-3 text-gray-700 leading-tight"
+                                value={userPosition.latitude}
+                                onChange={(e) => {
+                                    setUserPosition({
+                                        latitude: e.target.value,
+                                        longitude: userPosition.longitude,
+                                    })
+                                    setCustomLocation(true)
+                                }}
+                                required
+                            />
+                        </div>
+
+                        <div className="mb-4">
+                            <label className="block text-gray-800 text-sm font-bold mb-2">
+                                Longitude:
+                            </label>
+                            <input
+                                type="text"
+                                className="border rounded w-full py-2 px-3 text-gray-700 leading-tight"
+                                value={userPosition.longitude}
+                                onChange={(e) => {
+                                    setUserPosition({
+                                        latitude: userPosition.latitude,
+                                        longitude: e.target.value,
+                                    })
+                                    setCustomLocation(true)
+                                }}
+                                required
+                            />
+                        </div>
+                        <button
+                            className="bg-blue-700 hover:bg-blue-950 text-white font-bold py-1 px-2 rounded mr-[1rem] mb-[.5rem]"
+                            type="button"
+                            onClick={handleChangeLocation}
+                        >
+                            Change location
+                        </button>
+                    </div>
                 </div>
-                <div>
-                    <CreateEventForm />
-                    {userEvents && <section>{renderEvents()}</section>}
+            </div>
+            <div className="rounded overflow-hidden shadow-lg bg-white h-fit w-[50rem] pb-[3rem]">
+                <div className="flex justify-center m-[1rem] ">
+                    <div className="flex justify-between mt-[1rem]">
+                        <img
+                            className="w-10 h-10 rounded-full"
+                            src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+                        />
+                        <p className="m-[.5rem] font-bebas text-xl">
+                            {userData.username} Events:
+                        </p>
+                    </div>
+                    <div>
+                        <CreateEventForm />
+                        {userEvents && <section>{renderEvents()}</section>}
+                    </div>
                 </div>
             </div>
         </div>
