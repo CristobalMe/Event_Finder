@@ -9,7 +9,6 @@ const UserPageContent = () => {
     const userData = JSON.parse(localStorage.getItem('user'))
     const url = import.meta.env.VITE_URL
     const [userEvents, setUserEvents] = useState()
-    let [changeInEvent, setchangeInEvent] = useState(true)
     let [eventAttendance, setEventAttendance] = useState()
     let [idEventAttendance, setIdEventAttendance] = useState()
     let [eventModify, setEventModify] = useState()
@@ -33,9 +32,7 @@ const UserPageContent = () => {
     const { updateUser } = useContext(UserContext)
 
     useEffect(() => {
-        if (changeInEvent) {
-            fetchUserEvents()
-        }
+        fetchUserEvents()
         if ('geolocation' in navigator && !customLocation) {
             navigator.geolocation.getCurrentPosition(function (position) {
                 setUserPosition({
@@ -44,7 +41,6 @@ const UserPageContent = () => {
                 })
             })
         }
-        setchangeInEvent(false)
     }, [userEvents])
 
     const toggleForm = (event) => {

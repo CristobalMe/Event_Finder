@@ -9,30 +9,30 @@ const EventPage = () => {
     const current_eventId = current_link.split('/')[2]
     const [event, setEvent] = useState()
     const [comments, setComments] = useState()
-    let [changeInEvent, setchangeInEvent] = useState(true)
     const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
-        if (changeInEvent) {
-            setIsLoading(true)
-            fetchEvent()
-            fetchComments()
-        }
-        setIsLoading(false)
-        setchangeInEvent(false)
+        fetchEvent()
+        fetchComments()
     }, [event])
 
     const fetchEvent = () => {
         fetch(`http://localhost:3000${current_link}`)
             .then((response) => response.json())
-            .then((data) => setEvent(data))
+            .then((data) => {
+                setEvent(data)
+                setIsLoading(false)
+            })
             .catch((error) => console.error('Error fetching:', error))
     }
 
     const fetchComments = () => {
         fetch(`http://localhost:3000/comments/${current_eventId}`)
             .then((response) => response.json())
-            .then((data) => setComments(data))
+            .then((data) => {
+                setComments(data)
+                setIsLoading(false)
+            })
             .catch((error) => console.error('Error fetching:', error))
     }
 
