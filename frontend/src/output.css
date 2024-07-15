@@ -745,6 +745,14 @@ body {
   margin-left: 25rem;
 }
 
+.mb-\[20rem\] {
+  margin-bottom: 20rem;
+}
+
+.mb-\[10rem\] {
+  margin-bottom: 10rem;
+}
+
 .block {
   display: block;
 }
@@ -819,6 +827,18 @@ body {
   height: 100vh;
 }
 
+.h-\[15rem\] {
+  height: 15rem;
+}
+
+.h-\[7rem\] {
+  height: 7rem;
+}
+
+.h-\[17rem\] {
+  height: 17rem;
+}
+
 .w-10 {
   width: 2.5rem;
 }
@@ -854,6 +874,10 @@ body {
 
 .w-full {
   width: 100%;
+}
+
+.w-\[7rem\] {
+  width: 7rem;
 }
 
 .max-w-sm {

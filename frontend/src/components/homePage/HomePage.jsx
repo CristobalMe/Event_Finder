@@ -124,8 +124,11 @@ function App() {
                         <EventsCarousel events={events} />
                     </div>
 
-                    <div className="ml-[25rem]  my-[10rem] sm:mx-[7rem]">
-                        <RotatingEventImages />
+                    <div className="ml-[25rem]  mt-[10rem] mb-[20rem] sm:mx-[7rem]">
+                        <h2 className="flex justify-center font-bebas text-white text-3xl mb-[10rem]">
+                            Top 5 events
+                        </h2>
+                        <RotatingEventImages events={events} />
                     </div>
                 </div>
             )}
