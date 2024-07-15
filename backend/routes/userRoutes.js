@@ -17,6 +17,10 @@ router.post('/', async (req, res) => {
     return res.status(400).json({ error: 'Username already exists' });
   }
 
+  if (username.includes(null)){
+    return res.status(400).json({ error: 'Username can not contain "null"' });
+  }
+
   const hashedPassword = await bcrypt.hash(password, 10);
   const hashedPasswordValue = String(hashedPassword);
   
