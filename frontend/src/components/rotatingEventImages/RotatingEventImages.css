@@ -38,19 +38,3 @@
     height: 100%;
     object-fit: cover;
 }
-
-.a {
-    transform-origin: center + 0rem;
-}
-.b {
-    transform-origin: center + 10rem;
-}
-.c {
-    transform-origin: center + 20rem;
-}
-.a {
-    transform-origin: center + 30rem;
-}
-.a {
-    transform-origin: center + 40rem;
-}
