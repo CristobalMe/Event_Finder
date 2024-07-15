@@ -2,6 +2,7 @@ import EventsCarousel from '../carousel/EventsCarousel'
 import Header from '../header/Header'
 import SpinningBanner from '../spinningBanner/SpinningBaner'
 import LoadingPage from '../loadingPage/LoadingPage'
+import RotatingEventImages from '../rotatingEventImages/RotatingEventImages'
 import { useState, useEffect } from 'react'
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
@@ -121,6 +122,10 @@ function App() {
                             This week
                         </h2>
                         <EventsCarousel events={events} />
+                    </div>
+
+                    <div className="ml-[25rem]  my-[10rem] sm:mx-[7rem]">
+                        <RotatingEventImages />
                     </div>
                 </div>
             )}

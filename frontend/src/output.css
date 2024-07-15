@@ -636,6 +636,11 @@ body {
   margin-bottom: 1rem;
 }
 
+.my-\[10rem\] {
+  margin-top: 10rem;
+  margin-bottom: 10rem;
+}
+
 .-mr-1 {
   margin-right: -0.25rem;
 }
@@ -730,6 +735,14 @@ body {
 
 .mt-\[6rem\] {
   margin-top: 6rem;
+}
+
+.ml-\[5rem\] {
+  margin-left: 5rem;
+}
+
+.ml-\[25rem\] {
+  margin-left: 25rem;
 }
 
 .block {
