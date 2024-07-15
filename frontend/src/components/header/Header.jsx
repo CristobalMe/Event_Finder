@@ -57,9 +57,11 @@ const Header = () => {
     const [isOpen, setIsOpen] = useState(false)
     let Logged = false
     let userId = localStorage.getItem('user')
-    if (!localStorage.getItem('user').includes(null)) {
-        Logged = true
-        userId = JSON.parse(localStorage.getItem('user')).id
+    if (localStorage.getItem('user') != null) {
+        if (!localStorage.getItem('user').includes(null)) {
+            Logged = true
+            userId = JSON.parse(localStorage.getItem('user')).id
+        }
     }
 
     const toggleNavbar = () => {
