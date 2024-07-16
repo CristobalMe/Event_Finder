@@ -3,10 +3,11 @@ import { useState, useEffect } from 'react'
 
 const CardGridEventsAttending = () => {
     let [events, setEvents] = useState([])
-    let [fetched, setFetched] = useState(false)
     let userData = { username: null }
     const url = import.meta.env.VITE_URL
 
+    // To Do:
+    // Don't use local storage for this:
     if (
         !(
             localStorage.getItem('user').includes(null) ||
@@ -17,11 +18,8 @@ const CardGridEventsAttending = () => {
     }
 
     useEffect(() => {
-        if (!fetched) {
-            fetchUserAttendance()
-        }
-        setFetched(true)
-    }, [events])
+        fetchUserAttendance()
+    }, [])
 
     const fetchUserAttendance = () => {
         fetch(`${url}/event/attending/${userData.username}`)
