@@ -20,7 +20,12 @@ function ForYouPage(user) {
     return (
         <div>
             <Header />
-            <div className="flex items-center justify-center md:mt-[10%] xs:mt-[20%]">
+            <div className="flex items-center justify-center md:mt-[10rem] xs:mt-[12rem]">
+                <h2 className="flex justify-center font-bebas text-white text-3xl">
+                    Top 10 events for you
+                </h2>
+            </div>
+            <div className="flex items-center justify-center mt-[0rem]">
                 {eventData != undefined && <CardGridEvent data={eventData} />}
             </div>
         </div>
