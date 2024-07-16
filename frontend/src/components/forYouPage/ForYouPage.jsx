@@ -1,15 +1,30 @@
 import Header from '../header/Header'
-import CardGridForYou from "./CardGridForYou.jsx"
+import CardGridEvent from '../CardGridEvent'
+import { useState, useEffect } from 'react'
 
-function App() {
+function ForYouPage(user) {
+    const url = import.meta.env.VITE_URL
+    const userData = user.user
+    const [eventData, setEventData] = useState()
 
-  return (
-    <div>
+    useEffect(() => {
+        fetchRecommendedEvents()
+    }, [])
 
-        <Header />
-        <div className="h-screen flex items-center justify-center lg:mt-[20rem] sm:mt-[45rem]"><CardGridForYou /></div>
-    </div>
-  )
+    const fetchRecommendedEvents = () => {
+        fetch(`${url}/users/recommendedEvents/${userData.id}`)
+            .then((response) => response.json())
+            .then((data) => setEventData(data))
+            .catch((error) => console.error('Error fetching:', error))
+    }
+    return (
+        <div>
+            <Header />
+            <div className="flex items-center justify-center md:mt-[10%] xs:mt-[20%]">
+                {eventData != undefined && <CardGridEvent data={eventData} />}
+            </div>
+        </div>
+    )
 }
 
-export default App
+export default ForYouPage

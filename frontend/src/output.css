@@ -753,6 +753,10 @@ body {
   margin-bottom: 10rem;
 }
 
+.mt-\[10\%\] {
+  margin-top: 10%;
+}
+
 .block {
   display: block;
 }
@@ -1333,6 +1337,10 @@ body {
     margin-top: 1rem;
   }
 
+  .xs\:mt-\[20\%\] {
+    margin-top: 20%;
+  }
+
   .xs\:h-\[37rem\] {
     height: 37rem;
   }
@@ -1368,6 +1376,10 @@ body {
 @media (min-width: 768px) {
   .md\:ml-\[0rem\] {
     margin-left: 0rem;
+  }
+
+  .md\:mt-\[10\%\] {
+    margin-top: 10%;
   }
 
   .md\:flex {

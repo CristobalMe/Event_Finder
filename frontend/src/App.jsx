@@ -13,16 +13,10 @@ import { BrowserRouter } from 'react-router-dom'
 import { Route, Routes } from 'react-router-dom'
 
 // TODO:
-// Change parameters of EventsCarousel (Needs to complete data models and user auth first)
 // Put urls in and .env file
 // Some kind of email format validation, so that entries like foo@bar can't be used as email
 // Enforce pattern matching for password, e.g must have a symbol
 // GET LOCATION OF EVENT (LAT & LONG)
-// Update event Model (Ask for date of the event)
-
-// DONE
-// Login/signup routing logic
-// Redundant code with the creation of InitialHeader
 
 function App() {
     const [user, setUser] = useState(
@@ -45,7 +39,10 @@ function App() {
                         <Route path="/" element={<HomePage />} />
                         <Route path="/SignUp" element={<SignupPage />} />
                         <Route path="/Home" element={<HomePage />} />
-                        <Route path="/ForYou" element={<ForYouPage />} />
+                        <Route
+                            path="/ForYou"
+                            element={<ForYouPage user={user} />}
+                        />
                         <Route
                             path="/Nearby"
                             element={<NearbyPage user={user} />}
