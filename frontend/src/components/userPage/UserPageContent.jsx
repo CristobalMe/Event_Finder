@@ -41,7 +41,7 @@ const UserPageContent = () => {
                 })
             })
         }
-    }, [userEvents])
+    }, [])
 
     const toggleForm = (event) => {
         setEventLocation(event.location)
@@ -126,7 +126,6 @@ const UserPageContent = () => {
                 .then(function (response) {
                     updateUser(response.data)
                 })
-            location.reload()
         } catch (error) {
             console.error('Error changing location:', error)
         }
