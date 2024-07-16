@@ -112,14 +112,12 @@ router.get('/recommendedEvents/:userId', async (req, res) => {
   let categoriesEventsAttending = [];
   let idEventsAttending = [];
   let totalDistanceUserToEvent = 0;
-  
 
   // Get the current user
   const user = await prisma.user.findFirst({
     where: { id: parseInt(userId) }
   })
   // ----------------------------------------
-
   // Get the events that our user is attending
   const attendance = await prisma.attendance.findMany({
     where: { 
@@ -136,14 +134,11 @@ router.get('/recommendedEvents/:userId', async (req, res) => {
     }
   })
   // --------------------------------------------
-
-
   // Get the categories of the events that the user is attending
   eventsAttending.map((e) => 
     categoriesEventsAttending.push(e.category)
   )
   // ----------------------------------------------
-
   // Get the mean distance that our user is willing to travel for an event
   eventsAttending.map((e) => 
     totalDistanceUserToEvent = ( ((e.lat - user.lat)**2 + (e.long - user.long)**2)**.5 ) + totalDistanceUserToEvent
@@ -151,7 +146,6 @@ router.get('/recommendedEvents/:userId', async (req, res) => {
   let numberOfEventsAttending = Object.keys(eventsAttending).length
   let meanDistanceTraveledUser = totalDistanceUserToEvent/numberOfEventsAttending
   // -------------------------------------------------------------------------------
-
   // Get the events that are nearby (square with side = 28 miles)
   const eventsNear = await prisma.event.findMany({
     where: { 
@@ -166,11 +160,9 @@ router.get('/recommendedEvents/:userId', async (req, res) => {
     }
   })
   // ------------------------------------------------
-
   // Get current date (https://stackoverflow.com/questions/1531093/how-do-i-get-the-current-date-in-javascript)
   var today = new Date();
   // ---------------------------------------------------------------------------
-
   // Calculate the score for each event ****************************************************************************************
   let eventDate = new Date();
   let dateDifference = 0
@@ -181,10 +173,7 @@ router.get('/recommendedEvents/:userId', async (req, res) => {
   let distanceScore = 0
   let totalScore = 0
 
-
-
   eventsNear.map((e) => {
-
     // Date Score -----------------------------------------------------------------------------------------------------------
     eventDate = new Date(parseInt(e.date.slice(0, 2)) + '/' + parseInt(e.date.slice(3, 5)) + '/' + parseInt(e.date.slice(6, 10)))
     dateDifference =  ( ((eventDate.getTime() - today.getTime()) / 1000) / 604800 ) 
@@ -196,7 +185,6 @@ router.get('/recommendedEvents/:userId', async (req, res) => {
     }
     
     // ------------------------------------------------------------------------------------------------------------------------
-
     // Category Score -----------------------------------------------------------------------------------------------------------
     countOfApperances = 0
     for (let i = 0; i < categoriesEventsAttending.length; i++) {
@@ -210,7 +198,6 @@ router.get('/recommendedEvents/:userId', async (req, res) => {
       categoryScore = 0
     }
     // ------------------------------------------------------------------------------------------------------------------------
-
     // Distance Score -----------------------------------------------------------------------------------------------------------
     distanceEventToUser = ( ((e.lat - user.lat)**2 + (e.long - user.long)**2)**.5 )
 
@@ -223,8 +210,6 @@ router.get('/recommendedEvents/:userId', async (req, res) => {
       distanceScore = 1
     }
     // -------------------------------------------------------------------------------------------------------------------------
-
-
     // Total Score -----------------------------------------------------------------------------------------------------------
     totalScore = dateScore + categoryScore + distanceScore
     // -------------------------------------------------------------------------------------------------------------------------
@@ -233,7 +218,6 @@ router.get('/recommendedEvents/:userId', async (req, res) => {
     scoreRecommendedEvents.push(totalScore)
   })
   // *****************************************************************************************************************************
-
   // Sort events by score --------------------------------------------------------------
   var list = [];
   for (var j = 0; j < idRecommendedEvents.length; j++) {
@@ -249,18 +233,12 @@ router.get('/recommendedEvents/:userId', async (req, res) => {
         idRecommendedEvents[k] = list[k].id;
       }
   }
-
   // ------------------------------------------------------------------------------------
-
   const recommendedEvents = await prisma.event.findMany({
     where: {
       id: { in: idRecommendedEvents}
     }
   })
-
-
-
-
   res.json(recommendedEvents)
 
 })
