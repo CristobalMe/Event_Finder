@@ -12,7 +12,7 @@ const events = [
       image: "https://picsum.photos/200/306",
       category: "Music",
       userId: 1,
-      date: "07/14",
+      date: "09/14/2024",
       time: "1pm",
       lat: 19.432608,
       long: -99.133209
@@ -26,7 +26,7 @@ const events = [
       image: "https://picsum.photos/200/307",
       category: "Sightseeing",
       userId: 1,
-      date: "07/14",
+      date: "09/14/2024",
       time: "1pm",
       lat: 19.432608,
       long: -99.133209
@@ -40,7 +40,7 @@ const events = [
       image: "https://picsum.photos/200/308",
       category: "Food & Drink",
       userId: 1,
-      date: "07/14",
+      date: "09/14/2024",
       time: "1pm",
       lat: 19.432608,
       long: -99.133209
@@ -54,7 +54,7 @@ const events = [
       image: "https://picsum.photos/200/309",
       category: "Sightseeing",
       userId: 1,
-      date: "07/14",
+      date: "09/14/2024",
       time: "1pm",
       lat: 19.432608,
       long: -99.133209
@@ -68,7 +68,7 @@ const events = [
       image: "https://picsum.photos/200/310",
       category: "Entertainment",
       userId: 1,
-      date: "07/14",
+      date: "09/14/2024",
       time: "1pm",
       lat: 19.432608,
       long: -99.133209
