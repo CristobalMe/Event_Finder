@@ -77,11 +77,21 @@ router.get('/user/:userId', async (req, res) => {
   res.json(event)
 })
 
-router.get('/attending/user', async (req, res) => {
-  const {  attending  } = req.body
+router.get('/attending/:userAttending', async (req, res) => {
+  const { userAttending } = req.params
+  let idEventsAttending = [];
+  const attendance = await prisma.attendance.findMany({
+    where: { 
+      userAttending: userAttending
+    }
+  })
+  attendance.map((d) => 
+    idEventsAttending.push(d.eventId)
+  )
+
   const events = await prisma.event.findMany({
     where: {
-      id: { in: attending }
+      id: { in: idEventsAttending}
     }
   })
   res.json(events)
