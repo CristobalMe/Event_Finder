@@ -46,7 +46,10 @@ function App() {
                         <Route path="/SignUp" element={<SignupPage />} />
                         <Route path="/Home" element={<HomePage />} />
                         <Route path="/ForYou" element={<ForYouPage />} />
-                        <Route path="/Nearby" element={<NearbyPage />} />
+                        <Route
+                            path="/Nearby"
+                            element={<NearbyPage user={user} />}
+                        />
                         <Route
                             path="/Attending"
                             element={<EventsAttendingPage />}

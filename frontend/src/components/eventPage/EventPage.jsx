@@ -14,7 +14,7 @@ const EventPage = () => {
     useEffect(() => {
         fetchEvent()
         fetchComments()
-    }, [event])
+    }, [])
 
     const fetchEvent = () => {
         fetch(`http://localhost:3000${current_link}`)

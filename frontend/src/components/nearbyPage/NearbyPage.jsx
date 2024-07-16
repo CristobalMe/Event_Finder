@@ -2,9 +2,9 @@ import Header from '../header/Header'
 import CardGridEvent from '../CardGridEvent'
 import { useState, useEffect } from 'react'
 
-function NearbyPage() {
+function NearbyPage(user) {
     const url = import.meta.env.VITE_URL
-    const userData = JSON.parse(localStorage.getItem('user'))
+    const userData = user.user
     const [eventData, setEventData] = useState()
 
     useEffect(() => {
@@ -21,7 +21,7 @@ function NearbyPage() {
         <div>
             <Header />
             <div className="flex items-center justify-center mt-[20%] ">
-                <CardGridEvent data={eventData} />
+                {eventData != undefined && <CardGridEvent data={eventData} />}
             </div>
         </div>
     )
