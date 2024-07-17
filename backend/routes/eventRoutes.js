@@ -12,6 +12,7 @@ router.post('/', async (req, res) => {
   const {  rating, location, name, duration, description, image, category, userId, date, time ,lat, long } = req.body
   const floatLat = parseFloat(lat);
   const floatLong = parseFloat(long);
+  const dateTime = new Date(date)
   
   const newEvent = await prisma.event.create({
     data: {
@@ -23,7 +24,7 @@ router.post('/', async (req, res) => {
       image,
       category,
       userId, 
-      date, 
+      date: dateTime,
       time,
       lat: floatLat, 
       long: floatLong
@@ -35,6 +36,7 @@ router.post('/', async (req, res) => {
 router.patch('/:id', async(req, res) => {
   const { id } = req.params
   const {  location, lat, long, duration, description, image, date, time  } = req.body
+  const dateTime = new Date(date)
 
   const updatedEvent = await prisma.event.update({
     where: { id: parseInt(id) },
@@ -45,7 +47,7 @@ router.patch('/:id', async(req, res) => {
       duration, 
       description, 
       image, 
-      date,
+      date: dateTime,
       time
     }
   })

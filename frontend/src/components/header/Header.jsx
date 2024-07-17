@@ -10,7 +10,6 @@ const NavLinksLogged = () => {
 
     const handleLogOut = async () => {
         updateUser(null)
-        location.reload()
     }
     return (
         <>

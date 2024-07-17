@@ -25,7 +25,7 @@ model event {
   comments    comment[]
   user        user     @relation(fields: [userId], references: [id])
   userId      Int
-  date        String
+  date        DateTime
   time        String
   lat         Float
   long        Float
