@@ -3,6 +3,7 @@ const router = express.Router()
 const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient()
 const bcrypt = require('bcrypt');
+const { use } = require('bcrypt/promises');
 
 router.get('/', async (req, res) => {
   const users = await prisma.user.findMany()
@@ -105,19 +106,14 @@ router.patch('/location', async(req, res) => {
   res.json(updatedUser)
 })
 
-router.get('/recommendedEvents/:userId', async (req, res) => {
-  const { userId } = req.params
+const recommendTenEvents = async (user) => {
   let idRecommendedEvents = [];
   let scoreRecommendedEvents = [];
   let categoriesEventsAttending = [];
   let idEventsAttending = [];
+  let idEventsCommented = [];
   let totalDistanceUserToEvent = 0;
 
-  // Get the current user
-  const user = await prisma.user.findFirst({
-    where: { id: parseInt(userId) }
-  })
-  // ----------------------------------------
   // Get the events that our user is attending
   const attendance = await prisma.attendance.findMany({
     where: { 
@@ -160,6 +156,18 @@ router.get('/recommendedEvents/:userId', async (req, res) => {
     }
   })
   // ------------------------------------------------
+  // Get the id's of the events the user has commented on & how many comments the user has
+  const userComments = await prisma.comment.findMany({
+    where: { 
+      userPosting: user.username
+    }
+  })
+  let totalComments = 0
+  userComments.map((e) => {
+    idEventsCommented.push(e.eventId)
+    totalComments = totalComments + 1
+  })
+  // ------------------------------------------------
   // Get current date (https://stackoverflow.com/questions/1531093/how-do-i-get-the-current-date-in-javascript)
   var today = new Date();
   // ---------------------------------------------------------------------------
@@ -172,6 +180,8 @@ router.get('/recommendedEvents/:userId', async (req, res) => {
   let distanceEventToUser = 0
   let distanceScore = 0
   let totalScore = 0
+  let countOfCommentsInEvent = 0
+  let commentScore = 0
 
   eventsNear.map((e) => {
     // Date Score -----------------------------------------------------------------------------------------------------------
@@ -210,12 +220,26 @@ router.get('/recommendedEvents/:userId', async (req, res) => {
       distanceScore = 1
     }
     // -------------------------------------------------------------------------------------------------------------------------
+    // Comments Score -----------------------------------------------------------------------------------------------------------
+    countOfCommentsInEvent = 0
+    for (let i = 0; i < totalComments; i++) {
+      if (idEventsCommented[i] == e.id){
+        countOfCommentsInEvent = countOfCommentsInEvent + 1
+      }
+    }
+    if (totalComments != 0) {
+      commentScore = (countOfCommentsInEvent)/(totalComments)
+    } else {
+      commentScore = 0
+    }
+    // ------------------------------------------------------------------------------------------------------------------------
     // Total Score -----------------------------------------------------------------------------------------------------------
-    totalScore = dateScore + categoryScore + distanceScore
+    totalScore = dateScore + categoryScore + distanceScore + commentScore
     // -------------------------------------------------------------------------------------------------------------------------
-
-    idRecommendedEvents.push(e.id)
-    scoreRecommendedEvents.push(totalScore)
+    if (!idEventsAttending.includes(e.id)){
+      idRecommendedEvents.push(e.id)
+      scoreRecommendedEvents.push(totalScore)
+    }
   })
   // *****************************************************************************************************************************
   // Sort events by score --------------------------------------------------------------
@@ -229,9 +253,7 @@ router.get('/recommendedEvents/:userId', async (req, res) => {
   });
 
   for (var k = 0; k < list.length; k++) {
-      if (k < 10){
-        idRecommendedEvents[k] = list[k].id;
-      }
+    if (k < 10) idRecommendedEvents[k] = list[k].id;
   }
   // ------------------------------------------------------------------------------------
   const recommendedEvents = await prisma.event.findMany({
@@ -239,6 +261,24 @@ router.get('/recommendedEvents/:userId', async (req, res) => {
       id: { in: idRecommendedEvents}
     }
   })
+
+  console.log(recommendedEvents)
+
+  return (recommendedEvents)
+}
+
+router.get('/recommendedEvents/:userId', async (req, res) => {
+  const { userId } = req.params
+  
+
+  // Get the current user
+  const user = await prisma.user.findFirst({
+    where: { id: parseInt(userId) }
+  })
+  // ----------------------------------------
+
+  const recommendedEvents = recommendTenEvents(user)
+  
   res.json(recommendedEvents)
 
 })
