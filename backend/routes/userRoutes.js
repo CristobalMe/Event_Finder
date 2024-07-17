@@ -168,6 +168,20 @@ const recommendTenEvents = async (user) => {
     totalComments = totalComments + 1
   })
   // ------------------------------------------------
+  // Get attendance
+  const eventsAttendance = await prisma.attendance.findMany()
+  // ------------------------------------------------
+  // Get the users that are active (registered for at least 1 event)
+  let usersRegisteredForAnEvent = [];
+  eventsAttendance.map((e) => {
+    usersRegisteredForAnEvent.push(e.userAttending)
+  })
+  const activeUsers = await prisma.user.findMany({
+    where: {
+      username: { in: usersRegisteredForAnEvent}
+    }
+  })
+  // ------------------------------------------------
   // Get current date (https://stackoverflow.com/questions/1531093/how-do-i-get-the-current-date-in-javascript)
   var today = new Date();
   // ---------------------------------------------------------------------------
@@ -182,8 +196,14 @@ const recommendTenEvents = async (user) => {
   let totalScore = 0
   let countOfCommentsInEvent = 0
   let commentScore = 0
+  let eventAttendance = 0
+  let popularityScore = 0
 
   eventsNear.map((e) => {
+    eventAttendance = 0
+    eventsAttendance.map((a) => {
+      if (a.eventId == e.id) eventAttendance = eventAttendance + 1
+    })
     // Date Score -----------------------------------------------------------------------------------------------------------
     eventDate = new Date(parseInt(e.date.slice(0, 2)) + '/' + parseInt(e.date.slice(3, 5)) + '/' + parseInt(e.date.slice(6, 10)))
     dateDifference =  ( ((eventDate.getTime() - today.getTime()) / 1000) / 604800 ) 
@@ -233,10 +253,15 @@ const recommendTenEvents = async (user) => {
       commentScore = 0
     }
     // ------------------------------------------------------------------------------------------------------------------------
+    // Popularity Score -----------------------------------------------------------------------------------------------------------
+    popularityScore = 0
+    if (activeUsers.length != 0) popularityScore = eventAttendance/(activeUsers.length)
+    // ------------------------------------------------------------------------------------------------------------------------
     // Total Score -----------------------------------------------------------------------------------------------------------
-    totalScore = dateScore + categoryScore + distanceScore + commentScore
+    totalScore = dateScore + categoryScore + distanceScore + commentScore + 4*popularityScore
     // -------------------------------------------------------------------------------------------------------------------------
     if (!idEventsAttending.includes(e.id)){
+      console.log(popularityScore)
       idRecommendedEvents.push(e.id)
       scoreRecommendedEvents.push(totalScore)
     }
@@ -252,8 +277,10 @@ const recommendTenEvents = async (user) => {
       return ((a.score < b.score) ? 1 : ((a.score == b.score) ? 0 : -1));
   });
 
+  idRecommendedEvents = []
+
   for (var k = 0; k < list.length; k++) {
-    if (k < 10) idRecommendedEvents[k] = list[k].id;
+    if (k < 10) idRecommendedEvents.push(list[k].id)
   }
   // ------------------------------------------------------------------------------------
   const recommendedEvents = await prisma.event.findMany({
@@ -261,8 +288,6 @@ const recommendTenEvents = async (user) => {
       id: { in: idRecommendedEvents}
     }
   })
-
-  console.log(recommendedEvents)
 
   return (recommendedEvents)
 }
@@ -277,10 +302,9 @@ router.get('/recommendedEvents/:userId', async (req, res) => {
   })
   // ----------------------------------------
 
-  const recommendedEvents = recommendTenEvents(user)
+  const recommendedEvents = await recommendTenEvents(user)
   
   res.json(recommendedEvents)
-
 })
 
 module.exports = router
