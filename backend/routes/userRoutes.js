@@ -163,6 +163,10 @@ const recommendTenEvents = async (user) => {
       long: {
         gt: user.long - 0.2 - meanDistanceTraveledUser, 
         lt: user.long + 0.2 + meanDistanceTraveledUser
+      },
+      id: { not: {in: idEventsAttending}},
+      date: {
+        gt: today
       }
     }
   })
@@ -173,10 +177,9 @@ const recommendTenEvents = async (user) => {
       userPosting: user.username
     }
   })
-  let totalComments = 0
+  const totalComments = userComments.length
   userComments.map((e) => {
     idEventsCommented.push(e.eventId)
-    totalComments = totalComments + 1
   })
   // ------------------------------------------------
   // Get attendance
@@ -214,14 +217,7 @@ const recommendTenEvents = async (user) => {
     // Date Score -----------------------------------------------------------------------------------------------------------
     eventDate = new Date(e.date)
     dateDifference =  ( ((eventDate.getTime() - today.getTime()) / 1000) / 604800 ) 
-
-    if (dateDifference > 0 ){
-      dateScore = 1 / dateDifference
-    } else{
-      // This is to not recommend past events to users
-      dateScore = - 1000
-    }
-    
+    dateScore = 1 / dateDifference
     // ------------------------------------------------------------------------------------------------------------------------
     // Category Score -----------------------------------------------------------------------------------------------------------
     countOfApperances = 0
@@ -268,10 +264,9 @@ const recommendTenEvents = async (user) => {
     // Total Score -----------------------------------------------------------------------------------------------------------
     totalScore = dateScore + categoryScore + distanceScore + commentScore + 4*popularityScore
     // -------------------------------------------------------------------------------------------------------------------------
-    if (!idEventsAttending.includes(e.id)){
-      idRecommendedEvents.push(e.id)
-      scoreRecommendedEvents.push(totalScore)
-    }
+
+    idRecommendedEvents.push(e.id)
+    scoreRecommendedEvents.push(totalScore)
   })
   // *****************************************************************************************************************************
   // Sort events by score --------------------------------------------------------------
