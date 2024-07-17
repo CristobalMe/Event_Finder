@@ -207,10 +207,11 @@ const recommendTenEvents = async (user) => {
     eventDate = new Date(parseInt(e.date.slice(0, 2)) + '/' + parseInt(e.date.slice(3, 5)) + '/' + parseInt(e.date.slice(6, 10)))
     dateDifference =  ( ((eventDate.getTime() - today.getTime()) / 1000) / 604800 ) 
 
-    if (dateDifference !=0 ){
+    if (dateDifference > 0 ){
       dateScore = 1 / dateDifference
     } else{
-      dateScore = 1
+      // This is to not recommend past events to users
+      dateScore = - 1000
     }
     
     // ------------------------------------------------------------------------------------------------------------------------
