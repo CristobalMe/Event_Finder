@@ -3,7 +3,6 @@ const router = express.Router()
 const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient()
 const bcrypt = require('bcrypt');
-const { use } = require('bcrypt/promises');
 
 router.get('/', async (req, res) => {
   const users = await prisma.user.findMany()
