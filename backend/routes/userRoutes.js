@@ -134,23 +134,35 @@ const recommendTenEvents = async (user) => {
     categoriesEventsAttending.push(e.category)
   )
   // ----------------------------------------------
+  // Get current date (https://stackoverflow.com/questions/1531093/how-do-i-get-the-current-date-in-javascript)
+  var today = new Date();
+  // ---------------------------------------------------------------------------
   // Get the mean distance that our user is willing to travel for an event
-  eventsAttending.map((e) => 
-    totalDistanceUserToEvent = ( ((e.lat - user.lat)**2 + (e.long - user.long)**2)**.5 ) + totalDistanceUserToEvent
-  )
-  let numberOfEventsAttending = Object.keys(eventsAttending).length
-  let meanDistanceTraveledUser = totalDistanceUserToEvent/numberOfEventsAttending
+  let eventDate = new Date();
+  let dateDifference = 0
+  let numberOfEventsAttending = 0
+  let meanDistanceTraveledUser = 0
+  eventsAttending.map((e) => {
+    eventDate = new Date(e.date)
+    dateDifference =  ( ((eventDate.getTime() - today.getTime()) / 1000) / 604800 ) 
+    // Only count events that are recent (2 months ago)
+    if (dateDifference > -8) {
+      totalDistanceUserToEvent = ( ((e.lat - user.lat)**2 + (e.long - user.long)**2)**.5 ) + totalDistanceUserToEvent
+      numberOfEventsAttending = numberOfEventsAttending + 1
+    }
+  })
+  if (numberOfEventsAttending > 0) meanDistanceTraveledUser = totalDistanceUserToEvent/numberOfEventsAttending
   // -------------------------------------------------------------------------------
   // Get the events that are nearby (square with side = 28 miles)
   const eventsNear = await prisma.event.findMany({
     where: { 
       lat: {
-        gt: user.lat - 0.2,
-        lt: user.lat + 0.2
+        gt: user.lat - 0.2 - meanDistanceTraveledUser,
+        lt: user.lat + 0.2 + meanDistanceTraveledUser
       },
       long: {
-        gt: user.long - 0.2, 
-        lt: user.long + 0.2 
+        gt: user.long - 0.2 - meanDistanceTraveledUser, 
+        lt: user.long + 0.2 + meanDistanceTraveledUser
       }
     }
   })
@@ -181,12 +193,8 @@ const recommendTenEvents = async (user) => {
     }
   })
   // ------------------------------------------------
-  // Get current date (https://stackoverflow.com/questions/1531093/how-do-i-get-the-current-date-in-javascript)
-  var today = new Date();
-  // ---------------------------------------------------------------------------
   // Calculate the score for each event ****************************************************************************************
-  let eventDate = new Date();
-  let dateDifference = 0
+  dateDifference = 0
   let dateScore = 0
   let countOfApperances = 0
   let categoryScore = 0
@@ -204,7 +212,7 @@ const recommendTenEvents = async (user) => {
       if (a.eventId == e.id) eventAttendance = eventAttendance + 1
     })
     // Date Score -----------------------------------------------------------------------------------------------------------
-    eventDate = new Date(parseInt(e.date.slice(0, 2)) + '/' + parseInt(e.date.slice(3, 5)) + '/' + parseInt(e.date.slice(6, 10)))
+    eventDate = new Date(e.date)
     dateDifference =  ( ((eventDate.getTime() - today.getTime()) / 1000) / 604800 ) 
 
     if (dateDifference > 0 ){
@@ -231,10 +239,10 @@ const recommendTenEvents = async (user) => {
     // Distance Score -----------------------------------------------------------------------------------------------------------
     distanceEventToUser = ( ((e.lat - user.lat)**2 + (e.long - user.long)**2)**.5 )
 
-    if ((meanDistanceTraveledUser - distanceEventToUser) > 0){
-      distanceScore = 1 / (meanDistanceTraveledUser - distanceEventToUser)
-    } else if ((meanDistanceTraveledUser - distanceEventToUser) < 0) {
-      distanceScore = 1 / (distanceEventToUser - meanDistanceTraveledUser)
+    if ((meanDistanceTraveledUser - distanceEventToUser) > 0 && distanceEventToUser != 0){
+      distanceScore = ((1 / (meanDistanceTraveledUser - distanceEventToUser)) + (1/distanceEventToUser))/2
+    } else if ((meanDistanceTraveledUser - distanceEventToUser ) < 0 && distanceEventToUser != 0) {
+      distanceScore = ((1 / (distanceEventToUser - meanDistanceTraveledUser)) + (1/distanceEventToUser))/2
     }
     else {
       distanceScore = 1
