@@ -261,7 +261,6 @@ const recommendTenEvents = async (user) => {
     totalScore = dateScore + categoryScore + distanceScore + commentScore + 4*popularityScore
     // -------------------------------------------------------------------------------------------------------------------------
     if (!idEventsAttending.includes(e.id)){
-      console.log(popularityScore)
       idRecommendedEvents.push(e.id)
       scoreRecommendedEvents.push(totalScore)
     }
