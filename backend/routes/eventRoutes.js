@@ -42,8 +42,8 @@ router.patch('/:id', async(req, res) => {
     where: { id: parseInt(id) },
     data: {
       location,
-      lat,
-      long,
+      lat: parseFloat(lat),
+      long: parseFloat(long),
       duration, 
       description, 
       image, 

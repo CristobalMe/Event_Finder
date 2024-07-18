@@ -769,6 +769,14 @@ body {
   margin-top: 0rem;
 }
 
+.mt-\[5rem\] {
+  margin-top: 5rem;
+}
+
+.mt-\[3rem\] {
+  margin-top: 3rem;
+}
+
 .block {
   display: block;
 }
@@ -853,6 +861,10 @@ body {
 
 .h-\[17rem\] {
   height: 17rem;
+}
+
+.h-\[50rem\] {
+  height: 50rem;
 }
 
 .w-10 {

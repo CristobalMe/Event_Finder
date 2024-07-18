@@ -1,10 +1,11 @@
 import Header from '../header/Header'
 import CardGridEvent from '../CardGridEvent'
 import { useState, useEffect } from 'react'
+import NearbyEventsMap from '../NearbyEventsMap'
 
 function NearbyPage({ user }) {
     const url = import.meta.env.VITE_URL
-    const [eventData, setEventData] = useState()
+    const [eventData, setEventData] = useState([])
 
     useEffect(() => {
         fetchNearbyEvents()
@@ -16,10 +17,14 @@ function NearbyPage({ user }) {
             .then((data) => setEventData(data))
             .catch((error) => console.error('Error fetching:', error))
     }
+
     return (
         <div>
             <Header user={user} />
-            <div className="flex items-center justify-center mt-[20%] ">
+            <div className="flex items-center justify-center mt-[10rem]">
+                <NearbyEventsMap user={user} eventData={eventData} />
+            </div>
+            <div className="flex items-center justify-center mt-[3rem]">
                 {eventData != undefined && <CardGridEvent data={eventData} />}
             </div>
         </div>
