@@ -1,16 +1,16 @@
-import Header from "../header/Header";
-import SignUpForm from "./SignUpForm";
+import Header from '../header/Header'
+import SignUpForm from './SignUpForm'
 
-function App() {
-  return (
-    <div>
-      <Header />
+function SignUpPage({ user }) {
+    return (
+        <div>
+            <Header user={user} />
 
-      <div className="h-screen flex items-center justify-center mt-[6rem]">
-        <SignUpForm />
-      </div>
-    </div>
-  );
+            <div className="h-screen flex items-center justify-center mt-[6rem]">
+                <SignUpForm />
+            </div>
+        </div>
+    )
 }
 
-export default App;
+export default SignUpPage

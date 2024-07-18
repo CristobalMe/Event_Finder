@@ -5,7 +5,7 @@ import { ChevronDownIcon } from '@heroicons/react/20/solid'
 
 // To Do:
 // Add error handling for when a user inputs a bad request (Create event & modify event)
-const CreateEventForm = () => {
+const CreateEventForm = ({ user }) => {
     const url = import.meta.env.VITE_URL
     const [form, setForm] = useState(false)
     const [name, setEventName] = useState('')
@@ -41,7 +41,7 @@ const CreateEventForm = () => {
                 image: image,
                 category: category,
                 date: date,
-                userId: JSON.parse(localStorage.getItem('user')).id,
+                userId: user.id,
                 lat: lat,
                 long: long,
                 time: time,

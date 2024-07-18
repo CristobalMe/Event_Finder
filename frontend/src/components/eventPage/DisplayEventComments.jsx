@@ -1,19 +1,15 @@
 import { useState } from 'react'
 import axios from 'axios'
 
-const DisplayEventComments = (comments) => {
+const DisplayEventComments = ({ comments, user }) => {
     const [form, setForm] = useState(false)
     const [userComment, setUserComment] = useState('')
-
-    let displayComments = comments.comments
     let Logged = false
     const url = import.meta.env.VITE_URL
     const current_link = window.location.pathname
     const current_eventId = current_link.split('/')[2]
-    let user = localStorage.getItem('user')
-    let jsonUser = JSON.parse(user)
 
-    if (!(user.includes(null) || user.includes('null'))) {
+    if (!(user == null || user == 'null')) {
         Logged = true
     }
 
@@ -29,7 +25,7 @@ const DisplayEventComments = (comments) => {
             }
 
             await axios.post(`${url}/comments/${current_eventId}`, {
-                userPosting: jsonUser.username,
+                userPosting: user.username,
                 comment: userComment,
             })
 
@@ -43,7 +39,7 @@ const DisplayEventComments = (comments) => {
     }
 
     const renderComments = () => {
-        return displayComments.map((comment) => (
+        return comments.map((comment) => (
             <div
                 className="mx-[1rem] my-[1rem] border-2 border-black rounded h-fit p-[.5rem]"
                 key={comment.id}
@@ -60,7 +56,7 @@ const DisplayEventComments = (comments) => {
 
     return (
         <div className="rounded overflow-hidden shadow-lg bg-white h-fit md:w-[50rem] pb-[3rem] xs:w-[22rem]">
-            {displayComments && (
+            {comments && (
                 <div>
                     <div className="flex items-center justify-center m-[1rem] ">
                         <div className="inline m-[1rem]">

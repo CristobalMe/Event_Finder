@@ -6,23 +6,13 @@ import axios from 'axios'
 
 // TODO:
 // GET LOCATION OF EVENT (LAT & LONG)
-const DisplayEventInfo = (event) => {
-    let userData = { id: 0 }
+const DisplayEventInfo = ({ event, user }) => {
     const current_eventId = window.location.pathname.split('/')[2]
     const url = import.meta.env.VITE_URL
-    const eventDisplay = event.event
     let Logged = false
     let [userIsAttending, setUserIsAttending] = useState()
 
-    if (
-        !(
-            localStorage.getItem('user').includes(null) ||
-            localStorage.getItem('user').includes('null')
-        )
-    ) {
-        userData = JSON.parse(localStorage.getItem('user'))
-        Logged = true
-    }
+    if (user != null && user != undefined) Logged = true
 
     useEffect(() => {
         fetchUserAttendance()
@@ -32,9 +22,9 @@ const DisplayEventInfo = (event) => {
         if (userIsAttending == 0) {
             try {
                 await axios.post(
-                    `${url}/attendance/user/${userData.id}/${current_eventId}`,
+                    `${url}/attendance/user/${user.id}/${current_eventId}`,
                     {
-                        userAttending: userData.username,
+                        userAttending: user.username,
                         eventId: current_eventId,
                     }
                 )
@@ -45,9 +35,9 @@ const DisplayEventInfo = (event) => {
         } else {
             try {
                 await axios.delete(
-                    `${url}/attendance/user/${userData.id}/${current_eventId}`,
+                    `${url}/attendance/user/${user.id}/${current_eventId}`,
                     {
-                        userAttending: userData.username,
+                        userAttending: user.username,
                         eventId: current_eventId,
                     }
                 )
@@ -59,7 +49,7 @@ const DisplayEventInfo = (event) => {
     }
 
     const fetchUserAttendance = () => {
-        fetch(`${url}/attendance/user/${userData.id}/${current_eventId}`)
+        fetch(`${url}/attendance/user/${user.id}/${current_eventId}`)
             .then((response) => response.json())
             .then((data) => setUserIsAttending(data.length))
             .catch((error) => console.error('Error fetching:', error))
@@ -67,11 +57,11 @@ const DisplayEventInfo = (event) => {
 
     return (
         <div className="rounded overflow-hidden shadow-lg bg-white lg:h-[37rem] lg:w-[50rem] xs:w-[22rem]">
-            {eventDisplay && (
+            {event && (
                 <div className="flex">
                     <img
                         className="xs:h-[37rem] xs:w-[10rem] lg:h-[37rem] lg:w-[25rem]"
-                        src={eventDisplay.image}
+                        src={event.image}
                         id="image"
                         onError={(e) => {
                             e.target.src =
@@ -81,7 +71,7 @@ const DisplayEventInfo = (event) => {
                     <div className="items-center justify-center m-[1rem] mb-[0rem]">
                         <div className="inline m-[1rem]">
                             <h2 className="font-bebas text-3xl">
-                                {eventDisplay.name}
+                                {event.name}
                             </h2>
                             {Logged && (
                                 <div>
@@ -108,7 +98,7 @@ const DisplayEventInfo = (event) => {
                             )}
                         </div>
                         <p className="font-sans font-bold">
-                            {eventDisplay.description}
+                            {event.description}
                         </p>
 
                         <div className="inline-flex mb-[1rem]">
@@ -127,7 +117,7 @@ const DisplayEventInfo = (event) => {
                                 />
                             </svg>
                             <p className="ml-[.5rem] xs:mt-[1rem]">
-                                {eventDisplay.duration}
+                                {event.duration}
                             </p>
                         </div>
                         <div className="inline-flex m-[1rem]">
@@ -150,7 +140,7 @@ const DisplayEventInfo = (event) => {
                                     d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"
                                 />
                             </svg>
-                            <p>{eventDisplay.location}</p>
+                            <p>{event.location}</p>
                         </div>
                         <div className="inline-flex m-[1rem]">
                             <svg
@@ -167,7 +157,7 @@ const DisplayEventInfo = (event) => {
                                     d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z"
                                 />
                             </svg>
-                            <p>{eventDisplay.category}</p>
+                            <p>{event.category}</p>
                         </div>
 
                         <div className="inline-flex m-[1rem]">
@@ -185,7 +175,7 @@ const DisplayEventInfo = (event) => {
                                     d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z"
                                 />
                             </svg>
-                            <p>{eventDisplay.rating}</p>
+                            <p>{event.rating}</p>
                         </div>
 
                         {/* Uncomment for demo */}

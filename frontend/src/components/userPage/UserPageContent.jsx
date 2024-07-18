@@ -5,8 +5,7 @@ import { useContext } from 'react'
 import { UserContext } from '../../UserContext'
 import axios from 'axios'
 
-const UserPageContent = () => {
-    const userData = JSON.parse(localStorage.getItem('user'))
+const UserPageContent = ({ user }) => {
     const url = import.meta.env.VITE_URL
     const [userEvents, setUserEvents] = useState()
     let [eventAttendance, setEventAttendance] = useState()
@@ -58,7 +57,7 @@ const UserPageContent = () => {
     }
 
     const fetchUserEvents = () => {
-        fetch(`${url}/event/user/${userData.id}`)
+        fetch(`${url}/event/user/${user.id}`)
             .then((response) => response.json())
             .then((data) => setUserEvents(data))
             .catch((error) => console.error('Error fetching:', error))
@@ -119,7 +118,7 @@ const UserPageContent = () => {
         try {
             await axios
                 .patch(`${url}/users/location`, {
-                    id: userData.id,
+                    id: user.id,
                     lat: parseFloat(userPosition.latitude),
                     long: parseFloat(userPosition.longitude),
                 })
@@ -314,7 +313,7 @@ const UserPageContent = () => {
                             src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
                         />
                         <p className="m-[.5rem] font-bebas text-xl">
-                            {userData.username} Data:
+                            {user.username} Data:
                         </p>
                     </div>
                     <div>
@@ -373,11 +372,11 @@ const UserPageContent = () => {
                             src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
                         />
                         <p className="hidden m-[.5rem] font-bebas text-xl  md:flex">
-                            {userData.username} Events:
+                            {user.username} Events:
                         </p>
                     </div>
                     <div>
-                        <CreateEventForm />
+                        <CreateEventForm user={user} />
                         {userEvents && <section>{renderEvents()}</section>}
                     </div>
                 </div>
