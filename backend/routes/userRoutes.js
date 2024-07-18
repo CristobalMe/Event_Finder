@@ -192,11 +192,13 @@ const retrieveDataForRecommendation = async (user) => {
       username: { in: usersRegisteredForAnEvent}
     }
   })
+  //-----------------------------------------------------
   
-  return ([activeUsers, eventsAttendance, totalComments, eventsNear, meanDistanceTraveledUser, categoriesEventsAttending,idEventsCommented])
+  return ([activeUsers, eventsAttendance, totalComments, eventsNear, meanDistanceTraveledUser, categoriesEventsAttending, idEventsCommented])
 }
 
 const getDateScore = (e) => {
+  // This function follows the formula given by the Capstone Project Plan
   var today = new Date();
   eventDate = new Date(e.date)
   dateDifference =  ( ((eventDate.getTime() - today.getTime()) / 1000) / 604800 ) 
@@ -206,6 +208,7 @@ const getDateScore = (e) => {
 }
 
 const getCategoryScore = (e,categoriesEventsAttending) => {
+  // This function follows the formula given by the Capstone Project Plan
   countOfApperances = 0
   let categoryScore = 0
   for (let i = 0; i < categoriesEventsAttending.length; i++) {
@@ -219,6 +222,7 @@ const getCategoryScore = (e,categoriesEventsAttending) => {
 }
 
 const getDistanceScore = (e,user,meanDistanceTraveledUser) => {
+  // This function follows the formula given by the Capstone Project Plan
   let distanceScore = 0
   let distanceEventToUser = ( ((e.lat - user.lat)**2 + (e.long - user.long)**2)**.5 )
 
@@ -235,6 +239,7 @@ const getDistanceScore = (e,user,meanDistanceTraveledUser) => {
 }
 
 const getCommentScore = (e,idEventsCommented,totalComments) => {
+  // This function follows the formula given by the Capstone Project Plan
   countOfCommentsInEvent = 0
   for (let i = 0; i < totalComments; i++) {
     if (idEventsCommented[i] == e.id){
@@ -295,10 +300,11 @@ const getEventsScore = async (activeUsers, eventsAttendance, totalComments, even
 const recommendTenEvents = async (user) => {
   // Retrieve Necesary data to calculate the event scores
   const [activeUsers, eventsAttendance, totalComments, eventsNear, meanDistanceTraveledUser, categoriesEventsAttending,idEventsCommented] = await retrieveDataForRecommendation(user)
+  //------------------------------------------------------
   // Calculate the event scores
   let [idRecommendedEvents, scoreRecommendedEvents] = await getEventsScore(activeUsers, eventsAttendance, totalComments, eventsNear, meanDistanceTraveledUser, categoriesEventsAttending, user, idEventsCommented)
-  
-  // Sort events by score --------------------------------------------------------------
+  //------------------------------------------------------
+  // Sort events by score --------------------------------
   var list = [];
   for (var j = 0; j < idRecommendedEvents.length; j++) {
       list.push({'id': idRecommendedEvents[j], 'score': scoreRecommendedEvents[j]});
@@ -314,11 +320,13 @@ const recommendTenEvents = async (user) => {
     if (k < 10) idRecommendedEvents.push(list[k].id)
   }
   // ------------------------------------------------------------------------------------
+  // Search for the events
   const recommendedEvents = await prisma.event.findMany({
     where: {
       id: { in: idRecommendedEvents}
     }
   })
+  //------------------------------------------------------
 
   return (recommendedEvents)
 }
