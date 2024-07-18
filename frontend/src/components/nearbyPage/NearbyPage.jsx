@@ -21,11 +21,11 @@ function NearbyPage({ user }) {
     return (
         <div>
             <Header user={user} />
-            <div className="flex items-center justify-center mt-[20%] ">
-                {eventData != undefined && <CardGridEvent data={eventData} />}
-            </div>
             <div className="flex items-center justify-center mt-[10rem]">
                 <NearbyEventsMap user={user} eventData={eventData} />
+            </div>
+            <div className="flex items-center justify-center mt-[3rem]">
+                {eventData != undefined && <CardGridEvent data={eventData} />}
             </div>
         </div>
     )
