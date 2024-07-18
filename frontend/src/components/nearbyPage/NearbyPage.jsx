@@ -14,9 +14,7 @@ function NearbyPage({ user }) {
     const fetchNearbyEvents = () => {
         fetch(`${url}/event/nearby/user/${user.lat}/${user.long}`)
             .then((response) => response.json())
-            .then((data) => {
-                setEventData(data)
-            })
+            .then((data) => setEventData(data))
             .catch((error) => console.error('Error fetching:', error))
     }
 
