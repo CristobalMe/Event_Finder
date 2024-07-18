@@ -105,14 +105,11 @@ router.patch('/location', async(req, res) => {
   res.json(updatedUser)
 })
 
-const recommendTenEvents = async (user) => {
-  let idRecommendedEvents = [];
-  let scoreRecommendedEvents = [];
-  let categoriesEventsAttending = [];
+const retrieveDataForRecommendation = async (user) => {
   let idEventsAttending = [];
   let idEventsCommented = [];
   let totalDistanceUserToEvent = 0;
-
+  let categoriesEventsAttending = [];
   // Get the events that our user is attending
   const attendance = await prisma.attendance.findMany({
     where: { 
@@ -195,71 +192,93 @@ const recommendTenEvents = async (user) => {
       username: { in: usersRegisteredForAnEvent}
     }
   })
-  // ------------------------------------------------
-  // Calculate the score for each event ****************************************************************************************
-  dateDifference = 0
-  let dateScore = 0
-  let countOfApperances = 0
+  
+  return ([activeUsers, eventsAttendance, totalComments, eventsNear, meanDistanceTraveledUser, categoriesEventsAttending,idEventsCommented])
+}
+
+const getDateScore = (e) => {
+  var today = new Date();
+  eventDate = new Date(e.date)
+  dateDifference =  ( ((eventDate.getTime() - today.getTime()) / 1000) / 604800 ) 
+  let dateScore = 1 / dateDifference
+
+  return (dateScore)
+}
+
+const getCategoryScore = (e,categoriesEventsAttending) => {
+  countOfApperances = 0
   let categoryScore = 0
-  let distanceEventToUser = 0
+  for (let i = 0; i < categoriesEventsAttending.length; i++) {
+    if (categoriesEventsAttending[i] == e.category){
+      countOfApperances = countOfApperances + 1
+    }
+  }
+  if (categoriesEventsAttending.length != 0) categoryScore = (countOfApperances)/(categoriesEventsAttending.length)
+
+  return (categoryScore)
+}
+
+const getDistanceScore = (e,user,meanDistanceTraveledUser) => {
+  let distanceScore = 0
+  let distanceEventToUser = ( ((e.lat - user.lat)**2 + (e.long - user.long)**2)**.5 )
+
+  if ((meanDistanceTraveledUser - distanceEventToUser) > 0 && distanceEventToUser != 0){
+    distanceScore = ((1 / (meanDistanceTraveledUser - distanceEventToUser)) + (1/distanceEventToUser))/2
+  } else if ((meanDistanceTraveledUser - distanceEventToUser ) < 0 && distanceEventToUser != 0) {
+    distanceScore = ((1 / (distanceEventToUser - meanDistanceTraveledUser)) + (1/distanceEventToUser))/2
+  }
+  else {
+    distanceScore = 1
+  }
+
+  return (distanceScore)
+}
+
+const getCommentScore = (e,idEventsCommented,totalComments) => {
+  countOfCommentsInEvent = 0
+  for (let i = 0; i < totalComments; i++) {
+    if (idEventsCommented[i] == e.id){
+      countOfCommentsInEvent = countOfCommentsInEvent + 1
+    }
+  }
+  if (totalComments != 0) {
+    commentScore = (countOfCommentsInEvent)/(totalComments)
+  } else {
+    commentScore = 0
+  }
+}
+
+const getEventsScore = async (activeUsers, eventsAttendance, totalComments, eventsNear, meanDistanceTraveledUser, categoriesEventsAttending, user, idEventsCommented) => {
+  let idRecommendedEvents = [];
+  let scoreRecommendedEvents = [];
+  let dateScore = 0
+  let categoryScore = 0
   let distanceScore = 0
   let totalScore = 0
-  let countOfCommentsInEvent = 0
   let commentScore = 0
-  let eventAttendance = 0
-  let popularityScore = 0
+  let eventAttendanceCount = 0
+
 
   eventsNear.map((e) => {
-    eventAttendance = 0
+    eventAttendanceCount = 0
     eventsAttendance.map((a) => {
-      if (a.eventId == e.id) eventAttendance = eventAttendance + 1
+      if (a.eventId == e.id) eventAttendanceCount = eventAttendanceCount + 1
     })
     // Date Score -----------------------------------------------------------------------------------------------------------
-    eventDate = new Date(e.date)
-    dateDifference =  ( ((eventDate.getTime() - today.getTime()) / 1000) / 604800 ) 
-    dateScore = 1 / dateDifference
+    dateScore = getDateScore(e)
     // ------------------------------------------------------------------------------------------------------------------------
     // Category Score -----------------------------------------------------------------------------------------------------------
-    countOfApperances = 0
-    for (let i = 0; i < categoriesEventsAttending.length; i++) {
-      if (categoriesEventsAttending[i] == e.category){
-        countOfApperances = countOfApperances + 1
-      }
-    }
-    if (categoriesEventsAttending.length != 0) {
-      categoryScore = (countOfApperances)/(categoriesEventsAttending.length)
-    } else {
-      categoryScore = 0
-    }
+    categoryScore = getCategoryScore(e,categoriesEventsAttending)
     // ------------------------------------------------------------------------------------------------------------------------
     // Distance Score -----------------------------------------------------------------------------------------------------------
-    distanceEventToUser = ( ((e.lat - user.lat)**2 + (e.long - user.long)**2)**.5 )
-
-    if ((meanDistanceTraveledUser - distanceEventToUser) > 0 && distanceEventToUser != 0){
-      distanceScore = ((1 / (meanDistanceTraveledUser - distanceEventToUser)) + (1/distanceEventToUser))/2
-    } else if ((meanDistanceTraveledUser - distanceEventToUser ) < 0 && distanceEventToUser != 0) {
-      distanceScore = ((1 / (distanceEventToUser - meanDistanceTraveledUser)) + (1/distanceEventToUser))/2
-    }
-    else {
-      distanceScore = 1
-    }
+    distanceScore = getDistanceScore(e,user,meanDistanceTraveledUser)
     // -------------------------------------------------------------------------------------------------------------------------
     // Comments Score -----------------------------------------------------------------------------------------------------------
-    countOfCommentsInEvent = 0
-    for (let i = 0; i < totalComments; i++) {
-      if (idEventsCommented[i] == e.id){
-        countOfCommentsInEvent = countOfCommentsInEvent + 1
-      }
-    }
-    if (totalComments != 0) {
-      commentScore = (countOfCommentsInEvent)/(totalComments)
-    } else {
-      commentScore = 0
-    }
+    commentScore = getCommentScore(e,idEventsCommented,totalComments)
     // ------------------------------------------------------------------------------------------------------------------------
     // Popularity Score -----------------------------------------------------------------------------------------------------------
     popularityScore = 0
-    if (activeUsers.length != 0) popularityScore = eventAttendance/(activeUsers.length)
+    if (activeUsers.length != 0) popularityScore = eventAttendanceCount/(activeUsers.length)
     // ------------------------------------------------------------------------------------------------------------------------
     // Total Score -----------------------------------------------------------------------------------------------------------
     totalScore = dateScore + categoryScore + distanceScore + commentScore + 4*popularityScore
@@ -268,7 +287,17 @@ const recommendTenEvents = async (user) => {
     idRecommendedEvents.push(e.id)
     scoreRecommendedEvents.push(totalScore)
   })
-  // *****************************************************************************************************************************
+
+  return ([idRecommendedEvents, scoreRecommendedEvents])
+}
+
+
+const recommendTenEvents = async (user) => {
+  // Retrieve Necesary data to calculate the event scores
+  const [activeUsers, eventsAttendance, totalComments, eventsNear, meanDistanceTraveledUser, categoriesEventsAttending,idEventsCommented] = await retrieveDataForRecommendation(user)
+  // Calculate the event scores
+  let [idRecommendedEvents, scoreRecommendedEvents] = await getEventsScore(activeUsers, eventsAttendance, totalComments, eventsNear, meanDistanceTraveledUser, categoriesEventsAttending, user, idEventsCommented)
+  
   // Sort events by score --------------------------------------------------------------
   var list = [];
   for (var j = 0; j < idRecommendedEvents.length; j++) {
