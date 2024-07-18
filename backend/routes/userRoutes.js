@@ -194,7 +194,7 @@ const retrieveDataForRecommendation = async (user) => {
   })
   //-----------------------------------------------------
   
-  return ([activeUsers, eventsAttendance, totalComments, eventsNear, meanDistanceTraveledUser, categoriesEventsAttending, idEventsCommented])
+  return ([activeUsers, eventsAttendance, totalComments, eventsNear, meanDistanceTraveledUser, categoriesEventsAttending, idEventsCommented, numberOfEventsAttending])
 }
 
 const getDateScore = (e) => {
@@ -253,7 +253,7 @@ const getCommentScore = (e,idEventsCommented,totalComments) => {
   }
 }
 
-const getEventsScore = async (activeUsers, eventsAttendance, totalComments, eventsNear, meanDistanceTraveledUser, categoriesEventsAttending, user, idEventsCommented) => {
+const getEventsScore = async (activeUsers, eventsAttendance, totalComments, eventsNear, meanDistanceTraveledUser, categoriesEventsAttending, user, idEventsCommented, numberOfEventsAttending) => {
   let idRecommendedEvents = [];
   let scoreRecommendedEvents = [];
   let dateScore = 0
@@ -262,6 +262,12 @@ const getEventsScore = async (activeUsers, eventsAttendance, totalComments, even
   let totalScore = 0
   let commentScore = 0
   let eventAttendanceCount = 0
+  // userExperience is de Quantity of events a user has registered for, this, helps us recommend more popular
+  // events to newer users. The higher the newer the user is
+  let userExperience = 4
+  if (numberOfEventsAttending > 3) userExperience = 2
+  else if (numberOfEventsAttending > 5) userExperience = 1
+  //------------------------------------------------------------------
 
 
   eventsNear.map((e) => {
@@ -286,7 +292,7 @@ const getEventsScore = async (activeUsers, eventsAttendance, totalComments, even
     if (activeUsers.length != 0) popularityScore = eventAttendanceCount/(activeUsers.length)
     // ------------------------------------------------------------------------------------------------------------------------
     // Total Score -----------------------------------------------------------------------------------------------------------
-    totalScore = dateScore + categoryScore + distanceScore + commentScore + 4*popularityScore
+    totalScore = dateScore + categoryScore + distanceScore + commentScore + userExperience*popularityScore
     // -------------------------------------------------------------------------------------------------------------------------
 
     idRecommendedEvents.push(e.id)
@@ -299,10 +305,10 @@ const getEventsScore = async (activeUsers, eventsAttendance, totalComments, even
 
 const recommendTenEvents = async (user) => {
   // Retrieve Necesary data to calculate the event scores
-  const [activeUsers, eventsAttendance, totalComments, eventsNear, meanDistanceTraveledUser, categoriesEventsAttending,idEventsCommented] = await retrieveDataForRecommendation(user)
+  const [activeUsers, eventsAttendance, totalComments, eventsNear, meanDistanceTraveledUser, categoriesEventsAttending,idEventsCommented, numberOfEventsAttending] = await retrieveDataForRecommendation(user)
   //------------------------------------------------------
   // Calculate the event scores
-  let [idRecommendedEvents, scoreRecommendedEvents] = await getEventsScore(activeUsers, eventsAttendance, totalComments, eventsNear, meanDistanceTraveledUser, categoriesEventsAttending, user, idEventsCommented)
+  let [idRecommendedEvents, scoreRecommendedEvents] = await getEventsScore(activeUsers, eventsAttendance, totalComments, eventsNear, meanDistanceTraveledUser, categoriesEventsAttending, user, idEventsCommented, numberOfEventsAttending)
   //------------------------------------------------------
   // Sort events by score --------------------------------
   var list = [];
