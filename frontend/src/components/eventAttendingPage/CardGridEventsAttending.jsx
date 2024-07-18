@@ -1,28 +1,16 @@
 import CardEvent from '../CardEvent.jsx'
 import { useState, useEffect } from 'react'
 
-const CardGridEventsAttending = () => {
+const CardGridEventsAttending = ({ user }) => {
     let [events, setEvents] = useState([])
-    let userData = { username: null }
     const url = import.meta.env.VITE_URL
-
-    // To Do:
-    // Don't use local storage for this:
-    if (
-        !(
-            localStorage.getItem('user').includes(null) ||
-            localStorage.getItem('user').includes('null')
-        )
-    ) {
-        userData = JSON.parse(localStorage.getItem('user'))
-    }
 
     useEffect(() => {
         fetchUserAttendance()
     }, [])
 
     const fetchUserAttendance = () => {
-        fetch(`${url}/event/attending/${userData.username}`)
+        fetch(`${url}/event/attending/${user.username}`)
             .then((response) => response.json())
             .then((data) => setEvents(data))
             .catch((error) => console.error('Error fetching:', error))

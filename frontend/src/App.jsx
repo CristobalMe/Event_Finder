@@ -36,9 +36,15 @@ function App() {
             <UserContext.Provider value={{ user, updateUser }}>
                 <BrowserRouter>
                     <Routes>
-                        <Route path="/" element={<HomePage />} />
-                        <Route path="/SignUp" element={<SignupPage />} />
-                        <Route path="/Home" element={<HomePage />} />
+                        <Route path="/" element={<HomePage user={user} />} />
+                        <Route
+                            path="/SignUp"
+                            element={<SignupPage user={user} />}
+                        />
+                        <Route
+                            path="/Home"
+                            element={<HomePage user={user} />}
+                        />
                         <Route
                             path="/ForYou"
                             element={<ForYouPage user={user} />}
@@ -49,15 +55,24 @@ function App() {
                         />
                         <Route
                             path="/Attending"
-                            element={<EventsAttendingPage />}
+                            element={<EventsAttendingPage user={user} />}
                         />
                         <Route
                             path="/Favorites"
                             element={<FavoriteEventsPage />}
                         />
-                        <Route path="/Login" element={<LoginPage />} />
-                        <Route path="/Event/:id" element={<EventPage />} />
-                        <Route path="/user/:id" element={<UserPage />} />
+                        <Route
+                            path="/Login"
+                            element={<LoginPage user={user} />}
+                        />
+                        <Route
+                            path="/Event/:id"
+                            element={<EventPage user={user} />}
+                        />
+                        <Route
+                            path="/user/:id"
+                            element={<UserPage user={user} />}
+                        />
                     </Routes>
                 </BrowserRouter>
             </UserContext.Provider>

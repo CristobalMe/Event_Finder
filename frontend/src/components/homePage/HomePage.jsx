@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react'
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
 
-function App() {
+function HomePage({ user }) {
     // const MapsApiKey = import.meta.env.VITE_MAPS_API_KEY
     const url = import.meta.env.VITE_URL
     let [events, setEvents] = useState()
@@ -56,7 +56,7 @@ function App() {
         <div>
             {!isLoading && (
                 <div>
-                    <Header />
+                    <Header user={user} />
 
                     <div className="mt-[10rem]">
                         <SpinningBanner />
@@ -142,4 +142,4 @@ function App() {
     )
 }
 
-export default App
+export default HomePage
