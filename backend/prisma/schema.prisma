@@ -32,14 +32,15 @@ model event {
 }
 
 model user {
-  id          Int      @id @default(autoincrement())
-  username    String   @unique
-  email       String
-  password    String
-  attendance  attendance[]
-  events      event[]
-  lat         Float
-  long        Float       
+  id                Int      @id @default(autoincrement())
+  username          String   @unique
+  email             String
+  password          String
+  attendance        attendance[]
+  events            event[]
+  lat               Float
+  long              Float       
+  cellphoneNumber   String?  @unique
 }
 
 model comment {
@@ -51,8 +52,32 @@ model comment {
 }
 
 model attendance {
-  id              Int      @id @default(autoincrement())
-  eventId         Int
-  userAttending   String
-  user            user     @relation(fields: [userAttending], references: [username], onDelete: Cascade)
+  id                                    Int      @id @default(autoincrement())
+  eventId                               Int
+  userAttending                         String
+  user                                  user     @relation(fields: [userAttending], references: [username], onDelete: Cascade)
+  ridesharingUserPreferencesForEvent    ridesharingUserPreferencesForEvent?
+  ridesharingDriver 		                ridesharing?
+}
+
+model ridesharingUserPreferencesForEvent {
+  id				              Int           @id @default(autoincrement())
+  preferedLocationLat	    Float?
+  preferedLocationLong	  Float?
+  preferedArrivalTime	    DateTime
+  numberOfSeatsAvalible 	Int
+  attendanceId		        Int           @unique
+  attendance 			        attendance 	  @relation(fields: [attendanceId], references: [id])
+}
+
+model ridesharing {
+  id				              Int           @id @default(autoincrement())
+  userPreferencesIds	    Int[]
+  seatsAvailable 		      Int
+  departingTime		        DateTime
+  departingLat		        Float
+  departingLong		        Float
+  arrivalTime			        DateTime
+  attendanceId      	    Int           @unique
+  attendance 			        attendance 	  @relation(fields: [attendanceId], references: [id], onDelete: Cascade)
 }
