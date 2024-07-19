@@ -15,14 +15,17 @@ const DisplayEventInfo = ({ event, user }) => {
     if (user != null && user != undefined) Logged = true
 
     useEffect(() => {
-        fetchUserAttendance()
+        if (Logged) fetchUserAttendance()
     }, [userIsAttending])
 
     const handleRegister = async () => {
         if (userIsAttending == 0) {
+            console.log(
+                `${url}/attendance/user/${user.username}/${current_eventId}`
+            )
             try {
                 await axios.post(
-                    `${url}/attendance/user/${user.id}/${current_eventId}`,
+                    `${url}/attendance/user/${user.username}/${current_eventId}`,
                     {
                         userAttending: user.username,
                         eventId: current_eventId,
@@ -35,7 +38,7 @@ const DisplayEventInfo = ({ event, user }) => {
         } else {
             try {
                 await axios.delete(
-                    `${url}/attendance/user/${user.id}/${current_eventId}`,
+                    `${url}/attendance/user/${user.username}/${current_eventId}`,
                     {
                         userAttending: user.username,
                         eventId: current_eventId,
@@ -49,7 +52,7 @@ const DisplayEventInfo = ({ event, user }) => {
     }
 
     const fetchUserAttendance = () => {
-        fetch(`${url}/attendance/user/${user.id}/${current_eventId}`)
+        fetch(`${url}/attendance/user/${user.username}/${current_eventId}`)
             .then((response) => response.json())
             .then((data) => setUserIsAttending(data.length))
             .catch((error) => console.error('Error fetching:', error))
