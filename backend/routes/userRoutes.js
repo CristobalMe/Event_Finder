@@ -5,61 +5,104 @@ const prisma = new PrismaClient()
 const bcrypt = require('bcrypt');
 
 router.get('/', async (req, res) => {
-  const users = await prisma.user.findMany()
+  let users = []
+  try {
+    users = await prisma.user.findMany()
+  } catch (error) {
+    console.log(error);
+
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
   res.json(users)
 })
 
 router.post('/', async (req, res) => {
   const {  username, email, password  } = req.body
+  let existingUser = []
+  let newUser = []
+  try {
+    existingUser = await prisma.user.findFirst({ where: { username: username } });
+    if (existingUser) {
+      return res.status(400).json({ error: 'Username already exists' });
+    }
 
-  const existingUser = await prisma.user.findFirst({ where: { username: username } });
-  if (existingUser) {
-    return res.status(400).json({ error: 'Username already exists' });
+    if (username.includes(null)){
+      return res.status(400).json({ error: 'Username can not contain "null"' });
+    }
+  } catch (error) {
+    console.log(error);
+
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
   }
-
-  if (username.includes(null)){
-    return res.status(400).json({ error: 'Username can not contain "null"' });
-  }
-
   const hashedPassword = await bcrypt.hash(password, 10);
   const hashedPasswordValue = String(hashedPassword);
-  
-  const newUser = await prisma.user.create({
-    data: {
-        username, 
-        email, 
-        password: hashedPasswordValue,
-        lat: 0.0,
-        long: 0.0
-    }
-  })
+  try {
+    newUser = await prisma.user.create({
+      data: {
+          username, 
+          email, 
+          password: hashedPasswordValue,
+          lat: 0.0,
+          long: 0.0
+      }
+    })
+  } catch (error) {
+    console.log(error);
 
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
   req.session.user = newUser;
-
   res.json(newUser)
 })
 
 router.put('/:id', async(req, res) => {
   const { id } = req.params
   const {  username, email, password  } = req.body
+  let updatedUser = []
+  try {
+    updatedUser = await prisma.user.update({
+      where: { id: parseInt(id) },
+      data: {
+          username, 
+          email, 
+          password
+      }
+    })
+  } catch (error) {
+    console.log(error);
 
-  const updatedUser = await prisma.user.update({
-    where: { id: parseInt(id) },
-    data: {
-        username, 
-        email, 
-        password
-    }
-  })
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
   res.json(updatedUser)
 })
 
 router.delete('/:id', async(req, res) => {
   const { id } = req.params
+  let deletedUser = []
+  try {
+    deletedUser = await prisma.user.delete({
+      where: { id: parseInt(id) }
+    })
+  } catch (error) {
+    console.log(error);
 
-  const deletedUser = await prisma.user.delete({
-    where: { id: parseInt(id) }
-  })
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
   res.json(deletedUser)
 })
 
@@ -94,14 +137,23 @@ router.post('/login', async (req, res) => {
 
 router.patch('/location', async(req, res) => {
   const {  id, lat, long  } = req.body
+  let updatedUser = []
+  try {
+    updatedUser = await prisma.user.update({
+      where: { id: parseInt(id) },
+      data: {
+        lat,
+        long
+      }
+    })
+  } catch (error) {
+    console.log(error);
 
-  const updatedUser = await prisma.user.update({
-    where: { id: parseInt(id) },
-    data: {
-      lat,
-      long
-    }
-  })
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
   res.json(updatedUser)
 })
 
@@ -203,7 +255,6 @@ const getDateScore = (e) => {
   eventDate = new Date(e.date)
   dateDifference =  ( ((eventDate.getTime() - today.getTime()) / 1000) / 604800 ) 
   let dateScore = 1 / dateDifference
-
   return (dateScore)
 }
 
@@ -217,7 +268,6 @@ const getCategoryScore = (e,categoriesEventsAttending) => {
     }
   }
   if (categoriesEventsAttending.length != 0) categoryScore = (countOfApperances)/(categoriesEventsAttending.length)
-
   return (categoryScore)
 }
 
@@ -339,15 +389,33 @@ const recommendTenEvents = async (user) => {
 
 router.get('/recommendedEvents/:userId', async (req, res) => {
   const { userId } = req.params
+  let user = []
+  let recommendedEvents = []
   
-
   // Get the current user
-  const user = await prisma.user.findFirst({
-    where: { id: parseInt(userId) }
-  })
-  // ----------------------------------------
+  try {
+    user = await prisma.user.findFirst({
+      where: { id: parseInt(userId) }
+    })
+  } catch (error) {
+    console.log(error);
 
-  const recommendedEvents = await recommendTenEvents(user)
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+  // ----------------------------------------
+  try {
+    recommendedEvents = await recommendTenEvents(user)
+  } catch (error) {
+    console.log(error);
+
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
   
   res.json(recommendedEvents)
 })

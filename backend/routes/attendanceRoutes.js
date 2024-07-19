@@ -4,70 +4,140 @@ const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient()
 
 router.get('/', async (req, res) => {
-  const attendance = await prisma.attendance.findMany()
+  let attendance = []
+  try {
+    attendance = await prisma.attendance.findMany()
+  } catch (error) {
+    console.log(error);
+
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
   res.json(attendance)
 })
 
 router.delete('/:eventId/:id', async(req, res) => {
   const { eventId, id } = req.params
+  let deletedAttendance = []
+  try {
+    deletedAttendance = await prisma.attendance.delete({
+      where: { 
+          id: parseInt(id),
+          eventId: parseInt(eventId)
+      }
+    })
+  } catch (error) {
+    console.log(error);
 
-  const deletedAttendance = await prisma.attendance.delete({
-    where: { 
-        id: parseInt(id),
-        eventId: parseInt(eventId)
-    }
-  })
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
   res.json(deletedAttendance)
 })
 
 router.get('/:eventId', async (req, res) => {
   const { eventId } = req.params
-  const attendance = await prisma.attendance.findMany({
-    where: { eventId: parseInt(eventId) }
-  })
+  let attendance = []
+  try {
+    attendance = await prisma.attendance.findMany({
+      where: { eventId: parseInt(eventId) }
+    })
+  } catch (error) {
+    console.log(error);
+
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
   res.json(attendance)
 })
 
 router.get('/user/:userAttending', async (req, res) => {
   const { userAttending } = req.params
-  const attendance = await prisma.attendance.findMany({
-    where: { 
-      userAttending: userAttending
-    }
-  })
+  let attendance = []
+  try {
+    attendance = await prisma.attendance.findMany({
+      where: { 
+        userAttending: userAttending
+      }
+    })
+  } catch (error) {
+    console.log(error);
+
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
   res.json(attendance)
 })
 
 router.post('/user/:userAttending/:eventId', async (req, res) => {
   const { userAttending, eventId } = req.params
-  const newAttendance = await prisma.attendance.create({
-    data: { 
-      userAttending: userAttending,
-      eventId: parseInt(eventId)
-    }
-  })
+  let newAttendance = []
+  console.log(userAttending)
+  try {
+    newAttendance = await prisma.attendance.create({
+      data: { 
+        userAttending: userAttending,
+        eventId: parseInt(eventId)
+      }
+    })
+  } catch (error) {
+    console.log(error);
+
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
   res.json(newAttendance)
 })
 
 router.get('/user/:userAttending/:eventId', async (req, res) => {
   const { userAttending, eventId } = req.params
-  const attendance = await prisma.attendance.findMany({
-    where: { 
-      userAttending: userAttending,
-      eventId: parseInt(eventId)
-    }
-  })
+  let attendance = []
+  try {
+    attendance = await prisma.attendance.findMany({
+      where: { 
+        userAttending: userAttending,
+        eventId: parseInt(eventId)
+      }
+    })
+  } catch (error) {
+    console.log(error);
+
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
   res.json(attendance)
 })
 
 router.delete('/user/:userAttending/:eventId', async (req, res) => {
   const { userAttending, eventId } = req.params
-  const attendance = await prisma.attendance.deleteMany({
-    where: { 
-      userAttending: userAttending,
-      eventId: parseInt(eventId)
-    }
-  })
+  let attendance = []
+  try {
+    attendance = await prisma.attendance.deleteMany({
+      where: { 
+        userAttending: userAttending,
+        eventId: parseInt(eventId)
+      }
+    })
+  } catch (error) {
+    console.log(error);
+
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
   res.json(attendance)
 })
 

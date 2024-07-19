@@ -3,11 +3,9 @@ import axios from 'axios'
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
 
-// To Do:
-// Add error handling for when a user inputs a bad request (Create event & modify event)
 const CreateEventForm = ({ user }) => {
     const url = import.meta.env.VITE_URL
-    const [form, setForm] = useState(false)
+    const [createNewEventForm, setCreateNewEventForm] = useState(false)
     const [name, setEventName] = useState('')
     const [eventLocation, setEventLocation] = useState('')
     const [lat, setLat] = useState('')
@@ -59,12 +57,12 @@ const CreateEventForm = ({ user }) => {
             <button
                 type="button"
                 className="bg-blue-700 hover:bg-blue-950 text-white font-bold py-1 px-2 rounded mr-[1rem] mb-[.5rem] xs:ml-[1rem] md:ml-[0rem]"
-                onClick={() => setForm(!form)}
+                onClick={() => setCreateNewEventForm(!createNewEventForm)}
             >
                 Create event
             </button>
 
-            {form && (
+            {createNewEventForm && (
                 <div>
                     <div className="mb-4">
                         <label className="block text-gray-800 text-sm font-bold mb-2">
