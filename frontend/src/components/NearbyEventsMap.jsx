@@ -1,7 +1,7 @@
 import React from 'react'
 import { GoogleMap, useJsApiLoader, MarkerF } from '@react-google-maps/api'
 
-function NearbyEventsMap({ user, eventData }) {
+function NearbyEventsMap({ user, eventData, mapContainerStyle }) {
     let eventsLocation = []
     eventData.map((e) => {
         let lat = e.lat
@@ -20,16 +20,11 @@ function NearbyEventsMap({ user, eventData }) {
         lng: user.long,
     }
 
-    const containerStyle = {
-        width: '40rem',
-        height: '25rem',
-    }
-
     return isLoaded ? (
-        <div className="rounded overflow-hidden shadow-lg bg-white pb-[3rem] mb-[2rem] xs:w-[20rem] md:w-[50rem] h-[25rem]">
+        <div className="rounded overflow-hidden shadow-lg bg-white">
             <div className="flex items-center justify-center">
                 <GoogleMap
-                    mapContainerStyle={containerStyle}
+                    mapContainerStyle={mapContainerStyle}
                     center={center}
                     zoom={12}
                     options={{

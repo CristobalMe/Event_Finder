@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 // import EventMap from "../EventMap";
 import EventCreatorTooltip from '../eventCreatorTooltip/EventCreatorTooltip'
 import axios from 'axios'
+import { Link } from 'react-router-dom'
 
 // TODO:
 // GET LOCATION OF EVENT (LAT & LONG)
@@ -20,9 +21,6 @@ const DisplayEventInfo = ({ event, user }) => {
 
     const handleRegister = async () => {
         if (userIsAttending == 0) {
-            console.log(
-                `${url}/attendance/user/${user.username}/${current_eventId}`
-            )
             try {
                 await axios.post(
                     `${url}/attendance/user/${user.username}/${current_eventId}`,
@@ -77,10 +75,23 @@ const DisplayEventInfo = ({ event, user }) => {
                                 {event.name}
                             </h2>
                             {Logged && (
-                                <div>
+                                <div className="md:inline-flex mb-1">
+                                    {user.cellphoneNumber != null &&
+                                        userIsAttending != 0 && (
+                                            <Link
+                                                to={`/ridesharing/form/${current_eventId}`}
+                                            >
+                                                <button
+                                                    className="bg-blue-700 hover:bg-blue-950 text-white font-bold py-2 px-4 rounded mr-1"
+                                                    type="button"
+                                                >
+                                                    RideSharing
+                                                </button>
+                                            </Link>
+                                        )}
                                     {userIsAttending == 0 && (
                                         <button
-                                            className="bg-blue-700 hover:bg-blue-950 text-white font-bold py-2 px-4 rounded"
+                                            className="bg-blue-700 hover:bg-blue-950 text-white font-bold py-2 px-4 rounded md:mt-0 xs:mt-1"
                                             onClick={handleRegister}
                                         >
                                             Register
@@ -90,7 +101,7 @@ const DisplayEventInfo = ({ event, user }) => {
                                     {userIsAttending != 0 && (
                                         <EventCreatorTooltip>
                                             <button
-                                                className="bg-red-700 hover:bg-red-950 text-white font-bold py-2 px-4 rounded"
+                                                className="bg-red-700 hover:bg-red-950 text-white font-bold py-2 px-4 rounded md:mt-0 xs:mt-1"
                                                 onClick={handleRegister}
                                             >
                                                 Unregister

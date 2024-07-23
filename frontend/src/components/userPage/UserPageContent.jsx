@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import CreateEventForm from './CreateEventForm'
+import DisplayUserRidesharings from './DisplayUserRidesharings.jsx'
 import { Link } from 'react-router-dom'
 import { useContext } from 'react'
 import { UserContext } from '../../UserContext'
@@ -29,9 +30,12 @@ const UserPageContent = ({ user }) => {
     })
     let [customLocation, setCustomLocation] = useState(false)
     const { updateUser } = useContext(UserContext)
+    const [cellphoneNumber, setCellphoneNumber] = useState(user.cellphoneNumber)
+    const [userRideshares, setUserRideshares] = useState([])
 
     useEffect(() => {
         fetchUserEvents()
+        fetchUserRideshares()
         if ('geolocation' in navigator && !customLocation) {
             navigator.geolocation.getCurrentPosition(function (position) {
                 setUserPosition({
@@ -96,6 +100,13 @@ const UserPageContent = ({ user }) => {
         ))
     }
 
+    const fetchUserRideshares = () => {
+        fetch(`${url}/ridesharing/user/${user.username}`)
+            .then((response) => response.json())
+            .then((data) => setUserRideshares(data))
+            .catch((error) => console.error('Error fetching:', error))
+    }
+
     const handleModifyEvent = async () => {
         try {
             await axios.patch(`${url}/event/${eventModify.id}`, {
@@ -121,6 +132,40 @@ const UserPageContent = ({ user }) => {
                     id: user.id,
                     lat: parseFloat(userPosition.latitude),
                     long: parseFloat(userPosition.longitude),
+                })
+                .then(function (response) {
+                    updateUser(response.data)
+                })
+        } catch (error) {
+            console.error('Error changing location:', error)
+        }
+    }
+
+    const handlePatchCellphone = async () => {
+        if (String(cellphoneNumber).length != 10) {
+            alert('Please input a valid cellphone number')
+        } else {
+            try {
+                await axios
+                    .patch(`${url}/users/cellphone`, {
+                        id: user.id,
+                        cellphoneNumber: String(cellphoneNumber),
+                    })
+                    .then(function (response) {
+                        updateUser(response.data)
+                    })
+            } catch (error) {
+                console.error('Error changing location:', error)
+            }
+        }
+    }
+
+    const handleDeleteCellphone = async () => {
+        try {
+            await axios
+                .patch(`${url}/users/cellphone`, {
+                    id: user.id,
+                    cellphoneNumber: null,
                 })
                 .then(function (response) {
                     updateUser(response.data)
@@ -316,6 +361,66 @@ const UserPageContent = ({ user }) => {
                             {user.username} Data:
                         </p>
                     </div>
+                    {user.cellphoneNumber != null && (
+                        <div>
+                            <div className="mb-4">
+                                <label className="block text-gray-800 text-sm font-bold mb-2">
+                                    Cellphone number:
+                                </label>
+                                <input
+                                    type="tel"
+                                    className="border rounded w-full py-2 px-3 text-gray-700 leading-tight"
+                                    value={cellphoneNumber ?? ''}
+                                    placeholder="(00) 00 00000000"
+                                    onChange={(e) => {
+                                        setCellphoneNumber(e.target.value)
+                                    }}
+                                    required
+                                />
+                            </div>
+                            <button
+                                className="bg-blue-700 hover:bg-blue-950 text-white font-bold py-1 px-2 rounded mr-[1rem] mb-[.5rem]"
+                                type="button"
+                                onClick={handlePatchCellphone}
+                            >
+                                Change cellphone number
+                            </button>
+                            <button
+                                className="bg-red-700 hover:bg-blue-950 text-white font-bold py-1 px-2 rounded mr-[1rem] mb-[.5rem]"
+                                type="button"
+                                onClick={handleDeleteCellphone}
+                            >
+                                Delete cellphone number
+                            </button>
+                        </div>
+                    )}
+                    {user.cellphoneNumber == null && (
+                        <div>
+                            <div className="mb-4">
+                                <label className="block text-gray-800 text-sm font-bold mb-2">
+                                    Cellphone number:
+                                </label>
+                                <input
+                                    type="text"
+                                    className="border rounded w-full py-2 px-3 text-gray-700 leading-tight"
+                                    value={cellphoneNumber ?? ''}
+                                    placeholder="(00) 00 00000000"
+                                    onChange={(e) => {
+                                        setCellphoneNumber(e.target.value)
+                                    }}
+                                    required
+                                />
+                            </div>
+                            <button
+                                className="bg-blue-700 hover:bg-blue-950 text-white font-bold py-1 px-2 rounded mr-[1rem] mb-[.5rem]"
+                                type="button"
+                                onClick={handlePatchCellphone}
+                            >
+                                Register for RideSharing
+                            </button>
+                        </div>
+                    )}
+
                     <div>
                         <div className="mb-4">
                             <label className="block text-gray-800 text-sm font-bold mb-2">
@@ -364,6 +469,14 @@ const UserPageContent = ({ user }) => {
                     </div>
                 </div>
             </div>
+
+            <div className="flex items-center justify-center mb-[2.5rem]">
+                <DisplayUserRidesharings
+                    userRideshares={userRideshares}
+                    user={user}
+                />
+            </div>
+
             <div className="rounded overflow-hidden shadow-lg bg-white h-fit md:w-[50rem] pb-[3rem] xs:w-[20rem]">
                 <div className="flex justify-center m-[1rem]">
                     <div className="justify-between mt-[1rem]">
