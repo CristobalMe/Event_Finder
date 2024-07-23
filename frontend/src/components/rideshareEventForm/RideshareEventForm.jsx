@@ -9,13 +9,16 @@ function RideshareEventForm({ user }) {
     const current_eventId = window.location.pathname.split('/')[3]
     const [event, setEvent] = useState()
     const [attendance, setAttendance] = useState()
+    const [
+        isAlreadyRegisteredForRidesharing,
+        setIsAlreadyRegisteredForRidesharing,
+    ] = useState(false)
     const [hasCar, setHasCar] = useState(false)
     const numberOfSeats = [1, 2, 3, 4, 5, 6]
     const [preferedArrivalTime, setPreferedArrivalTime] = useState()
     const [numberOfSeatsAvailable, setNumberOfSeatsAvailable] = useState(0)
     const [numberOfSeatsNeeded, setNumberOfSeatsNeeded] = useState(0)
     const url = import.meta.env.VITE_URL
-    let alreadyRegistered = false
 
     const mapContainerStyle = {
         width: '20rem',
@@ -25,15 +28,11 @@ function RideshareEventForm({ user }) {
     useEffect(() => {
         fetchEvent()
         fetchAttendance()
-        // To Do:
-        // Fix how to check if a user is registered
-        if (attendance) {
-            if (attendance[0].length > 3) alreadyRegistered = true
-        }
+        fetchIsRegistered()
     }, [])
 
     const fetchEvent = () => {
-        fetch(`http://localhost:3000/event/${current_eventId}`)
+        fetch(`${url}/event/${current_eventId}`)
             .then((response) => response.json())
             .then((data) => {
                 setEvent(data)
@@ -42,12 +41,23 @@ function RideshareEventForm({ user }) {
     }
 
     const fetchAttendance = () => {
-        fetch(
-            `http://localhost:3000/attendance/user/${user.username}/${current_eventId}`
-        )
+        fetch(`${url}/attendance/user/${user.username}/${current_eventId}`)
             .then((response) => response.json())
             .then((data) => {
                 setAttendance(data)
+            })
+            .catch((error) => console.error('Error fetching:', error))
+    }
+
+    const fetchIsRegistered = () => {
+        fetch(
+            `${url}/ridesharing/isRegistered/${user.username}/${current_eventId}`
+        )
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.length > 0) {
+                    setIsAlreadyRegisteredForRidesharing(true)
+                }
             })
             .catch((error) => console.error('Error fetching:', error))
     }
@@ -62,6 +72,7 @@ function RideshareEventForm({ user }) {
                 user: user,
                 event: event,
             })
+            fetchIsRegistered()
         } catch (error) {
             console.error('Error:', error)
         }
@@ -75,6 +86,7 @@ function RideshareEventForm({ user }) {
                 user: user,
                 event: event,
             })
+            fetchIsRegistered()
         } catch (error) {
             console.error('Error:', error)
         }
@@ -85,7 +97,7 @@ function RideshareEventForm({ user }) {
             {attendance && (
                 <div>
                     <Header user={user} />
-                    {!alreadyRegistered && (
+                    {!isAlreadyRegisteredForRidesharing && (
                         <div className="my-[10rem] flex items-center justify-center overflow-auto">
                             {event && (
                                 <div className="rounded overflow-hidden shadow-lg bg-white lg:h-[35rem] lg:w-[50rem] xs:w-[22rem] xs:h-[35rem]">
@@ -353,11 +365,11 @@ function RideshareEventForm({ user }) {
                 </div>
             )}
 
-            {alreadyRegistered && (
+            {isAlreadyRegisteredForRidesharing && (
                 <div>
                     <p className="flex text-white justify-center mt-[20rem]">
                         You have already registered for ridesharing in this
-                        event
+                        event. Please go to your user profile
                     </p>
                 </div>
             )}

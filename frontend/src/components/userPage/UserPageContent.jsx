@@ -31,11 +31,28 @@ const UserPageContent = ({ user }) => {
     let [customLocation, setCustomLocation] = useState(false)
     const { updateUser } = useContext(UserContext)
     const [cellphoneNumber, setCellphoneNumber] = useState(user.cellphoneNumber)
-    const [userRideshares, setUserRideshares] = useState([])
+    const [cellphoneNumberState, setCellphoneNumberState] = useState(
+        'Change cellphone number'
+    )
+    const [cellphoneNumberButtonColor, setcellphoneNumberButtonColor] =
+        useState('blue')
+
+    // Change color and text of cellphoneNumberButton
+    useEffect(() => {
+        if (user.cellphoneNumber == null) {
+            setCellphoneNumberState('Register for ridesharing')
+            setcellphoneNumberButtonColor('blue')
+        } else if (cellphoneNumber == '') {
+            setCellphoneNumberState('Delete cellphone number')
+            setcellphoneNumberButtonColor('red')
+        } else {
+            setCellphoneNumberState('Change cellphone number')
+            setcellphoneNumberButtonColor('blue')
+        }
+    }, [cellphoneNumber, user])
 
     useEffect(() => {
         fetchUserEvents()
-        fetchUserRideshares()
         if ('geolocation' in navigator && !customLocation) {
             navigator.geolocation.getCurrentPosition(function (position) {
                 setUserPosition({
@@ -100,13 +117,6 @@ const UserPageContent = ({ user }) => {
         ))
     }
 
-    const fetchUserRideshares = () => {
-        fetch(`${url}/ridesharing/user/${user.username}`)
-            .then((response) => response.json())
-            .then((data) => setUserRideshares(data))
-            .catch((error) => console.error('Error fetching:', error))
-    }
-
     const handleModifyEvent = async () => {
         try {
             await axios.patch(`${url}/event/${eventModify.id}`, {
@@ -142,14 +152,14 @@ const UserPageContent = ({ user }) => {
     }
 
     const handlePatchCellphone = async () => {
-        if (String(cellphoneNumber).length != 10) {
-            alert('Please input a valid cellphone number')
-        } else {
+        let newCellphone = cellphoneNumber
+        if (cellphoneNumber == '') newCellphone = null
+        if (String(newCellphone).length == 10 || newCellphone == null) {
             try {
                 await axios
                     .patch(`${url}/users/cellphone`, {
                         id: user.id,
-                        cellphoneNumber: String(cellphoneNumber),
+                        cellphoneNumber: newCellphone,
                     })
                     .then(function (response) {
                         updateUser(response.data)
@@ -157,21 +167,8 @@ const UserPageContent = ({ user }) => {
             } catch (error) {
                 console.error('Error changing location:', error)
             }
-        }
-    }
-
-    const handleDeleteCellphone = async () => {
-        try {
-            await axios
-                .patch(`${url}/users/cellphone`, {
-                    id: user.id,
-                    cellphoneNumber: null,
-                })
-                .then(function (response) {
-                    updateUser(response.data)
-                })
-        } catch (error) {
-            console.error('Error changing location:', error)
+        } else {
+            alert('Please input a valid cellphone number')
         }
     }
 
@@ -361,65 +358,30 @@ const UserPageContent = ({ user }) => {
                             {user.username} Data:
                         </p>
                     </div>
-                    {user.cellphoneNumber != null && (
-                        <div>
-                            <div className="mb-4">
-                                <label className="block text-gray-800 text-sm font-bold mb-2">
-                                    Cellphone number:
-                                </label>
-                                <input
-                                    type="tel"
-                                    className="border rounded w-full py-2 px-3 text-gray-700 leading-tight"
-                                    value={cellphoneNumber ?? ''}
-                                    placeholder="(00) 00 00000000"
-                                    onChange={(e) => {
-                                        setCellphoneNumber(e.target.value)
-                                    }}
-                                    required
-                                />
-                            </div>
-                            <button
-                                className="bg-blue-700 hover:bg-blue-950 text-white font-bold py-1 px-2 rounded mr-[1rem] mb-[.5rem]"
-                                type="button"
-                                onClick={handlePatchCellphone}
-                            >
-                                Change cellphone number
-                            </button>
-                            <button
-                                className="bg-red-700 hover:bg-blue-950 text-white font-bold py-1 px-2 rounded mr-[1rem] mb-[.5rem]"
-                                type="button"
-                                onClick={handleDeleteCellphone}
-                            >
-                                Delete cellphone number
-                            </button>
+                    <div>
+                        <div className="mb-4">
+                            <label className="block text-gray-800 text-sm font-bold mb-2">
+                                Cellphone number:
+                            </label>
+                            <input
+                                type="tel"
+                                className="border rounded w-full py-2 px-3 text-gray-700 leading-tight"
+                                value={cellphoneNumber ?? ''}
+                                placeholder="(00) 00 00000000"
+                                onChange={(e) => {
+                                    setCellphoneNumber(e.target.value)
+                                }}
+                                required
+                            />
                         </div>
-                    )}
-                    {user.cellphoneNumber == null && (
-                        <div>
-                            <div className="mb-4">
-                                <label className="block text-gray-800 text-sm font-bold mb-2">
-                                    Cellphone number:
-                                </label>
-                                <input
-                                    type="text"
-                                    className="border rounded w-full py-2 px-3 text-gray-700 leading-tight"
-                                    value={cellphoneNumber ?? ''}
-                                    placeholder="(00) 00 00000000"
-                                    onChange={(e) => {
-                                        setCellphoneNumber(e.target.value)
-                                    }}
-                                    required
-                                />
-                            </div>
-                            <button
-                                className="bg-blue-700 hover:bg-blue-950 text-white font-bold py-1 px-2 rounded mr-[1rem] mb-[.5rem]"
-                                type="button"
-                                onClick={handlePatchCellphone}
-                            >
-                                Register for RideSharing
-                            </button>
-                        </div>
-                    )}
+                        <button
+                            className={`bg-${cellphoneNumberButtonColor}-700 hover:bg-${cellphoneNumberButtonColor}-950 text-white font-bold py-1 px-2 rounded mr-[1rem] mb-[.5rem]`}
+                            type="button"
+                            onClick={handlePatchCellphone}
+                        >
+                            {cellphoneNumberState}
+                        </button>
+                    </div>
 
                     <div>
                         <div className="mb-4">
@@ -470,12 +432,11 @@ const UserPageContent = ({ user }) => {
                 </div>
             </div>
 
-            <div className="flex items-center justify-center mb-[2.5rem]">
-                <DisplayUserRidesharings
-                    userRideshares={userRideshares}
-                    user={user}
-                />
-            </div>
+            {user.cellphoneNumber && (
+                <div className="flex items-center justify-center mb-[2.5rem]">
+                    <DisplayUserRidesharings user={user} />
+                </div>
+            )}
 
             <div className="rounded overflow-hidden shadow-lg bg-white h-fit md:w-[50rem] pb-[3rem] xs:w-[20rem]">
                 <div className="flex justify-center m-[1rem]">

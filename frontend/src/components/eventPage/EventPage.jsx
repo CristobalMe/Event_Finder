@@ -10,6 +10,7 @@ const EventPage = ({ user }) => {
     const [event, setEvent] = useState()
     const [comments, setComments] = useState()
     const [isLoading, setIsLoading] = useState(true)
+    const url = import.meta.env.VITE_URL
 
     useEffect(() => {
         fetchEvent()
@@ -17,7 +18,7 @@ const EventPage = ({ user }) => {
     }, [])
 
     const fetchEvent = () => {
-        fetch(`http://localhost:3000${current_link}`)
+        fetch(`${url}${current_link}`)
             .then((response) => response.json())
             .then((data) => {
                 setEvent(data)
@@ -27,7 +28,7 @@ const EventPage = ({ user }) => {
     }
 
     const fetchComments = () => {
-        fetch(`http://localhost:3000/comments/${current_eventId}`)
+        fetch(`${url}/comments/${current_eventId}`)
             .then((response) => response.json())
             .then((data) => {
                 setComments(data)
