@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import CreateEventForm from './CreateEventForm'
+import DisplayUserRidesharings from './DisplayUserRidesharings.jsx'
 import { Link } from 'react-router-dom'
 import { useContext } from 'react'
 import { UserContext } from '../../UserContext'
@@ -29,6 +30,26 @@ const UserPageContent = ({ user }) => {
     })
     let [customLocation, setCustomLocation] = useState(false)
     const { updateUser } = useContext(UserContext)
+    const [cellphoneNumber, setCellphoneNumber] = useState(user.cellphoneNumber)
+    const [cellphoneNumberState, setCellphoneNumberState] = useState(
+        'Change cellphone number'
+    )
+    const [cellphoneNumberButtonColor, setcellphoneNumberButtonColor] =
+        useState('blue')
+
+    // Change color and text of cellphoneNumberButton
+    useEffect(() => {
+        if (user.cellphoneNumber == null) {
+            setCellphoneNumberState('Register for ridesharing')
+            setcellphoneNumberButtonColor('blue')
+        } else if (cellphoneNumber == '') {
+            setCellphoneNumberState('Delete cellphone number')
+            setcellphoneNumberButtonColor('red')
+        } else {
+            setCellphoneNumberState('Change cellphone number')
+            setcellphoneNumberButtonColor('blue')
+        }
+    }, [cellphoneNumber, user])
 
     useEffect(() => {
         fetchUserEvents()
@@ -127,6 +148,27 @@ const UserPageContent = ({ user }) => {
                 })
         } catch (error) {
             console.error('Error changing location:', error)
+        }
+    }
+
+    const handlePatchCellphone = async () => {
+        let newCellphone = cellphoneNumber
+        if (cellphoneNumber == '') newCellphone = null
+        if (String(newCellphone).length == 10 || newCellphone == null) {
+            try {
+                await axios
+                    .patch(`${url}/users/cellphone`, {
+                        id: user.id,
+                        cellphoneNumber: newCellphone,
+                    })
+                    .then(function (response) {
+                        updateUser(response.data)
+                    })
+            } catch (error) {
+                console.error('Error changing location:', error)
+            }
+        } else {
+            alert('Please input a valid cellphone number')
         }
     }
 
@@ -319,6 +361,31 @@ const UserPageContent = ({ user }) => {
                     <div>
                         <div className="mb-4">
                             <label className="block text-gray-800 text-sm font-bold mb-2">
+                                Cellphone number:
+                            </label>
+                            <input
+                                type="tel"
+                                className="border rounded w-full py-2 px-3 text-gray-700 leading-tight"
+                                value={cellphoneNumber ?? ''}
+                                placeholder="(00) 00 00000000"
+                                onChange={(e) => {
+                                    setCellphoneNumber(e.target.value)
+                                }}
+                                required
+                            />
+                        </div>
+                        <button
+                            className={`bg-${cellphoneNumberButtonColor}-700 hover:bg-${cellphoneNumberButtonColor}-950 text-white font-bold py-1 px-2 rounded mr-[1rem] mb-[.5rem]`}
+                            type="button"
+                            onClick={handlePatchCellphone}
+                        >
+                            {cellphoneNumberState}
+                        </button>
+                    </div>
+
+                    <div>
+                        <div className="mb-4">
+                            <label className="block text-gray-800 text-sm font-bold mb-2">
                                 Latitude:
                             </label>
                             <input
@@ -364,6 +431,13 @@ const UserPageContent = ({ user }) => {
                     </div>
                 </div>
             </div>
+
+            {user.cellphoneNumber && (
+                <div className="flex items-center justify-center mb-[2.5rem]">
+                    <DisplayUserRidesharings user={user} />
+                </div>
+            )}
+
             <div className="rounded overflow-hidden shadow-lg bg-white h-fit md:w-[50rem] pb-[3rem] xs:w-[20rem]">
                 <div className="flex justify-center m-[1rem]">
                     <div className="justify-between mt-[1rem]">
