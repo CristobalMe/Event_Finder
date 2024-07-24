@@ -69,7 +69,7 @@ model ridesharingUserPreferencesForEvent {
   numberOfSeatsNeeded 	  Int
   attendanceId		        Int           @unique
   attendance 			        attendance 	  @relation(fields: [attendanceId], references: [id], onDelete: Cascade)
-  ridesharing             ridesharing?    @relation(fields: [ridesharingId], references: [id], onDelete: Cascade)
+  ridesharing             ridesharing?  @relation(fields: [ridesharingId], references: [id], onDelete: Cascade)
   ridesharingId           Int?
 }
 

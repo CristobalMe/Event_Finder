@@ -3,8 +3,6 @@ const router = express.Router()
 const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient()
 
-
-
 router.post('/withCar', async (req, res) => {
   const {  seatsAvailable, arrivalTime, departingLat, departingLong, user, event } = req.body
   let newRidesharing = []
@@ -155,7 +153,6 @@ router.get('/user/driving/:userAttending', async (req, res) => {
     res.json(ridesharing)
 })
 
-// Check
 router.get('/user/notDriving/:userAttending', async (req, res) => {
   let ridesharing = []
   let attendance = []
@@ -583,8 +580,6 @@ router.patch('/modify/coordinates/datetime', async(req, res) => {
       message: error.message,
     });
   }
-
-
   res.json(ridesharing)
 })
 

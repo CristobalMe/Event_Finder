@@ -319,7 +319,6 @@ const getEventsScore = async (activeUsers, eventsAttendance, totalComments, even
   else if (numberOfEventsAttending > 5) userExperience = 1
   //------------------------------------------------------------------
 
-
   eventsNear.map((e) => {
     eventAttendanceCount = 0
     eventsAttendance.map((a) => {
