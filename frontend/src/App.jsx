@@ -8,6 +8,7 @@ import LoginPage from './components/LoginPage/LoginPage.jsx'
 import SignupPage from './components/signUpPage/SignUpPage.jsx'
 import UserPage from './components/userPage/UserPage.jsx'
 import RideshareEventForm from './components/rideshareEventForm/RideshareEventForm.jsx'
+import RidesharePage from './components/ridesharePage/RidesharePage.jsx'
 import { useState, useEffect } from 'react'
 import { UserContext } from './UserContext'
 import { BrowserRouter } from 'react-router-dom'
@@ -77,6 +78,10 @@ function App() {
                         <Route
                             path="/ridesharing/form/:eventId"
                             element={<RideshareEventForm user={user} />}
+                        />
+                        <Route
+                            path="/ridesharing/manage/:rideshareId"
+                            element={<RidesharePage user={user} />}
                         />
                     </Routes>
                 </BrowserRouter>

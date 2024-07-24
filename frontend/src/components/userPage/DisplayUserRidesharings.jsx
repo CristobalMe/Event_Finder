@@ -1,14 +1,19 @@
 import { useState, useEffect } from 'react'
+import axios from 'axios'
+import { Link } from 'react-router-dom'
 
 const DisplayUserRidesharings = ({ user }) => {
     const url = import.meta.env.VITE_URL
     const [userRidesharesDriving, setUserRidesharesDriving] = useState([])
     const [userRidesharesNotDriving, setUserRidesharesNotDriving] = useState([])
+    const [userRidesharesSuggestions, setUserRidesharesSuggestions] = useState(
+        []
+    )
 
     useEffect(() => {
         fetchUserRideshares()
         fetchUserNoDriverRideshares()
-        //fetchUserRidesharesSuggestions()
+        fetchUserRidesharesSuggestions()
     }, [])
 
     const fetchUserRideshares = () => {
@@ -25,12 +30,32 @@ const DisplayUserRidesharings = ({ user }) => {
             .catch((error) => console.error('Error fetching:', error))
     }
 
-    // const fetchUserRidesharesSuggestions = () => {
-    //     fetch(`${url}/ridesharing/user/notDriving/suggestions/${user.username}`)
-    //         .then((response) => response.json())
-    //         .then((data) => setUserRidesharesDriving(data))
-    //         .catch((error) => console.error('Error fetching:', error))
-    // }
+    const fetchUserRidesharesSuggestions = () => {
+        fetch(`${url}/ridesharing/user/notDriving/suggestions/${user.username}`)
+            .then((response) => response.json())
+            .then((data) => setUserRidesharesSuggestions(data))
+            .catch((error) => console.error('Error fetching:', error))
+    }
+
+    const handleRidesharingAttendance = async (
+        ridesharingId,
+        eventName,
+        isDeleting
+    ) => {
+        try {
+            await axios.patch(
+                `${url}/ridesharing/attendance/${user.username}`,
+                {
+                    ridesharingId: ridesharingId,
+                    eventName: eventName,
+                    isDeleting: isDeleting,
+                }
+            )
+            location.reload()
+        } catch (error) {
+            console.error('Error:', error)
+        }
+    }
 
     const renderRidesharings = (userRideshares, isDriving, isSuggestion) => {
         return userRideshares.map((rideshare) => (
@@ -39,7 +64,7 @@ const DisplayUserRidesharings = ({ user }) => {
                 key={rideshare.id}
             >
                 <h3 className="text-white font-sans font-bold bg-blue-950 rounded overflow-hidden w-fit h-fit p-[.4rem] mb-[.5rem]">
-                    {rideshare.id}
+                    {rideshare.eventName}
                 </h3>
                 <p className="bg-white h-fit p-[.2rem] break-all">
                     ⊛ {rideshare.seatsAvailable} seats available
@@ -50,23 +75,45 @@ const DisplayUserRidesharings = ({ user }) => {
                 <p className="bg-white h-fit p-[.2rem] break-all">
                     ⊛ Arrival time: {rideshare.departingTime.substring(11, 16)}
                 </p>
-                {!isSuggestion && (
+                {!isSuggestion && !isDriving && (
                     <button
                         className="bg-red-700 hover:bg-red-950 text-white font-bold py-1 px-2 rounded mr-[1rem] my-[.5rem]"
                         type="button"
-                        //onClick={() => {handleDeleteRidesharingAttendance(rideshare.id)}}
+                        onClick={() => {
+                            handleRidesharingAttendance(
+                                rideshare.id,
+                                rideshare.eventName,
+                                0
+                            )
+                        }}
                     >
                         Unregister
                     </button>
                 )}
-                {isSuggestion && (
+                {isSuggestion && !isDriving && (
                     <button
                         className="bg-blue-700 hover:bg-blue-950 text-white font-bold py-1 px-2 rounded mr-[1rem] my-[.5rem]"
                         type="button"
-                        //onClick={() => {handleRegisterRidesharingAttendance(rideshare.id)}}
+                        onClick={() => {
+                            handleRidesharingAttendance(
+                                rideshare.id,
+                                rideshare.eventName,
+                                1
+                            )
+                        }}
                     >
                         Register
                     </button>
+                )}
+                {isDriving && (
+                    <Link to={`/ridesharing/manage/${rideshare.id}`}>
+                        <button
+                            className="bg-blue-700 hover:bg-blue-950 text-white font-bold py-1 px-2 rounded mr-[1rem] my-[.5rem]"
+                            type="button"
+                        >
+                            Manage Rideshare
+                        </button>
+                    </Link>
                 )}
 
                 {/* Map and route */}
@@ -75,7 +122,7 @@ const DisplayUserRidesharings = ({ user }) => {
     }
 
     return (
-        <div className="rounded overflow-hidden shadow-lg bg-white h-fit md:w-[50rem] pb-[3rem] xs:w-[22rem]">
+        <div className="rounded overflow-hidden shadow-lg bg-white h-fit md:w-[50rem] pb-[3rem] xs:w-[20rem]">
             {true && (
                 <div>
                     <div className="flex items-center justify-center m-[1rem] ">
@@ -86,32 +133,44 @@ const DisplayUserRidesharings = ({ user }) => {
                         </div>
                     </div>
 
-                    <section className="ridesharings-grid">
-                        <h2 className="font-bebas text-2xl ml-5">
-                            Suggestions
-                        </h2>
-                        {renderRidesharings(
-                            userRidesharesNotDriving,
-                            false,
-                            true
-                        )}
-                    </section>
+                    {userRidesharesSuggestions && (
+                        <section className="ridesharings-grid">
+                            <h2 className="font-bebas text-2xl ml-5">
+                                Suggestions
+                            </h2>
+                            {renderRidesharings(
+                                userRidesharesSuggestions,
+                                false,
+                                true
+                            )}
+                        </section>
+                    )}
 
-                    <section className="ridesharings-grid">
-                        <h2 className="font-bebas text-2xl ml-5">Driving</h2>
-                        {renderRidesharings(userRidesharesDriving, true, false)}
-                    </section>
+                    {userRidesharesDriving && (
+                        <section className="ridesharings-grid">
+                            <h2 className="font-bebas text-2xl ml-5">
+                                Driving
+                            </h2>
+                            {renderRidesharings(
+                                userRidesharesDriving,
+                                true,
+                                false
+                            )}
+                        </section>
+                    )}
 
-                    <section className="ridesharings-grid">
-                        <h2 className="font-bebas text-2xl ml-5">
-                            Not Driving
-                        </h2>
-                        {renderRidesharings(
-                            userRidesharesNotDriving,
-                            false,
-                            false
-                        )}
-                    </section>
+                    {userRidesharesNotDriving && (
+                        <section className="ridesharings-grid">
+                            <h2 className="font-bebas text-2xl ml-5">
+                                Not Driving
+                            </h2>
+                            {renderRidesharings(
+                                userRidesharesNotDriving,
+                                false,
+                                false
+                            )}
+                        </section>
+                    )}
                 </div>
             )}
         </div>

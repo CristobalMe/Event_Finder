@@ -1572,6 +1572,11 @@ body {
     height: 35rem;
   }
 
+  .xs\:h-fit {
+    height: -moz-fit-content;
+    height: fit-content;
+  }
+
   .xs\:w-\[10rem\] {
     width: 10rem;
   }
@@ -1661,6 +1666,11 @@ body {
 
   .lg\:h-\[35rem\] {
     height: 35rem;
+  }
+
+  .lg\:h-fit {
+    height: -moz-fit-content;
+    height: fit-content;
   }
 
   .lg\:w-\[25rem\] {

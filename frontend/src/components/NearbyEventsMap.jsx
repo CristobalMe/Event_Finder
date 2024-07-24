@@ -4,8 +4,8 @@ import { GoogleMap, useJsApiLoader, MarkerF } from '@react-google-maps/api'
 function NearbyEventsMap({ user, eventData, mapContainerStyle }) {
     let eventsLocation = []
     eventData.map((e) => {
-        let lat = e.lat
-        let long = e.long
+        let lat = parseFloat(e.lat)
+        let long = parseFloat(e.long)
         let position = { lat: lat, lng: long }
         eventsLocation.push(position)
     })
@@ -16,8 +16,8 @@ function NearbyEventsMap({ user, eventData, mapContainerStyle }) {
     })
 
     const center = {
-        lat: user.lat,
-        lng: user.long,
+        lat: parseFloat(user.lat),
+        lng: parseFloat(user.long),
     }
 
     return isLoaded ? (
