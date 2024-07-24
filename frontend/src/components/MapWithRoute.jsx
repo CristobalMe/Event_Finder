@@ -2,7 +2,6 @@ import { useState } from 'react'
 import {
     useJsApiLoader,
     GoogleMap,
-    Marker,
     DirectionsRenderer,
 } from '@react-google-maps/api'
 import { useEffect } from 'react'
@@ -12,7 +11,7 @@ const center = {
     lng: 80.7718,
 }
 
-function App() {
+function MapWithRoute() {
     const { isLoaded } = useJsApiLoader({
         id: 'google-map-script',
         googleMapsApiKey: import.meta.env.VITE_MAPS_API_KEY,
@@ -38,7 +37,7 @@ function App() {
         <>
             <GoogleMap
                 center={center}
-                zoom={1}
+                zoom={13}
                 mapContainerStyle={{ width: '100%', height: '100vh' }}
                 options={{
                     zoomControl: false,
@@ -47,7 +46,6 @@ function App() {
                     fullscreenControl: false,
                 }}
             >
-                <Marker position={center} />
                 {directionsResponse && (
                     <DirectionsRenderer directions={directionsResponse} />
                 )}
@@ -58,4 +56,4 @@ function App() {
     )
 }
 
-export default App
+export default MapWithRoute
