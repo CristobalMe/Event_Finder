@@ -58,6 +58,7 @@ model attendance {
   user                                  user     @relation(fields: [userAttending], references: [username], onDelete: Cascade)
   ridesharingUserPreferencesForEvent    ridesharingUserPreferencesForEvent?
   ridesharingDriver 		                ridesharing?
+  ridesharingId                         Int?
 }
 
 model ridesharingUserPreferencesForEvent {
@@ -65,19 +66,22 @@ model ridesharingUserPreferencesForEvent {
   preferedLocationLat	    Float?
   preferedLocationLong	  Float?
   preferedArrivalTime	    DateTime
-  numberOfSeatsAvalible 	Int
+  numberOfSeatsNeeded 	  Int
   attendanceId		        Int           @unique
-  attendance 			        attendance 	  @relation(fields: [attendanceId], references: [id])
+  attendance 			        attendance 	  @relation(fields: [attendanceId], references: [id], onDelete: Cascade)
+  ridesharing             ridesharing?    @relation(fields: [ridesharingId], references: [id], onDelete: Cascade)
+  ridesharingId           Int?
 }
 
 model ridesharing {
-  id				              Int           @id @default(autoincrement())
-  userPreferencesIds	    Int[]
-  seatsAvailable 		      Int
-  departingTime		        DateTime
-  departingLat		        Float
-  departingLong		        Float
-  arrivalTime			        DateTime
-  attendanceId      	    Int           @unique
-  attendance 			        attendance 	  @relation(fields: [attendanceId], references: [id], onDelete: Cascade)
+  id				                                Int           @id @default(autoincrement())
+  userPreferencesIds                        ridesharingUserPreferencesForEvent[]
+  seatsAvailable 		                        Int
+  departingTime		                          DateTime
+  departingLat		                          Float
+  departingLong		                          Float
+  arrivalTime			                          DateTime
+  attendanceId      	                      Int           @unique
+  attendance 			                          attendance 	  @relation(fields: [attendanceId], references: [id], onDelete: Cascade)
+  eventName                                 String
 }

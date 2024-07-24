@@ -42,11 +42,13 @@ const eventRoutes = require("./routes/eventRoutes")
 const userRoutes = require("./routes/userRoutes")
 const commentRoutes = require("./routes/commentRoutes")
 const attendanceRoutes = require("./routes/attendanceRoutes")
+const ridesharingRoutes = require("./routes/ridesharingRoutes")
 
 app.use('/event', eventRoutes)
 app.use('/users', userRoutes)
 app.use('/comments', commentRoutes)
 app.use('/attendance', attendanceRoutes)
+app.use('/ridesharing', ridesharingRoutes)
 
 newSequelize.sync({ alter: true })
   .then(() => {

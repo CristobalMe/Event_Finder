@@ -141,4 +141,47 @@ router.delete('/user/:userAttending/:eventId', async (req, res) => {
   res.json(attendance)
 })
 
+router.post('/ridesharing/manyIds', async (req, res) => {
+  const { ids } = req.body
+  let attendance = []
+  let usernames = []
+  let usersData = []
+  try {
+    attendance = await prisma.attendance.findMany({
+      where:{
+        id: { in: ids }
+      }
+    })
+  } catch (error) {
+    console.log(error);
+
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+  console.log(ids)
+  console.log(attendance)
+  attendance.map((a) => {
+    usernames.push(a.userAttending)
+  })
+
+  try {
+    usersData = await prisma.user.findMany({
+      where:{
+        username: { in: usernames }
+      }
+    })
+  } catch (error) {
+    console.log(error);
+
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+
+  res.json(usersData)
+})
+
 module.exports = router

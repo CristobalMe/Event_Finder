@@ -420,4 +420,26 @@ router.get('/recommendedEvents/:userId', async (req, res) => {
   res.json(recommendedEvents)
 })
 
+router.patch('/cellphone', async(req, res) => {
+  const {  id, cellphoneNumber  } = req.body
+  let updatedUser = []
+  console.log(cellphoneNumber)
+  try {
+    updatedUser = await prisma.user.update({
+      where: { id: parseInt(id) },
+      data: {
+        cellphoneNumber: cellphoneNumber
+      }
+    })
+  } catch (error) {
+    console.log(error);
+
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+  res.json(updatedUser)
+})
+
 module.exports = router
