@@ -45,6 +45,7 @@ CREATE TABLE "attendance" (
     "id" SERIAL NOT NULL,
     "eventId" INTEGER NOT NULL,
     "userAttending" TEXT NOT NULL,
+    "ridesharingId" INTEGER,
 
     CONSTRAINT "attendance_pkey" PRIMARY KEY ("id")
 );
@@ -55,8 +56,9 @@ CREATE TABLE "ridesharingUserPreferencesForEvent" (
     "preferedLocationLat" DOUBLE PRECISION,
     "preferedLocationLong" DOUBLE PRECISION,
     "preferedArrivalTime" TIMESTAMP(3) NOT NULL,
-    "numberOfSeatsAvalible" INTEGER NOT NULL,
+    "numberOfSeatsNeeded" INTEGER NOT NULL,
     "attendanceId" INTEGER NOT NULL,
+    "ridesharingId" INTEGER,
 
     CONSTRAINT "ridesharingUserPreferencesForEvent_pkey" PRIMARY KEY ("id")
 );
@@ -64,13 +66,13 @@ CREATE TABLE "ridesharingUserPreferencesForEvent" (
 -- CreateTable
 CREATE TABLE "ridesharing" (
     "id" SERIAL NOT NULL,
-    "userPreferencesIds" INTEGER[],
     "seatsAvailable" INTEGER NOT NULL,
     "departingTime" TIMESTAMP(3) NOT NULL,
     "departingLat" DOUBLE PRECISION NOT NULL,
     "departingLong" DOUBLE PRECISION NOT NULL,
     "arrivalTime" TIMESTAMP(3) NOT NULL,
     "attendanceId" INTEGER NOT NULL,
+    "eventName" TEXT NOT NULL,
 
     CONSTRAINT "ridesharing_pkey" PRIMARY KEY ("id")
 );
@@ -97,7 +99,10 @@ ALTER TABLE "comment" ADD CONSTRAINT "comment_eventId_fkey" FOREIGN KEY ("eventI
 ALTER TABLE "attendance" ADD CONSTRAINT "attendance_userAttending_fkey" FOREIGN KEY ("userAttending") REFERENCES "user"("username") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "ridesharingUserPreferencesForEvent" ADD CONSTRAINT "ridesharingUserPreferencesForEvent_attendanceId_fkey" FOREIGN KEY ("attendanceId") REFERENCES "attendance"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "ridesharingUserPreferencesForEvent" ADD CONSTRAINT "ridesharingUserPreferencesForEvent_attendanceId_fkey" FOREIGN KEY ("attendanceId") REFERENCES "attendance"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ridesharingUserPreferencesForEvent" ADD CONSTRAINT "ridesharingUserPreferencesForEvent_ridesharingId_fkey" FOREIGN KEY ("ridesharingId") REFERENCES "ridesharing"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "ridesharing" ADD CONSTRAINT "ridesharing_attendanceId_fkey" FOREIGN KEY ("attendanceId") REFERENCES "attendance"("id") ON DELETE CASCADE ON UPDATE CASCADE;
