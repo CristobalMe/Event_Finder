@@ -49,6 +49,15 @@ const UserPageContent = ({ user }) => {
             setCellphoneNumberState('Change cellphone number')
             setcellphoneNumberButtonColor('blue')
         }
+
+        if ('geolocation' in navigator && !customLocation) {
+            navigator.geolocation.getCurrentPosition(function (position) {
+                setUserPosition({
+                    latitude: position.coords.latitude,
+                    longitude: position.coords.longitude,
+                })
+            })
+        }
     }, [cellphoneNumber, user])
 
     useEffect(() => {

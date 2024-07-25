@@ -13,6 +13,7 @@ function RidesharePage({ user }) {
     const [lat, setLat] = useState(rideshare.departingLat ?? '0')
     const [long, setLong] = useState(rideshare.departingLong ?? '0')
     const [preferedArrivalTime, setPreferedArrivalTime] = useState()
+    const [event, setEvent] = useState([])
     let preferencesIds = []
     let center = {
         lat: lat,
@@ -42,6 +43,10 @@ function RidesharePage({ user }) {
     }, [rideshare, userPreferences])
 
     useEffect(() => {
+        if (rideshare.eventName) fetchEvent()
+    }, [rideshare])
+
+    useEffect(() => {
         fetchUserRideshare()
         fetchUserPreferences()
     }, [])
@@ -57,6 +62,13 @@ function RidesharePage({ user }) {
         fetch(`${url}/ridesharing/preferences/${current_rideshareId}`)
             .then((response) => response.json())
             .then((data) => setUserPreferences(data))
+            .catch((error) => console.error('Error fetching:', error))
+    }
+
+    const fetchEvent = () => {
+        fetch(`${url}/event/byName/${rideshare.eventName}`)
+            .then((response) => response.json())
+            .then((data) => setEvent(data))
             .catch((error) => console.error('Error fetching:', error))
     }
 
@@ -235,7 +247,18 @@ function RidesharePage({ user }) {
                 )}
 
                 <div className="flex flex-col mx-5 mt-10 justify-center">
-                    <MapWithRoute />
+                    <p className="flex items-center justify-center font-bebas text-3xl mt-3 mx-3 text-white">
+                        Route
+                    </p>
+                    {event.lat && (
+                        <MapWithRoute
+                            origin={{
+                                lat: parseFloat(center.lat),
+                                lng: parseFloat(center.long),
+                            }}
+                            destination={{ lat: event.lat, lng: event.long }}
+                        />
+                    )}
                 </div>
             </div>
         </div>
