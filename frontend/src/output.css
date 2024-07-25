@@ -680,6 +680,16 @@ body {
   margin-bottom: .5rem;
 }
 
+.mx-\[10rem\] {
+  margin-left: 10rem;
+  margin-right: 10rem;
+}
+
+.mx-\[30rem\] {
+  margin-left: 30rem;
+  margin-right: 30rem;
+}
+
 .-mr-1 {
   margin-right: -0.25rem;
 }
@@ -914,6 +924,10 @@ body {
 
 .ml-5 {
   margin-left: 1.25rem;
+}
+
+.mt-\[8rem\] {
+  margin-top: 8rem;
 }
 
 .block {
@@ -1695,5 +1709,11 @@ body {
 
   .lg\:flex-col {
     flex-direction: column;
+  }
+}
+
+@media (min-width: 1280px) {
+  .xl\:flex {
+    display: flex;
   }
 }

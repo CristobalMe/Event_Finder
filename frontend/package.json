@@ -21,6 +21,7 @@
     "@mui/icons-material": "^5.16.4",
     "@mui/lab": "^5.0.0-alpha.172",
     "@mui/material": "^5.16.4",
+    "@react-google-maps/api": "^2.19.3",
     "axios": "^1.7.2",
     "date-fns": "^3.6.0",
     "lucide-react": "^0.396.0",

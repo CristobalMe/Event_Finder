@@ -214,4 +214,22 @@ router.get('/nearby/user/:latUser/:longUser', async (req, res) => {
   res.json(events)
 })
 
+router.get('/byName/:eventName', async (req, res) => {
+  let event = []
+  const { eventName } = req.params
+  try {
+    event = await prisma.event.findFirst({
+      where: { name: eventName}
+    })
+  } catch (error) {
+    console.log(error);
+  
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+  res.json(event)
+})
+
 module.exports = router

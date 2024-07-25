@@ -8,6 +8,7 @@ import { ChevronDownIcon } from '@heroicons/react/20/solid'
 function RideshareEventForm({ user }) {
     const current_eventId = window.location.pathname.split('/')[3]
     const [event, setEvent] = useState()
+    // Pass attendance here
     const [attendance, setAttendance] = useState()
     const [
         isAlreadyRegisteredForRidesharing,

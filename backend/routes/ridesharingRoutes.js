@@ -14,8 +14,6 @@ router.post('/withCar', async (req, res) => {
       eventId: parseInt(event.id)
     }
   })
-  console.log(attendance)
-  console.log(attendance[0].id)
   try {
     newRidesharing = await prisma.ridesharing.create({
       data: {
@@ -206,7 +204,8 @@ const getAttendingRideshares = async (userAttending) => {
   // Get all the attendances in wich we have registered preferences
   try {
       attendance = await prisma.attendance.findMany({
-        where: { 
+        where: {
+          // Check logic (Change for OR)
           userAttending: userAttending,
           ridesharingUserPreferencesForEvent: {isNot: null},
           ridesharingId: {gt: 0}
@@ -240,6 +239,8 @@ router.get('/user/notDriving/suggestions/:userAttending', async (req, res) => {
   // get ridesharingAttending
   ridesharingAttending = await getAttendingRideshares(userAttending)
   // -------------------------
+
+  
 
   // recommend ridesharings
   try {
@@ -487,7 +488,6 @@ router.patch('/attendance/:user', async(req, res) => {
     })
 
     if (ridesharing.seatsAvailable >= ridesharingUserPreferencesForEvent.numberOfSeatsNeeded){
-      console.log(ridesharingId)
       attendance = await prisma.attendance.update({
         where: { 
           id: attendanceId.id

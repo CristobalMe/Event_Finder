@@ -124,11 +124,13 @@ function HomePage({ user }) {
                         <EventsCarousel events={events} />
                     </div>
 
-                    <div className="ml-[25rem]  mt-[10rem] mb-[20rem] sm:mx-[7rem]">
-                        <h2 className="flex justify-center font-bebas text-white text-3xl mb-[10rem]">
-                            Top 5 events
-                        </h2>
-                        <RotatingEventImages events={events} />
+                    <h2 className="hidden xl:flex justify-center font-bebas text-white text-3xl mt-[10rem]">
+                        Top 5 events
+                    </h2>
+                    <div className="hidden xl:flex mb-[20rem] mt-[8rem] mx-[30rem]">
+                        <div className="">
+                            <RotatingEventImages events={events} />
+                        </div>
                     </div>
                 </div>
             )}
