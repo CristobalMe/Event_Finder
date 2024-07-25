@@ -204,7 +204,8 @@ const getAttendingRideshares = async (userAttending) => {
   // Get all the attendances in wich we have registered preferences
   try {
       attendance = await prisma.attendance.findMany({
-        where: { 
+        where: {
+          // Check logic (Change for OR)
           userAttending: userAttending,
           ridesharingUserPreferencesForEvent: {isNot: null},
           ridesharingId: {gt: 0}
@@ -238,6 +239,8 @@ router.get('/user/notDriving/suggestions/:userAttending', async (req, res) => {
   // get ridesharingAttending
   ridesharingAttending = await getAttendingRideshares(userAttending)
   // -------------------------
+
+  
 
   // recommend ridesharings
   try {
