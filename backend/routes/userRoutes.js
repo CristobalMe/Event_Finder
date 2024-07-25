@@ -422,7 +422,6 @@ router.get('/recommendedEvents/:userId', async (req, res) => {
 router.patch('/cellphone', async(req, res) => {
   const {  id, cellphoneNumber  } = req.body
   let updatedUser = []
-  console.log(cellphoneNumber)
   try {
     updatedUser = await prisma.user.update({
       where: { id: parseInt(id) },

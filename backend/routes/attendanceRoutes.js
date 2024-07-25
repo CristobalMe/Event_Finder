@@ -80,7 +80,6 @@ router.get('/user/:userAttending', async (req, res) => {
 router.post('/user/:userAttending/:eventId', async (req, res) => {
   const { userAttending, eventId } = req.params
   let newAttendance = []
-  console.log(userAttending)
   try {
     newAttendance = await prisma.attendance.create({
       data: { 
@@ -160,8 +159,6 @@ router.post('/ridesharing/manyIds', async (req, res) => {
       message: error.message,
     });
   }
-  console.log(ids)
-  console.log(attendance)
   attendance.map((a) => {
     usernames.push(a.userAttending)
   })

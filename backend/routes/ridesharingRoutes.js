@@ -14,8 +14,6 @@ router.post('/withCar', async (req, res) => {
       eventId: parseInt(event.id)
     }
   })
-  console.log(attendance)
-  console.log(attendance[0].id)
   try {
     newRidesharing = await prisma.ridesharing.create({
       data: {
@@ -487,7 +485,6 @@ router.patch('/attendance/:user', async(req, res) => {
     })
 
     if (ridesharing.seatsAvailable >= ridesharingUserPreferencesForEvent.numberOfSeatsNeeded){
-      console.log(ridesharingId)
       attendance = await prisma.attendance.update({
         where: { 
           id: attendanceId.id
