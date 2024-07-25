@@ -17,7 +17,7 @@ model event {
   id          Int      @id @default(autoincrement())
   rating      Float
   location    String
-  name        String
+  name        String  @unique
   duration    String
   description String
   image       String
