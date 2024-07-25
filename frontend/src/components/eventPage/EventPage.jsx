@@ -3,6 +3,7 @@ import Header from '../header/Header'
 import DisplayEventInfo from './DisplayEventInfo'
 import DisplayEventComments from './DisplayEventComments'
 import LoadingPage from '../loadingPage/LoadingPage'
+import DisplayRideSharingSuggestions from './DisplayRideSharingSuggestions'
 
 const EventPage = ({ user }) => {
     const current_link = window.location.pathname
@@ -10,11 +11,13 @@ const EventPage = ({ user }) => {
     const [event, setEvent] = useState()
     const [comments, setComments] = useState()
     const [isLoading, setIsLoading] = useState(true)
+    let [attendance, setAttendance] = useState()
     const url = import.meta.env.VITE_URL
 
     useEffect(() => {
         fetchEvent()
         fetchComments()
+        fetchUserAttendance()
     }, [])
 
     const fetchEvent = () => {
@@ -37,6 +40,15 @@ const EventPage = ({ user }) => {
             .catch((error) => console.error('Error fetching:', error))
     }
 
+    const fetchUserAttendance = () => {
+        fetch(`${url}/attendance/user/${user.username}/${current_eventId}`)
+            .then((response) => response.json())
+            .then((data) => {
+                setAttendance(data)
+            })
+            .catch((error) => console.error('Error fetching:', error))
+    }
+
     return (
         <div>
             {!isLoading && (
@@ -45,9 +57,21 @@ const EventPage = ({ user }) => {
                     <div className="mt-[13rem] flex items-center justify-center">
                         <DisplayEventInfo event={event} user={user} />
                     </div>
-                    <div className="h-screen flex items-center justify-center">
+                    <div className="mt-[13rem] flex items-center justify-center">
                         <DisplayEventComments comments={comments} user={user} />
                     </div>
+
+                    {attendance && event && (
+                        <div className="h-screen flex items-center justify-center">
+                            {/* {(attendance[0].ridesharingUserPreferencesForEvent != undefined && (attendance[0].ridesharingId == undefined || attendance[0].ridesharingId == null)) &&
+                             */}
+                            <DisplayRideSharingSuggestions
+                                user={user}
+                                event={event}
+                            />
+                            {/* } */}
+                        </div>
+                    )}
                 </div>
             )}
             {isLoading && (

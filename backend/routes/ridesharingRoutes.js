@@ -69,47 +69,6 @@ router.post('/withoutCar', async (req, res) => {
     res.json(newRidesharing)
 })
 
-router.get('/event/:eventId', async (req, res) => {
-    let ridesharing = []
-    let attendance = []
-    let ridesharingId = []
-    const { eventId } = req.params
-
-    try {
-        attendance = await prisma.attendance.findMany({
-          where: { 
-            eventId: parseInt(eventId),
-            ridesharingDriver: {isNot: null}
-        }
-        })
-      } catch (error) {
-        console.log(error);
-    
-        return res.status(500).json({
-          success: false,
-          message: error.message,
-        });
-    }
-    attendance.map((a) => {
-        ridesharingId.push(a.id)
-    })
-    try {
-        ridesharing = await prisma.ridesharing.findMany({
-            where: {
-                attendanceId: { in: ridesharingId }
-            }
-        })
-    } catch (error) {
-      console.log(error);
-  
-      return res.status(500).json({
-        success: false,
-        message: error.message,
-      });
-    }
-    res.json(ridesharing)
-})
-
 router.get('/user/driving/:userAttending', async (req, res) => {
     let ridesharing = []
     let attendance = []
@@ -227,6 +186,8 @@ const getAttendingRideshares = async (userAttending) => {
   return(ridesharingId)
 }
 
+
+// here
 // This reccommends posible ridesharings to users without car 
 router.get('/user/notDriving/suggestions/:userAttending', async (req, res) => {
   let ridesharing = []
