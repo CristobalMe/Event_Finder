@@ -18,8 +18,10 @@ function MapWithRoute() {
     })
 
     useEffect(() => {
-        calculateRoute()
-    }, [])
+        if (isLoaded) {
+            calculateRoute()
+        }
+    }, [isLoaded])
 
     const [directionsResponse, setDirectionsResponse] = useState(null)
 
