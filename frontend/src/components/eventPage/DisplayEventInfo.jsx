@@ -30,6 +30,7 @@ const DisplayEventInfo = ({ event, user }) => {
                     }
                 )
                 fetchUserAttendance()
+                location.reload()
             } catch (error) {
                 console.error('Error:', error)
             }
@@ -43,6 +44,7 @@ const DisplayEventInfo = ({ event, user }) => {
                     }
                 )
                 fetchUserAttendance()
+                location.reload()
             } catch (error) {
                 console.error('Error:', error)
             }

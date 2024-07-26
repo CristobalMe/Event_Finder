@@ -11,13 +11,16 @@ const EventPage = ({ user }) => {
     const [event, setEvent] = useState()
     const [comments, setComments] = useState()
     const [isLoading, setIsLoading] = useState(true)
-    let [attendance, setAttendance] = useState()
+    const [preferences, setPreferences] = useState()
+    let logged = false
     const url = import.meta.env.VITE_URL
+
+    if (user != null && user != undefined) logged = true
 
     useEffect(() => {
         fetchEvent()
         fetchComments()
-        fetchUserAttendance()
+        if (logged) fetchUserPreferences()
     }, [])
 
     const fetchEvent = () => {
@@ -40,12 +43,12 @@ const EventPage = ({ user }) => {
             .catch((error) => console.error('Error fetching:', error))
     }
 
-    const fetchUserAttendance = () => {
-        fetch(`${url}/attendance/user/${user.username}/${current_eventId}`)
+    const fetchUserPreferences = () => {
+        fetch(
+            `${url}/ridesharing/ridesharingUserPreferencesForEvent/${user.username}/${current_eventId}`
+        )
             .then((response) => response.json())
-            .then((data) => {
-                setAttendance(data)
-            })
+            .then((data) => setPreferences(data))
             .catch((error) => console.error('Error fetching:', error))
     }
 
@@ -57,21 +60,21 @@ const EventPage = ({ user }) => {
                     <div className="mt-[13rem] flex items-center justify-center">
                         <DisplayEventInfo event={event} user={user} />
                     </div>
-                    <div className="mt-[13rem] flex items-center justify-center">
-                        <DisplayEventComments comments={comments} user={user} />
-                    </div>
-
-                    {attendance && event && (
-                        <div className="h-screen flex items-center justify-center">
-                            {/* {(attendance[0].ridesharingUserPreferencesForEvent != undefined && (attendance[0].ridesharingId == undefined || attendance[0].ridesharingId == null)) &&
-                             */}
-                            <DisplayRideSharingSuggestions
-                                user={user}
-                                event={event}
-                            />
-                            {/* } */}
+                    {/* Check if there are valid preferences (not registered to a group) and if event has loaded */}
+                    {preferences && event && (
+                        <div className="flex mt-[8rem] items-center justify-center">
+                            {preferences != -1 && (
+                                <DisplayRideSharingSuggestions
+                                    user={user}
+                                    event={event}
+                                    preferences={preferences}
+                                />
+                            )}
                         </div>
                     )}
+                    <div className="my-[8rem] flex items-center justify-center">
+                        <DisplayEventComments comments={comments} user={user} />
+                    </div>
                 </div>
             )}
             {isLoading && (

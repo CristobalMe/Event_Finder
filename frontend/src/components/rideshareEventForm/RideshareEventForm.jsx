@@ -313,6 +313,7 @@ function RideshareEventForm({ user }) {
                                                 <div>
                                                     <Link
                                                         to={`/user/${user.id}`}
+                                                        reloadDocument={true}
                                                     >
                                                         <button
                                                             className="bg-blue-950 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"

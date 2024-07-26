@@ -1,18 +1,19 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+import EventMap from '../EventMap'
 
-const DisplayRideSharingSuggestions = ({ user, event }) => {
+const DisplayRideSharingSuggestions = ({ user, event, preferences }) => {
     const url = import.meta.env.VITE_URL
     const [userRidesharesSuggestions, setUserRidesharesSuggestions] = useState(
         []
     )
 
     useEffect(() => {
-        fetchUserRidesharesSuggestions()
+        if (preferences) fetchUserRidesharesSuggestions()
     }, [])
 
     const fetchUserRidesharesSuggestions = () => {
-        fetch(`${url}/ridesharing/event/${event.id}/${user.id}`)
+        fetch(`${url}/ridesharing/recommendations/${event.id}/${user.id}`)
             .then((response) => response.json())
             .then((data) => setUserRidesharesSuggestions(data))
             .catch((error) => console.error('Error fetching:', error))
@@ -41,34 +42,42 @@ const DisplayRideSharingSuggestions = ({ user, event }) => {
     const renderRidesharings = (userRideshares) => {
         return userRideshares.map((rideshare) => (
             <div
-                className="mx-[1rem] my-[1rem] border-2 border-black rounded h-fit p-[.5rem]"
+                className="grid lg:grid-cols-2 mx-[1rem] my-[1rem] border-2 border-black rounded h-fit p-[.5rem]"
                 key={rideshare.id}
             >
-                <h3 className="text-white font-sans font-bold bg-blue-950 rounded overflow-hidden w-fit h-fit p-[.4rem] mb-[.5rem]">
-                    {rideshare.eventName}
-                </h3>
-                <p className="bg-white h-fit p-[.2rem] break-all">
-                    ⊛ {rideshare.seatsAvailable} seats available
-                </p>
-                <p className="bg-white h-fit p-[.2rem] break-all">
-                    ⊛ Date: {rideshare.departingTime.substring(0, 10)}
-                </p>
-                <p className="bg-white h-fit p-[.2rem] break-all">
-                    ⊛ Arrival time: {rideshare.departingTime.substring(11, 16)}
-                </p>
-                <button
-                    className="bg-blue-700 hover:bg-blue-950 text-white font-bold py-1 px-2 rounded mr-[1rem] my-[.5rem]"
-                    type="button"
-                    onClick={() => {
-                        handleRidesharingAttendance(
-                            rideshare.id,
-                            rideshare.eventName,
-                            1
-                        )
-                    }}
-                >
-                    Register
-                </button>
+                <div className="flex flex-col mx-5 mt-10 justify-center">
+                    <p className="bg-white h-fit p-[.2rem] break-all">
+                        ⊛ {rideshare.seatsAvailable} seats available
+                    </p>
+                    <p className="bg-white h-fit p-[.2rem] break-all">
+                        ⊛ Departing date:{' '}
+                        {rideshare.departingTime.substring(0, 10)}
+                    </p>
+                    <p className="bg-white h-fit p-[.2rem] break-all">
+                        ⊛ Arrival time:{' '}
+                        {rideshare.departingTime.substring(11, 16)}
+                    </p>
+                    <button
+                        className="bg-blue-700 hover:bg-blue-950 text-white font-bold py-1 px-2 rounded mr-[1rem] my-[.5rem]"
+                        type="button"
+                        onClick={() => {
+                            handleRidesharingAttendance(
+                                rideshare.id,
+                                rideshare.eventName,
+                                1
+                            )
+                        }}
+                    >
+                        Register
+                    </button>
+                </div>
+
+                <div className="hidden lg:flex lg:flex-col mx-5 mt-10 justify-center">
+                    <EventMap
+                        latitude={rideshare.departingLat}
+                        longitude={rideshare.departingLong}
+                    />
+                </div>
                 {/* Map and route */}
             </div>
         ))
@@ -81,16 +90,13 @@ const DisplayRideSharingSuggestions = ({ user, event }) => {
                     <div className="flex items-center justify-center m-[1rem] ">
                         <div className="inline m-[1rem]">
                             <h2 className="font-bebas text-3xl">
-                                {user.username} Rideshares
+                                Suggested Rideshares
                             </h2>
                         </div>
                     </div>
 
                     {userRidesharesSuggestions && (
                         <section className="ridesharings-grid">
-                            <h2 className="font-bebas text-2xl ml-5">
-                                Suggestions
-                            </h2>
                             {renderRidesharings(userRidesharesSuggestions)}
                         </section>
                     )}

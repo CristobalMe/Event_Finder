@@ -690,6 +690,11 @@ body {
   margin-right: 30rem;
 }
 
+.my-\[8rem\] {
+  margin-top: 8rem;
+  margin-bottom: 8rem;
+}
+
 .-mr-1 {
   margin-right: -0.25rem;
 }
