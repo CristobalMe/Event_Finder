@@ -414,19 +414,21 @@ router.patch('/modify/coordinates/datetime', async(req, res) => {
 })
 
 // Fetch distance using the API: Distance Matrix
-const fetchDistance = async () => {
+const fetchDistance = async (destination, origin) => {
+  // Import the API key
   const apiKey = process.env.MAPS_API_KEY;
-  const origin = '37.7749,-122.4194';
-  const destination = '34.0522,-118.2437';
-  let distance = 0
-  fetch(`https://maps.googleapis.com/maps/api/distancematrix/json?destinations=New%20York%20City%2C%20NY&origins=Washington%2C%20DC&units=imperial&key=${apiKey}`)
+  // distance = Infinity to work with unreacheable destinations
+  let distance = Infinity
+  // origin == destination is because of a bug when selecting the same location with the api
+  if (origin == destination) distance = 0
+
+  // Fetch distance from origin to destination
+  await fetch(`https://maps.googleapis.com/maps/api/distancematrix/json?destinations=${destination.lat}%2C${destination.long}&origins=${origin.lat}%2C${origin.long}&key=${apiKey}`)
       .then((response) => response.json())
       .then((data) => {
-        console.log("response:")
-        console.log(data.rows[0].elements[0].distance.value)
+        if (data.rows[0].elements[0].distance.value) distance = parseInt(data.rows[0].elements[0].distance.value)/1000
       })
       .catch((error) => console.error('Error fetching:', error))
-  
   return (distance)
 }
 
@@ -527,16 +529,19 @@ router.get('/recommendations/:eventId/:userId', async (req, res) => {
 
   // We store the distance between rideshare and user
   let distance = 0
-  let distanceEventUser = ((event.lat - userToRecommend.lat)**2 + (event.long - userToRecommend.long)**2)**.5
-  rideshares.map((rideshare) => {
-    distance = ((rideshare.departingLat - userToRecommend.lat)**2 + (rideshare.departingLong - userToRecommend.long)**2)**.5
+  let distanceEventUser = 0
+  // Distance between event and user
+  distanceEventUser = await fetchDistance({lat: event[0].lat, long: event[0].long}, {lat: userToRecommend.lat, long: userToRecommend.long})
+
+  await Promise.all(rideshares.map(async (rideshare) => {
+    distance = await fetchDistance({lat: rideshare.departingLat, long: rideshare.departingLong}, {lat: userToRecommend.lat, long: userToRecommend.long})
 
     // We penalize diferences greater the distance to the event
     if (distance > distanceEventUser){
       distance = 1000000
     }
     distanceRideshareToUser.push(distance)
-  })
+  }))
   // ----------------------------------------------
   // We calculate how different are the date that a user is departing and the date of the rideshare
   let difference = 0
@@ -582,9 +587,6 @@ router.get('/recommendations/:eventId/:userId', async (req, res) => {
   // ------------------------------------------------------------------------------------
 
   // Part 2 ***********************************************************
-
-  console.log(await fetchDistance())
-  
   res.json(recommendedRideshares)
 })
 
