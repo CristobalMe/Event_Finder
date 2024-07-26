@@ -610,6 +610,10 @@ body {
   margin: 0.25rem;
 }
 
+.m-\[8rem\] {
+  margin: 8rem;
+}
+
 .mx-\[1\.1rem\] {
   margin-left: 1.1rem;
   margin-right: 1.1rem;
@@ -965,6 +969,14 @@ body {
   margin-left: 2.5rem;
 }
 
+.ml-\[8rem\] {
+  margin-left: 8rem;
+}
+
+.ml-\[18rem\] {
+  margin-left: 18rem;
+}
+
 .block {
   display: block;
 }
@@ -1059,6 +1071,10 @@ body {
   height: 1.5rem;
 }
 
+.h-full {
+  height: 100%;
+}
+
 .w-10 {
   width: 2.5rem;
 }
@@ -1106,6 +1122,10 @@ body {
 
 .max-w-sm {
   max-width: 24rem;
+}
+
+.flex-none {
+  flex: none;
 }
 
 .basis-full {
@@ -1689,6 +1709,10 @@ body {
 
   .md\:w-\[50rem\] {
     width: 50rem;
+  }
+
+  .md\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
 

@@ -59,10 +59,10 @@ const DisplayUserRidesharings = ({ user }) => {
                     ⊛ {rideshare.seatsAvailable} seats available
                 </p>
                 <p className="bg-white h-fit p-[.2rem] break-all">
-                    ⊛ Date: {rideshare.departingTime.substring(0, 10)}
+                    ⊛ Date: {rideshare.arrivalTime.substring(0, 10)}
                 </p>
                 <p className="bg-white h-fit p-[.2rem] break-all">
-                    ⊛ Arrival time: {rideshare.departingTime.substring(11, 16)}
+                    ⊛ Arrival time: {rideshare.arrivalTime.substring(11, 16)}
                 </p>
                 {!isSuggestion && !isDriving && (
                     <button

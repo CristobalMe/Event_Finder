@@ -33,7 +33,7 @@ function NearbyPage({ user }) {
                     mapContainerStyle={mapContainerStyle}
                 />
             </div>
-            <div className="flex items-center justify-center mt-[3rem] xs:w-[20rem] md:w-[50rem] h-[25rem] pb-[3rem] mb-[2rem]">
+            <div>
                 {eventData != undefined && <CardGridEvent data={eventData} />}
             </div>
         </div>

@@ -563,7 +563,7 @@ router.get('/recommendations/:eventId/:userId', async (req, res) => {
   distanceRideshareToUser.map((distance, index) => {
     score = 1/distance + 1/differenceBetweenDates[index]
     // If we penalized the score, we assign it a negative score
-    if (1/distance < 1/10000 || 1/differenceBetweenDates[index] < 1/10000) score = -1
+    if (1/distance < 1/1000 || 1/differenceBetweenDates[index] < 1/1000) score = -1
 
     rideshareScore.push(score)
   })
@@ -572,7 +572,10 @@ router.get('/recommendations/:eventId/:userId', async (req, res) => {
   // Sort events by score --------------------------------
   var list = [];
   for (var j = 0; j < rideshareScore.length; j++) {
-      list.push({'rideshare': rideshares[j], 'score': rideshareScore[j]});
+      // Only adding valid rideshareScores
+      if (rideshareScore[j] > 0){
+        list.push({'rideshare': rideshares[j], 'score': rideshareScore[j]});
+      }
   }
 
   list.sort(function(a, b) {
