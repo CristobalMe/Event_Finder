@@ -156,36 +156,6 @@ router.get('/user/notDriving/:userAttending', async (req, res) => {
   res.json(ridesharing)
 })
 
-const getAttendingRideshares = async (userAttending) => {
-  let attendance = []
-  let ridesharingId = []
-
-  // Get all the attendances in wich we have registered preferences
-  try {
-      attendance = await prisma.attendance.findMany({
-        where: {
-          // Check logic (Change for OR)
-          userAttending: userAttending,
-          ridesharingUserPreferencesForEvent: {isNot: null},
-          ridesharingId: {gt: 0}
-      }
-      })
-    } catch (error) {
-      console.log(error);
-  
-      return res.status(500).json({
-        success: false,
-        message: error.message,
-      });
-  }
-  // -------------------------------------------------------------
-  // Get the ids 
-  attendance.map((a) => {
-      ridesharingId.push(a.ridesharingId)
-  })
-  return(ridesharingId)
-}
-
 // Check if a user is already registered
 router.get('/isRegistered/:userAttending/:eventId', async (req, res) => {
   let ridesharing = []
@@ -443,6 +413,23 @@ router.patch('/modify/coordinates/datetime', async(req, res) => {
   res.json(ridesharing)
 })
 
+// Fetch distance using the API: Distance Matrix
+const fetchDistance = async () => {
+  const apiKey = process.env.MAPS_API_KEY;
+  const origin = '37.7749,-122.4194';
+  const destination = '34.0522,-118.2437';
+  let distance = 0
+  fetch(`https://maps.googleapis.com/maps/api/distancematrix/json?destinations=New%20York%20City%2C%20NY&origins=Washington%2C%20DC&units=imperial&key=${apiKey}`)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("response:")
+        console.log(data.rows[0].elements[0].distance.value)
+      })
+      .catch((error) => console.error('Error fetching:', error))
+  
+  return (distance)
+}
+
 // Get recommendations
 router.get('/recommendations/:eventId/:userId', async (req, res) => {
   const { eventId, userId } = req.params
@@ -595,6 +582,8 @@ router.get('/recommendations/:eventId/:userId', async (req, res) => {
   // ------------------------------------------------------------------------------------
 
   // Part 2 ***********************************************************
+
+  console.log(await fetchDistance())
   
   res.json(recommendedRideshares)
 })
