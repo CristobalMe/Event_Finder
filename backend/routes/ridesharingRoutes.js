@@ -69,47 +69,6 @@ router.post('/withoutCar', async (req, res) => {
     res.json(newRidesharing)
 })
 
-router.get('/event/:eventId', async (req, res) => {
-    let ridesharing = []
-    let attendance = []
-    let ridesharingId = []
-    const { eventId } = req.params
-
-    try {
-        attendance = await prisma.attendance.findMany({
-          where: { 
-            eventId: parseInt(eventId),
-            ridesharingDriver: {isNot: null}
-        }
-        })
-      } catch (error) {
-        console.log(error);
-    
-        return res.status(500).json({
-          success: false,
-          message: error.message,
-        });
-    }
-    attendance.map((a) => {
-        ridesharingId.push(a.id)
-    })
-    try {
-        ridesharing = await prisma.ridesharing.findMany({
-            where: {
-                attendanceId: { in: ridesharingId }
-            }
-        })
-    } catch (error) {
-      console.log(error);
-  
-      return res.status(500).json({
-        success: false,
-        message: error.message,
-      });
-    }
-    res.json(ridesharing)
-})
-
 router.get('/user/driving/:userAttending', async (req, res) => {
     let ridesharing = []
     let attendance = []
@@ -227,92 +186,6 @@ const getAttendingRideshares = async (userAttending) => {
   return(ridesharingId)
 }
 
-// This reccommends posible ridesharings to users without car 
-router.get('/user/notDriving/suggestions/:userAttending', async (req, res) => {
-  let ridesharing = []
-  let attendance = []
-  let ridesharingId = []
-  let eventId = []
-  const { userAttending } = req.params
-  let ridesharingAttending = []
-
-  // get ridesharingAttending
-  ridesharingAttending = await getAttendingRideshares(userAttending)
-  // -------------------------
-
-  
-
-  // recommend ridesharings
-  try {
-      attendance = await prisma.attendance.findMany({
-        where: { 
-          userAttending: userAttending,
-          ridesharingUserPreferencesForEvent: {isNot: null}
-      }
-      })
-    } catch (error) {
-      console.log(error);
-  
-      return res.status(500).json({
-        success: false,
-        message: error.message,
-      });
-  }
-  attendance.map((a) => {
-      eventId.push(a.eventId)
-  })
-
-  try {
-    attendance = await prisma.attendance.findMany({
-      where: { 
-        eventId: {in: eventId},
-        userAttending: {not: userAttending},
-        ridesharingDriver: {isNot: null}
-    }
-    })
-  } catch (error) {
-    console.log(error);
-
-    return res.status(500).json({
-      success: false,
-      message: error.message,
-    });
-  }
-
-  attendance.map((a) => {
-    ridesharingId.push(a.id)
-  })
-
-  // Fix to display only rideshares with more than the seats needed
-  // ridesharingUserPreferencesForEvent = await prisma.ridesharingUserPreferencesForEvent.findMany({
-  //   where: {
-  //     id: {in: ridesharingId}
-  //   }
-  // })
-  // -------------------------------------------
-
-  try {
-      ridesharing = await prisma.ridesharing.findMany({
-          where: {
-            AND: [
-              {id: { not: { in: ridesharingAttending}}},
-              {attendanceId: { in: ridesharingId }},
-              {seatsAvailable: { gt: 1 }}
-            ]
-          }
-      })
-  } catch (error) {
-    console.log(error);
-
-    return res.status(500).json({
-      success: false,
-      message: error.message,
-    });
-  }
-  // -------------------------------------------------
-  res.json(ridesharing)
-})
-
 // Check if a user is already registered
 router.get('/isRegistered/:userAttending/:eventId', async (req, res) => {
   let ridesharing = []
@@ -381,21 +254,7 @@ router.get('/isRegistered/:userAttending/:eventId', async (req, res) => {
   res.json(ridesharingUserPreferencesForEvent.concat(ridesharing))
 })
 
-router.get('/ridesharingUserPreferencesForEvent', async (req, res) => {
-    let ridesharingUserPreferencesForEvent = []
-    try {
-        ridesharingUserPreferencesForEvent = await prisma.ridesharingUserPreferencesForEvent.findMany()
-    } catch (error) {
-      console.log(error);
-  
-      return res.status(500).json({
-        success: false,
-        message: error.message,
-      });
-    }
-    res.json(ridesharingUserPreferencesForEvent)
-})
-
+// Modify the attendance
 router.patch('/attendance/:user', async(req, res) => {
   const {  user  } = req.params
   // if isDeleting = 0, the user wants to delete the event, else is 1
@@ -556,6 +415,7 @@ router.get('/preferences/:rideshareId', async (req, res) => {
   res.json(preferences)
 })
 
+// Modify rideshare
 router.patch('/modify/coordinates/datetime', async(req, res) => {
   const { ridesharingId, newLat, newLong, newDateTime } = req.body
   let ridesharing = []
@@ -581,6 +441,203 @@ router.patch('/modify/coordinates/datetime', async(req, res) => {
     });
   }
   res.json(ridesharing)
+})
+
+// Get recommendations
+router.get('/recommendations/:eventId/:userId', async (req, res) => {
+  const { eventId, userId } = req.params
+  let rideshares = []
+  let attendance = []
+  let atendanceId = []
+
+  let event = []
+
+  let distanceRideshareToUser = []
+  let differenceBetweenDates = []
+
+  let userToRecommend = []
+  let userToRecommendAttendance = []
+  let userToRecommendPreferences = []
+  // Part 1 ***********************************************************
+  // Find our user data
+  try {
+    userToRecommend = await prisma.user.findUnique({
+      where: { 
+        id: parseInt(userId)
+      }
+    })
+  } catch (error) {
+    console.log(error);
+
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+
+  userToRecommendAttendance = await prisma.attendance.findFirst({
+    where: { 
+      eventId: parseInt(eventId),
+      userAttending: userToRecommend.username,
+    }
+  })
+
+  userToRecommendPreferences = await prisma.ridesharingUserPreferencesForEvent.findUnique({
+    where: { 
+      attendanceId: userToRecommendAttendance.id
+    }
+  })
+  // -----------------------------------------------
+  // Find the event data
+  event = await prisma.event.findMany({
+    where: { 
+      id: parseInt(eventId)
+    }
+  })
+  // ------------------------------------------------
+  // Find the "attendance" of the users that are driving to the event
+  try {
+      attendance = await prisma.attendance.findMany({
+        where: { 
+          eventId: parseInt(eventId),
+          ridesharingDriver: {isNot: null}
+        }
+      })
+    } catch (error) {
+      console.log(error);
+  
+      return res.status(500).json({
+        success: false,
+        message: error.message,
+      });
+  }
+  // ------------------------------------------------
+  // Store the attendance ids in an array
+  attendance.map((a) => {
+    atendanceId.push(a.id)
+  })
+  // ------------------------------------------------
+  // Search the rideshares
+  try {
+    rideshares = await prisma.ridesharing.findMany({
+        where: {
+            attendanceId: { in: atendanceId }
+        }
+    })
+  } catch (error) {
+    console.log(error);
+
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+  // -----------------------------------------------
+  // Part 1 ***********************************************************
+
+  // Part 2 ***********************************************************
+  let rideshareScore = []
+
+  // We store the distance between rideshare and user
+  let distance = 0
+  let distanceEventUser = ((event.lat - userToRecommend.lat)**2 + (event.long - userToRecommend.long)**2)**.5
+  rideshares.map((rideshare) => {
+    distance = ((rideshare.departingLat - userToRecommend.lat)**2 + (rideshare.departingLong - userToRecommend.long)**2)**.5
+
+    // We penalize diferences greater the distance to the event
+    if (distance > distanceEventUser){
+      distance = 1000000
+    }
+    distanceRideshareToUser.push(distance)
+  })
+  // ----------------------------------------------
+  // We calculate how different are the date that a user is departing and the date of the rideshare
+  let difference = 0
+  rideshares.map((rideshare) => {
+    // Transform difference from ms to days
+    difference = (((rideshare.arrivalTime - userToRecommendPreferences.preferedArrivalTime)**2)**.5) / 86400000
+
+    if (difference > 1){
+      // We penalize diferences greater than a day
+      difference = 1000000
+    }
+    differenceBetweenDates.push(difference)
+  })
+  // ----------------------------------------------
+
+  // We calculate the rideshareScore 
+  let score = 0
+
+  distanceRideshareToUser.map((distance, index) => {
+    score = 1/distance + 1/differenceBetweenDates[index]
+    // If we penalized the score, we assign it a negative score
+    if (1/distance < 1/10000 || 1/differenceBetweenDates[index] < 1/10000) score = -1
+
+    rideshareScore.push(score)
+  })
+  // ----------------------------------------------
+
+  // Sort events by score --------------------------------
+  var list = [];
+  for (var j = 0; j < rideshareScore.length; j++) {
+      list.push({'rideshare': rideshares[j], 'score': rideshareScore[j]});
+  }
+
+  list.sort(function(a, b) {
+      return ((a.score < b.score) ? 1 : ((a.score == b.score) ? 0 : -1));
+  });
+
+  recommendedRideshares = []
+
+  for (var k = 0; k < list.length; k++) {
+    if (k < 5) recommendedRideshares.push(list[k].rideshare)
+  }
+  // ------------------------------------------------------------------------------------
+
+  // Part 2 ***********************************************************
+  
+  res.json(recommendedRideshares)
+})
+
+// Get the preferences of a user that has not registered to a group
+router.get('/ridesharingUserPreferencesForEvent/:userAttending/:eventId', async (req, res) => {
+  let preferences = null
+  let attendance = []
+  const { userAttending, eventId } = req.params
+
+  try {
+      attendance = await prisma.attendance.findFirst({
+        where: { 
+          userAttending: userAttending,
+          eventId: parseInt(eventId)
+      }
+      })
+    } catch (error) {
+      console.log(error);
+  
+      return res.status(500).json({
+        success: false,
+        message: error.message,
+      });
+  }
+  if (attendance){
+    try {
+        preferences = await prisma.ridesharingUserPreferencesForEvent.findFirst({
+            where: {
+              attendanceId: attendance.id,
+              ridesharingId: {equals: null}
+            }
+        })
+    } catch (error) {
+      console.log(error);
+
+      return res.status(500).json({
+        success: false,
+        message: error.message,
+      });
+    }
+  }
+  res.json(preferences)
 })
 
 module.exports = router

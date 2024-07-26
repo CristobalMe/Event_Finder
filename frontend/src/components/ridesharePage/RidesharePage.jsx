@@ -148,7 +148,7 @@ function RidesharePage({ user }) {
                             </p>
                             {userPreferences && userData && (
                                 <section className="ridesharings-grid">
-                                    <h2 className="font-bebas text-2xl ml-5">
+                                    <h2 className="font-bebas text-2xl ml-5 mb-5">
                                         Preferences
                                     </h2>
                                     {renderPreferences(

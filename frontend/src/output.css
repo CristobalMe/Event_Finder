@@ -690,6 +690,21 @@ body {
   margin-right: 30rem;
 }
 
+.my-\[8rem\] {
+  margin-top: 8rem;
+  margin-bottom: 8rem;
+}
+
+.mx-\[20rem\] {
+  margin-left: 20rem;
+  margin-right: 20rem;
+}
+
+.mx-\[22rem\] {
+  margin-left: 22rem;
+  margin-right: 22rem;
+}
+
 .-mr-1 {
   margin-right: -0.25rem;
 }
@@ -930,6 +945,26 @@ body {
   margin-top: 8rem;
 }
 
+.mb-8 {
+  margin-bottom: 2rem;
+}
+
+.mb-5 {
+  margin-bottom: 1.25rem;
+}
+
+.mr-3 {
+  margin-right: 0.75rem;
+}
+
+.ml-3 {
+  margin-left: 0.75rem;
+}
+
+.ml-10 {
+  margin-left: 2.5rem;
+}
+
 .block {
   display: block;
 }
@@ -1095,6 +1130,10 @@ body {
 
 .content-center {
   align-content: center;
+}
+
+.items-start {
+  align-items: flex-start;
 }
 
 .items-center {

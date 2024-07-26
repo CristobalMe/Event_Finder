@@ -2,6 +2,7 @@ import Header from '../header/Header'
 import NearbyEventsMap from '../NearbyEventsMap'
 import axios from 'axios'
 import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
 
@@ -310,29 +311,38 @@ function RideshareEventForm({ user }) {
 
                                             {hasCar && (
                                                 <div>
-                                                    <button
-                                                        className="bg-blue-950 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                                                        type="button"
-                                                        onClick={
-                                                            handlePostWithCar
-                                                        }
+                                                    <Link
+                                                        to={`/user/${user.id}`}
+                                                        reloadDocument={true}
                                                     >
-                                                        Submit
-                                                    </button>
+                                                        <button
+                                                            className="bg-blue-950 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                                            type="button"
+                                                            onClick={
+                                                                handlePostWithCar
+                                                            }
+                                                        >
+                                                            Submit
+                                                        </button>
+                                                    </Link>
                                                 </div>
                                             )}
 
                                             {!hasCar && (
                                                 <div>
-                                                    <button
-                                                        className="bg-blue-950 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                                                        type="button"
-                                                        onClick={
-                                                            handlePostWithoutCar
-                                                        }
+                                                    <Link
+                                                        to={`/event/${event.id}`}
                                                     >
-                                                        Submit
-                                                    </button>
+                                                        <button
+                                                            className="bg-blue-950 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                                            type="button"
+                                                            onClick={
+                                                                handlePostWithoutCar
+                                                            }
+                                                        >
+                                                            Submit
+                                                        </button>
+                                                    </Link>
                                                 </div>
                                             )}
                                         </div>

@@ -2,7 +2,6 @@ import HomePage from './components/homePage/HomePage.jsx'
 import ForYouPage from './components/forYouPage/ForYouPage.jsx'
 import NearbyPage from './components/nearbyPage/NearbyPage.jsx'
 import EventsAttendingPage from './components/eventAttendingPage/EventsAttendingPage.jsx'
-import FavoriteEventsPage from './components/favoriteEventsPage/FavoriteEventsPage.jsx'
 import EventPage from './components/eventPage/EventPage.jsx'
 import LoginPage from './components/LoginPage/LoginPage.jsx'
 import SignupPage from './components/signUpPage/SignUpPage.jsx'
@@ -58,10 +57,6 @@ function App() {
                         <Route
                             path="/Attending"
                             element={<EventsAttendingPage user={user} />}
-                        />
-                        <Route
-                            path="/Favorites"
-                            element={<FavoriteEventsPage />}
                         />
                         <Route
                             path="/Login"

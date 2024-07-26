@@ -6,14 +6,10 @@ const DisplayUserRidesharings = ({ user }) => {
     const url = import.meta.env.VITE_URL
     const [userRidesharesDriving, setUserRidesharesDriving] = useState([])
     const [userRidesharesNotDriving, setUserRidesharesNotDriving] = useState([])
-    const [userRidesharesSuggestions, setUserRidesharesSuggestions] = useState(
-        []
-    )
 
     useEffect(() => {
         fetchUserRideshares()
         fetchUserNoDriverRideshares()
-        fetchUserRidesharesSuggestions()
     }, [])
 
     const fetchUserRideshares = () => {
@@ -27,13 +23,6 @@ const DisplayUserRidesharings = ({ user }) => {
         fetch(`${url}/ridesharing/user/notDriving/${user.username}`)
             .then((response) => response.json())
             .then((data) => setUserRidesharesNotDriving(data))
-            .catch((error) => console.error('Error fetching:', error))
-    }
-
-    const fetchUserRidesharesSuggestions = () => {
-        fetch(`${url}/ridesharing/user/notDriving/suggestions/${user.username}`)
-            .then((response) => response.json())
-            .then((data) => setUserRidesharesSuggestions(data))
             .catch((error) => console.error('Error fetching:', error))
     }
 
@@ -90,21 +79,6 @@ const DisplayUserRidesharings = ({ user }) => {
                         Unregister
                     </button>
                 )}
-                {isSuggestion && !isDriving && (
-                    <button
-                        className="bg-blue-700 hover:bg-blue-950 text-white font-bold py-1 px-2 rounded mr-[1rem] my-[.5rem]"
-                        type="button"
-                        onClick={() => {
-                            handleRidesharingAttendance(
-                                rideshare.id,
-                                rideshare.eventName,
-                                1
-                            )
-                        }}
-                    >
-                        Register
-                    </button>
-                )}
                 {isDriving && (
                     <Link to={`/ridesharing/manage/${rideshare.id}`}>
                         <button
@@ -132,19 +106,6 @@ const DisplayUserRidesharings = ({ user }) => {
                             </h2>
                         </div>
                     </div>
-
-                    {userRidesharesSuggestions && (
-                        <section className="ridesharings-grid">
-                            <h2 className="font-bebas text-2xl ml-5">
-                                Suggestions
-                            </h2>
-                            {renderRidesharings(
-                                userRidesharesSuggestions,
-                                false,
-                                true
-                            )}
-                        </section>
-                    )}
 
                     {userRidesharesDriving && (
                         <section className="ridesharings-grid">
