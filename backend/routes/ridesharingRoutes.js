@@ -156,36 +156,6 @@ router.get('/user/notDriving/:userAttending', async (req, res) => {
   res.json(ridesharing)
 })
 
-const getAttendingRideshares = async (userAttending) => {
-  let attendance = []
-  let ridesharingId = []
-
-  // Get all the attendances in wich we have registered preferences
-  try {
-      attendance = await prisma.attendance.findMany({
-        where: {
-          // Check logic (Change for OR)
-          userAttending: userAttending,
-          ridesharingUserPreferencesForEvent: {isNot: null},
-          ridesharingId: {gt: 0}
-      }
-      })
-    } catch (error) {
-      console.log(error);
-  
-      return res.status(500).json({
-        success: false,
-        message: error.message,
-      });
-  }
-  // -------------------------------------------------------------
-  // Get the ids 
-  attendance.map((a) => {
-      ridesharingId.push(a.ridesharingId)
-  })
-  return(ridesharingId)
-}
-
 // Check if a user is already registered
 router.get('/isRegistered/:userAttending/:eventId', async (req, res) => {
   let ridesharing = []
@@ -443,6 +413,25 @@ router.patch('/modify/coordinates/datetime', async(req, res) => {
   res.json(ridesharing)
 })
 
+// Fetch distance using the API: Distance Matrix
+const fetchDistance = async (destination, origin) => {
+  // Import the API key
+  const apiKey = process.env.MAPS_API_KEY;
+  // distance = Infinity to work with unreacheable destinations
+  let distance = Infinity
+  // origin == destination is because of a bug when selecting the same location with the api
+  if (origin == destination) distance = 0
+
+  // Fetch distance from origin to destination
+  await fetch(`https://maps.googleapis.com/maps/api/distancematrix/json?destinations=${destination.lat}%2C${destination.long}&origins=${origin.lat}%2C${origin.long}&key=${apiKey}`)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.rows[0].elements[0].distance.value) distance = parseInt(data.rows[0].elements[0].distance.value)/1000
+      })
+      .catch((error) => console.error('Error fetching:', error))
+  return (distance)
+}
+
 // Get recommendations
 router.get('/recommendations/:eventId/:userId', async (req, res) => {
   const { eventId, userId } = req.params
@@ -540,16 +529,19 @@ router.get('/recommendations/:eventId/:userId', async (req, res) => {
 
   // We store the distance between rideshare and user
   let distance = 0
-  let distanceEventUser = ((event.lat - userToRecommend.lat)**2 + (event.long - userToRecommend.long)**2)**.5
-  rideshares.map((rideshare) => {
-    distance = ((rideshare.departingLat - userToRecommend.lat)**2 + (rideshare.departingLong - userToRecommend.long)**2)**.5
+  let distanceEventUser = 0
+  // Distance between event and user
+  distanceEventUser = await fetchDistance({lat: event[0].lat, long: event[0].long}, {lat: userToRecommend.lat, long: userToRecommend.long})
+
+  await Promise.all(rideshares.map(async (rideshare) => {
+    distance = await fetchDistance({lat: rideshare.departingLat, long: rideshare.departingLong}, {lat: userToRecommend.lat, long: userToRecommend.long})
 
     // We penalize diferences greater the distance to the event
     if (distance > distanceEventUser){
       distance = 1000000
     }
     distanceRideshareToUser.push(distance)
-  })
+  }))
   // ----------------------------------------------
   // We calculate how different are the date that a user is departing and the date of the rideshare
   let difference = 0
@@ -595,7 +587,6 @@ router.get('/recommendations/:eventId/:userId', async (req, res) => {
   // ------------------------------------------------------------------------------------
 
   // Part 2 ***********************************************************
-  
   res.json(recommendedRideshares)
 })
 
