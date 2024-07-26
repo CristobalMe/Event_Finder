@@ -572,7 +572,10 @@ router.get('/recommendations/:eventId/:userId', async (req, res) => {
   // Sort events by score --------------------------------
   var list = [];
   for (var j = 0; j < rideshareScore.length; j++) {
-      list.push({'rideshare': rideshares[j], 'score': rideshareScore[j]});
+      // We only push events that have a valid rideshareScore
+      if (rideshareScore[j] > 0){
+        list.push({'rideshare': rideshares[j], 'score': rideshareScore[j]});
+      }
   }
 
   list.sort(function(a, b) {

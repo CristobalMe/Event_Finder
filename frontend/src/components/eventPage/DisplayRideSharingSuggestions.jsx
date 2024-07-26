@@ -50,12 +50,11 @@ const DisplayRideSharingSuggestions = ({ user, event, preferences }) => {
                         ⊛ {rideshare.seatsAvailable} seats available
                     </p>
                     <p className="bg-white h-fit p-[.2rem] break-all">
-                        ⊛ Arrival date:{' '}
-                        {rideshare.departingTime.substring(0, 10)}
+                        ⊛ Arrival date: {rideshare.arrivalTime.substring(0, 10)}
                     </p>
                     <p className="bg-white h-fit p-[.2rem] break-all">
                         ⊛ Arrival time:{' '}
-                        {rideshare.departingTime.substring(11, 16)}
+                        {rideshare.arrivalTime.substring(11, 16)}
                     </p>
                     <button
                         className="bg-blue-700 hover:bg-blue-950 text-white font-bold py-1 px-2 rounded mr-[1rem] my-[.5rem]"
