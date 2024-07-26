@@ -45,7 +45,7 @@
   - [X] I want to be able to receive recommendations on events based on my preferences, so I can spend less time searching and more having fun.
   - [X] I want to be able to see a map with events nearby, so I can find events that interest me.
   - [X] I want my passwords to be encrypted in the web app database for security.
-  - [ ] I want to be able to add friends, so I can attend events that my friends are interested in.
+  - [ ] I want to be able to add friends, so I can attend events that my friends are interested in. **(Discarded idea)**
 
 - [ ] **Optional TC 2**
   - [ ] Suggest departure time for each group member. (Can be achieved with Distance Matrix API, not enough time)
