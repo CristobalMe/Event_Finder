@@ -78,6 +78,9 @@ CREATE TABLE "ridesharing" (
 );
 
 -- CreateIndex
+CREATE UNIQUE INDEX "event_name_key" ON "event"("name");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "user_username_key" ON "user"("username");
 
 -- CreateIndex
