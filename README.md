@@ -52,6 +52,7 @@
 
 #### FORMULAS
 <img width="762" alt="Screenshot 2024-07-29 at 1 18 44 PM" src="https://github.com/user-attachments/assets/398d0529-82e9-4adf-a8e0-d3a39376178d">
-<img width="455" alt="Screenshot 2024-07-29 at 1 19 10 PM" src="https://github.com/user-attachments/assets/0ed9f7ff-9aa7-44df-bbb7-1dd0f1c45684">
+<img width="595" alt="Screenshot 2024-07-29 at 1 21 20 PM" src="https://github.com/user-attachments/assets/d2bf1d91-1eb4-49d2-9592-761b705d71cf">
+
      
 ## After Jul 29:
