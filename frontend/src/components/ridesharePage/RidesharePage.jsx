@@ -7,7 +7,7 @@ import MapWithRoute from '../MapWithRoute'
 function RidesharePage({ user }) {
     const current_rideshareId = window.location.pathname.split('/')[3]
     const url = import.meta.env.VITE_URL
-    const [rideshare, setRideshare] = useState([])
+    const [rideshare, setRideshare] = useState(false)
     const [userPreferences, setUserPreferences] = useState([])
     const [userData, setUserData] = useState([])
     const [lat, setLat] = useState(rideshare.departingLat ?? '0')
@@ -250,6 +250,18 @@ function RidesharePage({ user }) {
                     <p className="flex items-center justify-center font-bebas text-3xl mt-3 mx-3 text-white">
                         Route
                     </p>
+                    {rideshare && (
+                        <p className="flex items-center justify-center font-bebas text-xl mt-3 mx-3 text-white">
+                            Suggested depparting time:{' '}
+                            {rideshare.departingTime.substring(11, 16)}
+                        </p>
+                    )}
+                    {rideshare && (
+                        <p className="flex items-center justify-center font-bebas text-xl mt-3 mx-3 text-white">
+                            Suggested depparting date:{' '}
+                            {rideshare.departingTime.substring(0, 10)}
+                        </p>
+                    )}
                     {event.lat && (
                         <MapWithRoute
                             origin={{
