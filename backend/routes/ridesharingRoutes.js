@@ -3,6 +3,23 @@ const router = express.Router()
 const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient()
 
+// Fetch duration using the API: Distance Matrix
+const fetchDurationOfRide = async (destination, origin) => {
+  // Import the API key
+  const apiKey = process.env.MAPS_API_KEY;
+  let duration = 0
+
+  // Fetch duration from origin to destination
+  await fetch(`https://maps.googleapis.com/maps/api/distancematrix/json?destinations=${destination.lat}%2C${destination.long}&origins=${origin.lat}%2C${origin.long}&key=${apiKey}`)
+      .then((response) => response.json())
+      .then((data) => {
+        // If fetched correctly, we convert it to mls
+        if (data.rows[0].elements[0].duration.value) duration = parseInt(data.rows[0].elements[0].duration.value)*1000
+      })
+      .catch((error) => console.error('Error fetching:', error))
+  return (duration)
+}
+
 router.post('/withCar', async (req, res) => {
   const {  seatsAvailable, arrivalTime, departingLat, departingLong, user, event } = req.body
   let newRidesharing = []
@@ -14,11 +31,13 @@ router.post('/withCar', async (req, res) => {
       eventId: parseInt(event.id)
     }
   })
+  durationOfRideshare = await fetchDurationOfRide({lat:departingLat,long:departingLong},event)
+  const departingTime = new Date(arrivalTimeDateTime - durationOfRideshare)
   try {
     newRidesharing = await prisma.ridesharing.create({
       data: {
         seatsAvailable: seatsAvailable,
-        departingTime: event.date,
+        departingTime: departingTime,
         departingLat: departingLat,
         departingLong: departingLong,
         arrivalTime: arrivalTimeDateTime,
@@ -389,8 +408,34 @@ router.get('/preferences/:rideshareId', async (req, res) => {
 router.patch('/modify/coordinates/datetime', async(req, res) => {
   const { ridesharingId, newLat, newLong, newDateTime } = req.body
   let ridesharing = []
+  let ridesharingData = []
+  let event = []
   const newDate = new Date(newDateTime)
+  let departingTime = 0
   
+  // Find corresponding event
+  try {
+    ridesharingData = await prisma.ridesharing.findFirst({
+      where: { id: parseInt(ridesharingId)}
+    })
+
+    event = await prisma.event.findFirst({
+      where: { name: ridesharingData.eventName}
+    })
+  } catch (error) {
+    console.log(error);
+
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+
+  // Calculate estimated departing Datetime
+  durationOfRideshare = await fetchDurationOfRide({lat:newLat,long:newLong},event)
+  departingTime = new Date(newDate - durationOfRideshare)
+
+  // Update rideshare
   try {
       ridesharing = await prisma.ridesharing.update({
       where: { 
@@ -399,7 +444,8 @@ router.patch('/modify/coordinates/datetime', async(req, res) => {
       data: {
         departingLat: parseFloat(newLat),
         departingLong: parseFloat(newLong),
-        arrivalTime: newDate
+        arrivalTime: newDate,
+        departingTime: departingTime
       }
     })
   } catch (error) {

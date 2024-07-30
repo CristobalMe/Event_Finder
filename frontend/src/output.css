@@ -1120,6 +1120,10 @@ body {
   width: 1.5rem;
 }
 
+.w-\[100\%\] {
+  width: 100%;
+}
+
 .max-w-sm {
   max-width: 24rem;
 }
@@ -1778,5 +1782,9 @@ body {
 @media (min-width: 1280px) {
   .xl\:flex {
     display: flex;
+  }
+
+  .xl\:justify-center {
+    justify-content: center;
   }
 }
