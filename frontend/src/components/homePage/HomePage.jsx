@@ -127,10 +127,8 @@ function HomePage({ user }) {
                     <h2 className="hidden xl:flex justify-center font-bebas text-white text-3xl mt-[10rem]">
                         Top 5 events
                     </h2>
-                    <div className="hidden xl:flex mb-[20rem] mt-[8rem] mx-[22rem]">
-                        <div className="">
-                            <RotatingEventImages events={events} />
-                        </div>
+                    <div className="hidden xl:flex xl:justify-center mb-[20rem] mt-[8rem]">
+                        <RotatingEventImages events={events} />
                     </div>
                 </div>
             )}

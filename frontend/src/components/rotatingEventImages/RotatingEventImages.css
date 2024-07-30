@@ -1,6 +1,4 @@
 .box {
-    margin-left: 25rem;
-    position: relative;
     width: 200px;
     height: 200px;
     transform-style: preserve-3d;

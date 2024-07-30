@@ -17,7 +17,9 @@ function RotatingEventImages({ events }) {
     }
 
     return (
-        <div>{events && <div className="box">{displayEvent(events)}</div>}</div>
+        <div className="flex justify-center">
+            {events && <div className="box">{displayEvent(events)}</div>}
+        </div>
     )
 }
 
