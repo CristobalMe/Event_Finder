@@ -4,7 +4,7 @@
 
 ### [Project Plan](https://docs.google.com/document/d/1QazKiU6nkUZo1HXYLyYGtTFxe027hL-Ae4iMBgQIT8Y/edit#heading=h.eerthpw22b8l)
 
-### [Long Demo] (https://drive.google.com/file/d/1dNsJ84MvoyIJ3dqzy4ObO1_7RKJrdERP/view?usp=sharing)
+### [Long Demo](https://drive.google.com/file/d/1dNsJ84MvoyIJ3dqzy4ObO1_7RKJrdERP/view?usp=sharing)
 
 ### Application Features
 
