@@ -6,6 +6,8 @@
 
 ### [Long Demo](https://drive.google.com/file/d/1dNsJ84MvoyIJ3dqzy4ObO1_7RKJrdERP/view?usp=sharing)
 
+### [2min Demo](https://drive.google.com/file/d/179VFgYFgd6mxCe4J8ju8heQ_nD9lIFTQ/view?usp=drive_link)
+
 ### Application Features
 
 #### MU FEATURES
